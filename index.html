@@ -71,7 +71,6 @@
 
         @media (min-width: 768px) { #tree { height: 750px; } #displayTitle { font-size: 1.8rem; } }
 
-        /* Style untuk cetakan (dulu digunakan, sekarang backup) */
         @media print {
             .no-print { display: none !important; }
         }
@@ -107,7 +106,7 @@
         </div>
 
         <div class="action-bar">
-            <button onclick="printChartOnly()" class="btn btn-pdf"><i class="fas fa-file-pdf"></i> Cetak PDF (Gerenti Page 1)</button>
+            <button onclick="printChartOnly()" class="btn btn-pdf"><i class="fas fa-file-pdf"></i> Cetak PDF (Gerenti Latar Belakang)</button>
             <button onclick="saveData()" class="btn btn-save"><i class="fas fa-save"></i> Simpan JSON</button>
             <button onclick="loadData()" class="btn btn-open"><i class="fas fa-folder-open"></i> Buka JSON</button>
         </div>
@@ -122,20 +121,17 @@
         let employeeData = [];
         let chart;
 
-        // TEKNIK BARU: Cetak hanya kawasan carta dalam window baru
         function printChartOnly() {
             if (employeeData.length === 0) {
                 alert("Sila tambah staf terlebih dahulu.");
                 return;
             }
 
-            // Dapatkan SVG dari dalam div #tree
             const chartSvg = document.querySelector('#tree svg');
             if (!chartSvg) return;
 
             const tajuk = document.getElementById('displayTitle').innerText;
             
-            // Buka tetingkap baru
             const printWin = window.open('', '', 'width=1100,height=850');
             
             printWin.document.write(`
@@ -144,13 +140,18 @@
                     <title>Cetak Carta Organisasi</title>
                     <style>
                         body { 
-                            margin: 0; padding: 20px; font-family: 'Inter', sans-serif; text-align: center;
-                            background-color: #fffdf5; /* Cream background */
+                            margin: 0; padding: 40px; font-family: 'Inter', sans-serif; text-align: center;
+                            background-color: #fffdf5 !important;
+                            background-image: radial-gradient(#d1d5db 1px, transparent 1px) !important;
+                            background-size: 20px 20px !important;
+                            /* PAKSA WARNA KELUAR DI PRINT */
+                            -webkit-print-color-adjust: exact !important;
+                            print-color-adjust: exact !important;
                         }
                         h2 { color: #1e3a8a; margin-bottom: 20px; font-size: 24pt; }
-                        #print-wrapper { width: 100%; }
-                        svg { width: 100% !important; height: auto !important; }
-                        @page { size: A4 landscape; margin: 1cm; }
+                        #print-wrapper { width: 100%; display: flex; justify-content: center; }
+                        svg { width: 100% !important; height: auto !important; max-height: 80vh; }
+                        @page { size: A4 landscape; margin: 0; }
                     </style>
                 </head>
                 <body>
@@ -164,23 +165,17 @@
 
             printWin.document.close();
             
-            // Tunggu imej/SVG load sekejap, kemudian cetak
+            // Beri masa untuk rendering corak dot-dot
             setTimeout(() => {
                 printWin.focus();
                 printWin.print();
                 printWin.close();
-            }, 500);
+            }, 800);
         }
 
-        function updateDisplayTitle(val) {
-            document.getElementById('displayTitle').innerText = val || "Tajuk Carta Organisasi";
-        }
-
-        function updateFileName(input) {
-            const display = document.getElementById('file-name-display');
-            display.textContent = input.files.length > 0 ? "Fail: " + input.files[0].name : "Tiada foto";
-        }
-
+        // --- FUNGSI ASAL KEKAL ---
+        function updateDisplayTitle(val) { document.getElementById('displayTitle').innerText = val || "Tajuk Carta Organisasi"; }
+        function updateFileName(input) { const display = document.getElementById('file-name-display'); display.textContent = input.files.length > 0 ? "Fail: " + input.files[0].name : "Tiada foto"; }
         function setupTemplate() {
             OrgChart.templates.eziCustom = Object.assign({}, OrgChart.templates.ana);
             OrgChart.templates.eziCustom.size = [250, 130];
@@ -189,36 +184,20 @@
             OrgChart.templates.eziCustom.field_1 = '<foreignObject x="95" y="65" width="145" height="55"><div xmlns="http://www.w3.org/1999/xhtml" style="font-size:12px; color:#64748b; line-height:1.2; font-weight:500; display:block; word-break:break-word; overflow:hidden;">{val}</div></foreignObject>';
             OrgChart.templates.eziCustom.img_0 = '<clipPath id="ulaImg"><circle cx="45" cy="65" r="38"></circle></clipPath><circle cx="45" cy="65" r="40" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1"></circle><image preserveAspectRatio="xMidYMid slice" clip-path="url(#ulaImg)" xlink:href="{val}" x="7" y="27" width="76" height="76"></image>';
         }
-
         function renderChart() {
             const treeDiv = document.getElementById("tree");
             if (employeeData.length === 0) return;
             if (!OrgChart.templates.eziCustom) setupTemplate();
-
-            chart = new OrgChart(treeDiv, {
-                nodes: employeeData,
-                template: "eziCustom",
-                enableSearch: false,
-                userSearchControl: false,
-                mouseWheel: OrgChart.action.zoom,
-                nodeBinding: { field_0: "name", field_1: "title", img_0: "img" }
-            });
+            chart = new OrgChart(treeDiv, { nodes: employeeData, template: "eziCustom", enableSearch: false, userSearchControl: false, mouseWheel: OrgChart.action.zoom, nodeBinding: { field_0: "name", field_1: "title", img_0: "img" } });
             updateDropdown();
         }
-
         function addNode() {
             const nameVal = document.getElementById('userName').value.trim();
             const roleVal = document.getElementById('userRole').value.trim();
             const pidVal = document.getElementById('reportsTo').value || null;
             const photoFile = document.getElementById('userPhoto').files[0];
-
-            if (!nameVal || !roleVal) {
-                alert("Sila isi Nama dan Jawatan!");
-                return;
-            }
-
+            if (!nameVal || !roleVal) { alert("Sila isi Nama dan Jawatan!"); return; }
             const id = Date.now().toString();
-
             if (photoFile) {
                 const reader = new FileReader();
                 reader.onload = function(e) {
@@ -232,51 +211,13 @@
                     img.src = e.target.result;
                 };
                 reader.readAsDataURL(photoFile);
-            } else {
-                saveAndPush(id, pidVal, nameVal, roleVal, "");
-            }
-
-            document.getElementById('userName').value = "";
-            document.getElementById('userRole').value = "";
-            document.getElementById('userPhoto').value = "";
-            document.getElementById('file-name-display').textContent = "Tiada foto";
+            } else { saveAndPush(id, pidVal, nameVal, roleVal, ""); }
+            document.getElementById('userName').value = ""; document.getElementById('userRole').value = ""; document.getElementById('userPhoto').value = ""; document.getElementById('file-name-display').textContent = "Tiada foto";
         }
-
-        function saveAndPush(id, pid, name, title, img) {
-            employeeData.push({ id, pid, name, title, img });
-            renderChart();
-        }
-
-        function updateDropdown() {
-            const select = document.getElementById('reportsTo');
-            const current = select.value;
-            select.innerHTML = '<option value="">-- Melapor Kepada --</option>';
-            employeeData.forEach(n => select.add(new Option(n.name, n.id)));
-            select.value = current;
-        }
-
-        function saveData() {
-            if (employeeData.length === 0) return;
-            const blob = new Blob([JSON.stringify(employeeData, null, 2)], {type: "application/json"});
-            const a = document.createElement('a');
-            a.href = URL.createObjectURL(blob);
-            a.download = "carta_ezi.json";
-            a.click();
-        }
-
-        function loadData() {
-            const input = document.createElement('input');
-            input.type = 'file'; input.accept = '.json';
-            input.onchange = e => {
-                const reader = new FileReader();
-                reader.onload = ev => {
-                    employeeData = JSON.parse(ev.target.result);
-                    renderChart();
-                };
-                reader.readAsText(e.target.files[0]);
-            };
-            input.click();
-        }
+        function saveAndPush(id, pid, name, title, img) { employeeData.push({ id, pid, name, title, img }); renderChart(); }
+        function updateDropdown() { const select = document.getElementById('reportsTo'); const current = select.value; select.innerHTML = '<option value="">-- Melapor Kepada --</option>'; employeeData.forEach(n => select.add(new Option(n.name, n.id))); select.value = current; }
+        function saveData() { if (employeeData.length === 0) return; const blob = new Blob([JSON.stringify(employeeData, null, 2)], {type: "application/json"}); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = "carta_ezi.json"; a.click(); }
+        function loadData() { const input = document.createElement('input'); input.type = 'file'; input.accept = '.json'; input.onchange = e => { const reader = new FileReader(); reader.onload = ev => { employeeData = JSON.parse(ev.target.result); renderChart(); }; reader.readAsText(e.target.files[0]); }; input.click(); }
     </script>
 </body>
 </html>
