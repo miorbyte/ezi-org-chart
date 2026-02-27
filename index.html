@@ -18,213 +18,80 @@
             --bg: #f1f5f9;
         }
 
-        body { 
-            font-family: 'Inter', sans-serif; 
-            background-color: var(--bg); 
-            margin: 0; padding: 10px; 
-            color: #1e293b;
-        }
+        body { font-family: 'Inter', sans-serif; background-color: var(--bg); margin: 0; padding: 10px; }
 
         .container { 
-            max-width: 1200px; 
-            margin: 0 auto; 
-            background: white; 
-            padding: 20px; 
-            border-radius: 15px; 
-            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-            box-sizing: border-box; 
+            max-width: 1200px; margin: 0 auto; background: white; padding: 20px; 
+            border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); box-sizing: border-box; 
         }
 
-        h1 { 
-            text-align: center; 
-            color: var(--primary); 
-            font-weight: 800; 
-            font-size: 1.5rem; /* Lebih kecil untuk mobile */
-            margin-bottom: 20px; 
-        }
+        h1 { text-align: center; color: var(--primary); font-weight: 800; font-size: 1.5rem; }
 
-        .input-card { 
-            background: #ffffff; 
-            padding: 20px; 
-            border: 1px solid #e2e8f0; 
-            border-radius: 12px; 
-            margin-bottom: 15px; 
-        }
+        .input-card { background: #ffffff; padding: 20px; border: 1px solid #e2e8f0; border-radius: 12px; margin-bottom: 15px; }
 
-        h3 { font-size: 0.95rem; margin-top: 0; color: #475569; display: flex; align-items: center; gap: 8px; }
+        #chartTitle { width: 100%; padding: 12px; font-size: 1rem; border: 2px solid #e2e8f0; border-radius: 10px; text-align: center; }
 
-        #chartTitle { 
-            width: 100%; 
-            padding: 12px; 
-            font-size: 1rem; 
-            border: 2px solid #e2e8f0; 
-            border-radius: 10px; 
-            box-sizing: border-box; 
-            text-align: center;
-        }
-
-        /* RESPONSIVE GRID: 1 Kolum untuk Mobile, 5 Kolum untuk Desktop */
-        .form-personal { 
-            display: grid; 
-            grid-template-columns: 1fr; 
-            gap: 12px; 
-        }
+        .form-personal { display: grid; grid-template-columns: 1fr; gap: 12px; }
 
         @media (min-width: 768px) {
-            .form-personal { 
-                grid-template-columns: 1.5fr 1.2fr 1.2fr 1fr 0.8fr; 
-            }
+            .form-personal { grid-template-columns: 1.5fr 1.2fr 1.2fr 1fr 0.8fr; }
             h1 { font-size: 2rem; }
             .container { padding: 40px; }
         }
 
-        input[type="text"], select { 
-            padding: 12px; 
-            border: 1.5px solid #cbd5e1; 
-            border-radius: 8px; 
-            width: 100%; 
-            font-size: 16px; /* Elak iOS zoom automatik pada input */
-            box-sizing: border-box;
-        }
+        input[type="text"], select { padding: 12px; border: 1.5px solid #cbd5e1; border-radius: 8px; width: 100%; font-size: 16px; box-sizing: border-box; }
 
         .upload-container { position: relative; text-align: center; }
+        #userPhoto { opacity: 0; position: absolute; width: 0.1px; height: 0.1px; z-index: -1; }
+        .custom-file-upload { display: block; border: 2px dashed var(--secondary); background: #eff6ff; color: var(--secondary); padding: 12px; border-radius: 8px; cursor: pointer; font-size: 0.85rem; font-weight: 700; }
 
-        #userPhoto { 
-            opacity: 0; position: absolute; width: 0.1px; height: 0.1px; z-index: -1;
-        }
+        #addBtn { background: var(--success); color: white; border: none; padding: 12px; border-radius: 8px; font-weight: 700; cursor: pointer; height: 48px; }
 
-        .custom-file-upload {
-            display: block;
-            border: 2px dashed var(--secondary);
-            background: #eff6ff;
-            color: var(--secondary);
-            padding: 12px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 0.85rem;
-            font-weight: 700;
-        }
+        .action-bar { display: grid; grid-template-columns: 1fr; gap: 10px; margin: 20px 0; }
+        @media (min-width: 600px) { .action-bar { grid-template-columns: repeat(3, 1fr); } }
 
-        #addBtn { 
-            background: var(--success); 
-            color: white; 
-            border: none; 
-            padding: 12px; 
-            border-radius: 8px; 
-            font-weight: 700; 
-            cursor: pointer;
-            height: 48px; /* Lebih besar untuk senang tekan guna jari */
-        }
-
-        /* Action Bar Responsive */
-        .action-bar { 
-            display: grid; 
-            grid-template-columns: 1fr; 
-            gap: 10px; 
-            margin: 20px 0; 
-        }
-
-        @media (min-width: 600px) {
-            .action-bar { grid-template-columns: repeat(3, 1fr); }
-        }
-
-        .btn { 
-            border: none; 
-            padding: 12px; 
-            border-radius: 8px; 
-            color: white; 
-            font-weight: 700; 
-            cursor: pointer; 
-            text-align: center;
-        }
+        .btn { border: none; padding: 12px; border-radius: 8px; color: white; font-weight: 700; cursor: pointer; text-align: center; text-decoration: none; }
         .btn-pdf { background: var(--danger); }
         .btn-save { background: var(--primary); }
         .btn-open { background: #64748b; }
 
         #displayTitle { text-align: center; color: var(--primary); margin-top: 30px; font-weight: 800; font-size: 1.2rem; }
         
-        /* Area Carta: Scrollable pada mobile */
-        #tree { 
-            width: 100%; 
-            height: 500px; /* Lebih pendek sedikit untuk mobile */
-            border: 1px solid #f1f5f9; 
-            border-radius: 12px; 
-            margin-top: 10px; 
-            background: white;
-            touch-action: none; /* Biar library handle touch */
-        }
-
-        @media (min-width: 768px) {
-            #tree { height: 750px; }
-            #displayTitle { font-size: 1.8rem; }
-        }
+        #tree { width: 100%; height: 600px; border: 1px solid #f1f5f9; border-radius: 12px; margin-top: 10px; background: white; }
 
         /* ==========================================================
-           FIXED PRINT PDF: PAKSA CARTA KE PAGE 1
+           FIX PRINT PDF: PAKSA CARTA KE ATAS PAGE 1
            ========================================================== */
         @media print {
-            /* 1. Sembunyikan semua elemen yang tidak perlu */
-            .no-print, 
-            .input-card, 
-            .action-bar, 
-            h1 { 
-                display: none !important; 
-            }
-
-            /* 2. Reset body dan container untuk bermula tepat dari atas */
-            body, html { 
-                margin: 0 !important; 
-                padding: 0 !important; 
-                background: white !important;
-                height: auto !important;
-            }
-
+            .no-print, .input-card, .action-bar, h1 { display: none !important; }
+            
+            body, html { margin: 0 !important; padding: 0 !important; background: white !important; }
+            
             .container { 
-                box-shadow: none !important; 
-                padding: 0 !important; 
-                margin: 0 !important; 
-                width: 100% !important; 
-                max-width: 100% !important;
-                display: block !important; /* Paksa mod block, bukan flex */
+                box-shadow: none !important; padding: 0 !important; margin: 0 !important; 
+                width: 100% !important; max-width: 100% !important; display: block !important;
             }
 
-            /* 3. Tajuk Carta rapat ke atas */
             #displayTitle { 
-                display: block !important;
-                margin: 0 !important; 
-                padding: 5mm 0 !important; /* Jarak kecil di atas tajuk */
-                text-align: center !important;
-                font-size: 22pt !important;
-                color: black !important;
-                page-break-after: avoid !important; /* Paksa jangan ada break selepas tajuk */
+                display: block !important; margin: 0 !important; 
+                padding: 5mm 0 !important; text-align: center !important; 
+                font-size: 20pt !important; color: black !important;
             }
 
-            /* 4. Paksa kedudukan carta bermula selepas tajuk */
             #tree { 
-                position: relative !important;
-                top: 0 !important;
-                left: 0 !important;
+                display: block !important;
+                height: 17cm !important; /* Hadkan tinggi agar muat A4 Landscape */
+                width: 100% !important;
                 margin: 0 !important;
                 padding: 0 !important;
-                width: 100% !important;
-                height: 18cm !important; /* Hadkan tinggi supaya muat A4 Landscape */
-                transform: none !important; /* BUANG auto-centering library */
-                page-break-before: avoid !important; /* Paksa jangan ada break sebelum carta */
+                border: none !important;
                 overflow: visible !important;
             }
 
-            /* 5. Paksa elemen SVG di dalam supaya tidak lari */
-            #tree svg {
-                transform: none !important; /* Membatalkan anjakan automatik library */
-                position: relative !important;
-                top: 0 !important;
-            }
+            /* Sembunyikan elemen scrollbar/UI Balkangraph semasa cetak */
+            .boc-edit-form, .boc-search { display: none !important; }
 
-            /* 6. Tetapan Saiz Kertas */
-            @page { 
-                size: A4 landscape; 
-                margin: 1cm; 
-            }
+            @page { size: A4 landscape; margin: 0.5cm; }
         }
     </style>
 </head>
@@ -258,9 +125,9 @@
         </div>
 
         <div class="action-bar no-print">
-            <button onclick="window.print()" class="btn btn-pdf"><i class="fas fa-file-pdf"></i> PDF</button>
-            <button onclick="saveData()" class="btn btn-save"><i class="fas fa-save"></i> Simpan</button>
-            <button onclick="loadData()" class="btn btn-open"><i class="fas fa-folder-open"></i> Buka</button>
+            <button onclick="prepareAndPrint()" class="btn btn-pdf"><i class="fas fa-file-pdf"></i> Cetak PDF (Page 1)</button>
+            <button onclick="saveData()" class="btn btn-save"><i class="fas fa-save"></i> Simpan JSON</button>
+            <button onclick="loadData()" class="btn btn-open"><i class="fas fa-folder-open"></i> Buka JSON</button>
         </div>
 
         <div id="print-zone">
@@ -272,6 +139,20 @@
     <script>
         let employeeData = [];
         let chart;
+
+        // FUNGSI BARU: Paksa carta fit ke skrin sebelum cetak
+        function prepareAndPrint() {
+            if (chart) {
+                // Balkangraph Fit Command: Paksa semua kotak masuk dalam skrin
+                chart.fit(); 
+                // Beri masa 500ms untuk library adjust kedudukan sebelum dialog cetak keluar
+                setTimeout(() => {
+                    window.print();
+                }, 500);
+            } else {
+                window.print();
+            }
+        }
 
         function updateDisplayTitle(val) {
             document.getElementById('displayTitle').innerText = val || "Tajuk Carta Organisasi";
@@ -286,21 +167,9 @@
             OrgChart.templates.eziCustom = Object.assign({}, OrgChart.templates.ana);
             OrgChart.templates.eziCustom.size = [250, 130];
             OrgChart.templates.eziCustom.node = '<rect x="0" y="0" height="130" width="250" fill="#ffffff" stroke="#e2e8f0" stroke-width="2" rx="15" ry="15"></rect>';
-
-            OrgChart.templates.eziCustom.field_0 = 
-                '<foreignObject x="95" y="15" width="145" height="45">' +
-                    '<div xmlns="http://www.w3.org/1999/xhtml" style="font-weight:800; font-size:14px; color:#1e3a8a; line-height:1.1; display:flex; align-items:center; height:100%; word-break:break-word;">{val}</div>' +
-                '</foreignObject>';
-
-            OrgChart.templates.eziCustom.field_1 = 
-                '<foreignObject x="95" y="65" width="145" height="55">' +
-                    '<div xmlns="http://www.w3.org/1999/xhtml" style="font-size:12px; color:#64748b; line-height:1.2; font-weight:500; display:block; word-break:break-word; overflow:hidden;">{val}</div>' +
-                '</foreignObject>';
-
-            OrgChart.templates.eziCustom.img_0 = 
-                '<clipPath id="ulaImg"><circle cx="45" cy="65" r="38"></circle></clipPath>' +
-                '<circle cx="45" cy="65" r="40" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1"></circle>' +
-                '<image preserveAspectRatio="xMidYMid slice" clip-path="url(#ulaImg)" xlink:href="{val}" x="7" y="27" width="76" height="76"></image>';
+            OrgChart.templates.eziCustom.field_0 = '<foreignObject x="95" y="15" width="145" height="45"><div xmlns="http://www.w3.org/1999/xhtml" style="font-weight:800; font-size:14px; color:#1e3a8a; line-height:1.1; display:flex; align-items:center; height:100%; word-break:break-word;">{val}</div></foreignObject>';
+            OrgChart.templates.eziCustom.field_1 = '<foreignObject x="95" y="65" width="145" height="55"><div xmlns="http://www.w3.org/1999/xhtml" style="font-size:12px; color:#64748b; line-height:1.2; font-weight:500; display:block; word-break:break-word; overflow:hidden;">{val}</div></foreignObject>';
+            OrgChart.templates.eziCustom.img_0 = '<clipPath id="ulaImg"><circle cx="45" cy="65" r="38"></circle></clipPath><circle cx="45" cy="65" r="40" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1"></circle><image preserveAspectRatio="xMidYMid slice" clip-path="url(#ulaImg)" xlink:href="{val}" x="7" y="27" width="76" height="76"></image>';
         }
 
         function renderChart() {
@@ -313,7 +182,7 @@
                 template: "eziCustom",
                 enableSearch: false,
                 userSearchControl: false,
-                mouseWheel: OrgChart.action.zoom, // Aktifkan zoom guna skrol/pinch
+                mouseWheel: OrgChart.action.zoom,
                 nodeBinding: { field_0: "name", field_1: "title", img_0: "img" }
             });
             updateDropdown();
