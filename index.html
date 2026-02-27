@@ -22,7 +22,7 @@
                     <option value="">-- Melapor Kepada (Pilih Bos) --</option>
                 </select>
                 <div class="upload-wrapper">
-                    <label>Gambar Passport:</label>
+                    <label>Gambar:</label>
                     <input type="file" id="userPhoto" accept="image/*">
                 </div>
                 <button onclick="addNode()" id="addBtn">➕ Tambah Staf</button>
@@ -30,10 +30,6 @@
         </section>
 
         <section class="action-bar">
-            <div class="bg-control">
-                <label>Warna Latar Preview:</label>
-                <input type="color" id="bgColorPicker" value="#ffffff" onchange="changeBg()">
-            </div>
             <button onclick="downloadPDF()" class="btn-pdf">📄 Cetak PDF (Auto-Fit)</button>
             <button onclick="saveData()" class="btn-save">💾 Simpan (.json)</button>
             <button onclick="loadData()" class="btn-open">📂 Buka Fail</button>
