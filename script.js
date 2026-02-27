@@ -39,6 +39,7 @@ function renderChart() {
     chart = new OrgChart(treeDiv, {
         nodes: employeeData,
         template: "eziCustom",
+        enableSearch: false, // MEMBUANG KOTAK SEARCH
         nodeBinding: { field_0: "name", field_1: "title", img_0: "img" }
     });
     updateDropdown();
@@ -74,7 +75,6 @@ function addNode() {
         saveAndPush(id, pidVal, nameVal, roleVal, "");
     }
 
-    // Reset Form
     document.getElementById('userName').value = "";
     document.getElementById('userRole').value = "";
     document.getElementById('userPhoto').value = "";
