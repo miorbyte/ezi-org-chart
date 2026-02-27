@@ -92,3 +92,22 @@ h1 { text-align: center; color: #1a73e8; }
     .container { box-shadow: none; border: none; width: 100%; max-width: 100%; }
     #tree { height: 1000px !important; }
 }
+
+/* PAKSA SEMBUNYI SEARCH & ZOOM (NUCLEAR OPTION) */
+#tree [control-search-container], 
+#tree .b3g-search-container,
+#tree [control-expander-container],
+#tree svg > g[data-on-search-container],
+.orgchart-search-container {
+    display: none !important;
+    visibility: hidden !important;
+}
+
+/* Pastikan tajuk nampak besar dalam preview */
+#displayTitle {
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    display: block !important;
+}
