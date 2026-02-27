@@ -3,20 +3,22 @@ let chart;
 
 function renderChart() {
     const treeElement = document.getElementById("tree");
-    if (employeeData.length === 0) {
-        treeElement.innerHTML = "";
-        return;
-    }
+    if (employeeData.length === 0) return;
     treeElement.innerHTML = "";
 
     chart = new OrgChart(treeElement, {
         nodes: employeeData,
-        enableSearch: false, // Matikan search
+        enableSearch: false,
         mouseWheel: OrgChart.action.zoom,
-        // Menu Repair & Delete
         nodeMenu: {
             edit: { text: "Repair / Edit" },
             remove: { text: "Delete Staf" }
+        },
+        // --- TAMBAHAN KRITIKAL UNTUK NAMA PENUH ---
+        tags: {
+            "all": {
+                template: "ana" // Menggunakan template 'ana' yang lebih mesra teks panjang
+            }
         },
         nodeBinding: {
             field_0: "name",
@@ -25,7 +27,14 @@ function renderChart() {
         }
     });
 
-    // Letak di tengah selepas render
+    // Paksa semua elemen teks dalam SVG untuk tidak memotong perkataan
+    chart.on('render-text', function (sender, args) {
+        if (args.text) {
+            // Mematikan fungsi truncate (...) secara total
+            args.text = args.text.replace('...', ''); 
+        }
+    });
+
     setTimeout(() => {
         chart.center(employeeData[0].id);
     }, 300);
