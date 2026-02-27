@@ -1,12 +1,13 @@
 let employeeData = [];
 let chart;
 
-// Inisialisasi awal
 window.onload = function() {
     renderChart();
 };
 
 function renderChart() {
+    // Bersihkan kawasan carta sebelum lukis
+    document.getElementById("tree").innerHTML = "";
     chart = new OrgChart(document.getElementById("tree"), {
         nodes: employeeData,
         nodeBinding: {
@@ -41,7 +42,7 @@ function addNode() {
 }
 
 function processNode(name, role, parent, img) {
-    const id = Date.now();
+    const id = Date.now().toString();
     const newNode = { 
         id: id, 
         pid: parent ? parent : null, 
@@ -52,8 +53,9 @@ function processNode(name, role, parent, img) {
     
     employeeData.push(newNode);
     updateDropdown(name, id);
-    renderChart(); // Lukis semula carta dengan data baru
+    renderChart();
     
+    // Kosongkan input selepas tambah
     document.getElementById('userName').value = "";
     document.getElementById('userRole').value = "";
     document.getElementById('userPhoto').value = "";
@@ -68,24 +70,11 @@ function updateDropdown(name, id) {
 }
 
 function downloadPDF() {
-    if (!chart || employeeData.length === 0) {
-        alert("Tiada data untuk dicetak.");
+    if (employeeData.length === 0) {
+        alert("Sila masukkan data terlebih dahulu.");
         return;
     }
-
-    try {
-        // Fungsi eksport rasmi OrgChart.js
-        chart.exportPDF({
-            format: 'A4',
-            landscape: true,
-            header: document.getElementById('chartTitle').value || "Carta Organisasi",
-            footer: "Dihasilkan melalui Ezi Org Chart",
-            margin: [20, 20, 20, 20]
-        });
-    } catch (e) {
-        console.error(e);
-        alert("Ralat cetakan. Sila pastikan anda mempunyai akses internet.");
-    }
+    window.print(); // Membuka dialog cetakan pelayar
 }
 
 function saveData() {
@@ -95,7 +84,7 @@ function saveData() {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = "data_carta.json";
+    a.download = "ezi_org_data.json";
     a.click();
 }
 
@@ -107,7 +96,7 @@ function loadData() {
         const reader = new FileReader();
         reader.onload = event => {
             employeeData = JSON.parse(event.target.result);
-            document.getElementById('reportsTo').innerHTML = '<option value="">-- Pilih Bos --</option>';
+            document.getElementById('reportsTo').innerHTML = '<option value="">-- Melapor Kepada --</option>';
             employeeData.forEach(node => updateDropdown(node.name, node.id));
             renderChart();
         };
