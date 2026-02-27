@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ezi Org Chart - BPP Edition</title>
+    <title>Ezi Org Chart - BPP Latest</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://balkangraph.com/js/orgchart.js"></script>
 </head>
@@ -13,7 +13,7 @@
         <h1 class="no-print">📊 Ezi Org Chart Generator</h1>
         
         <section class="input-section no-print">
-            <input type="text" id="chartTitle" placeholder="Masukkan Tajuk Carta (Contoh: Carta Organisasi BPP)">
+            <input type="text" id="chartTitle" onkeyup="updateTitle()" placeholder="Masukkan Tajuk Carta (Contoh: Carta Organisasi BPP)">
             
             <div class="form-personal">
                 <input type="text" id="userName" placeholder="Nama Kakitangan">
@@ -30,14 +30,13 @@
                 
                 <button onclick="addNode()" id="addBtn">➕ Tambah Staf</button>
             </div>
-            
-            <p style="font-size: 0.85em; color: #666; margin-top: 10px;">
-                💡 <b>Tips:</b> Untuk <b>Edit</b> atau <b>Padam</b> staf, klik pada kotak staf atau ikon menu di penjuru kotak tersebut pada paparan preview di bawah.
+            <p style="font-size: 0.8em; color: #666; margin-top: 10px;">
+                💡 <b>Repair/Delete:</b> Klik pada kotak staf di preview untuk Edit atau Padam.
             </p>
         </section>
 
         <section class="action-bar no-print">
-            <button onclick="downloadPDF()" class="btn-pdf">📄 Cetak / Simpan PDF (1 Page)</button>
+            <button onclick="downloadPDF()" class="btn-pdf">📄 Cetak / Simpan PDF</button>
             <button onclick="saveData()" class="btn-save">💾 Simpan Data (.json)</button>
             <button onclick="loadData()" class="btn-open">📂 Buka Fail (.json)</button>
         </section>
