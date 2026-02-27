@@ -3,41 +3,29 @@ let chart;
 
 function renderChart() {
     const treeElement = document.getElementById("tree");
-    if (employeeData.length === 0) return;
+    if (employeeData.length === 0) {
+        treeElement.innerHTML = "";
+        return;
+    }
     treeElement.innerHTML = "";
 
     chart = new OrgChart(treeElement, {
         nodes: employeeData,
         enableSearch: false,
         mouseWheel: OrgChart.action.zoom,
-        
-        // Guna template 'ana' tapi kita akan besarkan kotaknya di CSS
-        template: "ana", 
-        
+        template: "baly", // Template paling stabil untuk gambar & nama
         nodeMenu: {
             edit: { text: "Repair / Edit" },
-            remove: { text: "Delete Staf" }
+            remove: { text: "Padam Staf" }
         },
-        
-        // Nama field untuk gambar dalam template 'ana' adalah img_0
         nodeBinding: {
             field_0: "name",
             field_1: "title",
-            img_0: "img" 
+            img_0: "img"
         }
     });
 
-    // --- FUNGSI PAKSA NAMA JADI 2 BARIS ---
-    chart.on('field', function (sender, args) {
-        if (args.name == "name") {
-            var name = args.value;
-            // Jika nama panjang, kita wrap setiap 15-20 huruf
-            if (name.length > 15) {
-                args.value = OrgChart.wrap(name, 15);
-            }
-        }
-    });
-
+    // Kita guna cara manual untuk paksa center
     setTimeout(() => {
         chart.center(employeeData[0].id);
     }, 300);
@@ -59,7 +47,6 @@ function addNode() {
     const process = (imgData) => {
         employeeData.push({ id, pid, name: nameInput.value, title: roleInput.value, img: imgData });
         renderChart();
-        // Reset input lepas tambah
         nameInput.value = ""; 
         roleInput.value = ""; 
         photoInput.value = "";
@@ -70,22 +57,22 @@ function addNode() {
         reader.onload = (e) => process(e.target.result);
         reader.readAsDataURL(photoInput.files[0]);
     } else {
-        process(""); // Jika tiada gambar
+        process("");
     }
 }
 
-// Fungsi lain (downloadPDF, saveData, loadData) kekal sama seperti sebelum ini...
-function downloadPDF() {
-    if (!chart) return;
-    chart.zoom(1);
-    chart.center(employeeData[0].id);
-    setTimeout(() => { window.print(); }, 700);
-}
-
+// Fungsi lain (Save/Load/PDF)
 function updateParentDropdown() {
     const s = document.getElementById('reportsTo');
     const cur = s.value;
     s.innerHTML = '<option value="">-- Melapor Kepada --</option>';
     employeeData.forEach(node => { s.add(new Option(node.name, node.id)); });
     s.value = cur;
+}
+
+function downloadPDF() {
+    if (!chart) return;
+    chart.zoom(1);
+    chart.center(employeeData[0].id);
+    setTimeout(() => { window.print(); }, 600);
 }
