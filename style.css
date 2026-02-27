@@ -1,184 +1,20 @@
-/* ==========================================================
-   1. ASAS & RESET
-   ========================================================== */
-:root {
-    --primary: #1a237e; /* Biru Gelap EziChart */
-    --secondary: #2196f3; /* Biru Terang Accent */
-    --bg-app: #f5f5f5;
-    --sidebar-width: 320px;
-    --border-color: #e0e0e0;
-}
+function setupTemplate() {
+    OrgChart.templates.eziCustom = Object.assign({}, OrgChart.templates.ana);
+    OrgChart.templates.eziCustom.size = [250, 120];
+    
+    // Nama (Field 0)
+    OrgChart.templates.eziCustom.field_0 = 
+        '<foreignObject x="90" y="15" width="150" height="50">' +
+            '<div xmlns="http://www.w3.org/1999/xhtml" style="font-weight:bold; font-size:14px; color:#333; line-height:1.1; display:flex; align-items:center; height:100%; word-break: break-word; overflow:hidden;">{val}</div>' +
+        '</foreignObject>';
 
-body { 
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-    margin: 0; padding: 0; 
-    background: var(--bg-app); 
-    color: #333;
-    overflow: hidden; /* Prevent body scroll */
-}
+    // Jawatan (Field 1) - FIX JARAK BARIS
+    OrgChart.templates.eziCustom.field_1 = 
+        '<foreignObject x="90" y="65" width="150" height="45">' +
+            '<div xmlns="http://www.w3.org/1999/xhtml" style="font-size:12px; color:#666; line-height:1.2; padding-top:2px; word-break: break-word;">{val}</div>' +
+        '</foreignObject>';
 
-/* ==========================================================
-   2. HEADER & LOGO
-   ========================================================== */
-.app-header {
-    height: 60px;
-    background: #ffffff;
-    border-bottom: 1px solid var(--border-color);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 20px;
-    position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
-    box-sizing: border-box;
-}
-
-.logo-zone { display: flex; align-items: center; gap: 10px; }
-.logo-icon { color: var(--secondary); font-size: 24px; }
-.logo-zone h1 { margin: 0; font-size: 20px; color: var(--primary); font-weight: 700; }
-.sub-title { font-weight: 400; color: #757575; }
-
-.header-actions { display: flex; gap: 10px; }
-.btn-head { border: none; padding: 8px 15px; border-radius: 4px; color: white; cursor: pointer; font-size: 13px; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 5px; }
-.btn-pdf { background: #d32f2f; }
-.btn-pdf:hover { background: #b71c1c; }
-
-/* ==========================================================
-   3. MAIN CONTAINER & SIDEBAR (INPUT)
-   ========================================================== */
-.main-content {
-    display: flex;
-    margin-top: 60px; /* Offset Header */
-    height: calc(100vh - 60px);
-}
-
-.sidebar {
-    width: var(--sidebar-width);
-    height: 100%;
-    background: #ffffff;
-    border-right: 1px solid var(--border-color);
-    overflow-y: auto; /* Scroll sidebar sahaja */
-    box-sizing: border-box;
-    transition: width 0.3s ease;
-}
-
-.sidebar-content { padding: 25px; }
-.sidebar h3 { font-size: 15px; color: #1e88e5; margin-bottom: 15px; margin-top: 0; font-weight: 600; }
-.divider { border: 0; border-top: 1px solid var(--border-color); margin: 25px 0; }
-
-/* INPUT & FORM GRID */
-#chartTitle { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; font-size: 14px; }
-
-.form-grid { display: grid; gap: 12px; }
-.form-grid input, .form-grid select { padding: 11px; border: 1px solid #ccc; border-radius: 6px; font-size: 13px; width: 100%; box-sizing: border-box; }
-
-/* GAYA UPLOAD FOTO */
-.upload-area { display: grid; gap: 5px; }
-.custom-file-upload {
-    border: 2px dashed var(--secondary); background: #e3f2fd; color: #1565c0;
-    padding: 10px; border-radius: 6px; cursor: pointer; text-align: center;
-    font-size: 12px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 8px;
-}
-.custom-file-upload:hover { background: #bbdefb; }
-input[type="file"] { display: none; }
-#file-name-display { font-size: 11px; color: #757575; text-align: center; font-style: italic; word-break: break-all; }
-
-#addBtn { background: #2e7d32; color: white; border: none; padding: 12px; border-radius: 6px; cursor: pointer; font-weight: 700; font-size: 14px; display: flex; align-items: center; justify-content: center; gap: 8px; }
-#addBtn:hover { background: #1b5e20; }
-
-/* JSON ACTIONS */
-.json-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-.btn-side { border: none; padding: 10px; border-radius: 4px; color: white; cursor: pointer; font-size: 12px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 5px; }
-.btn-save { background: var(--primary); }
-.btn-save:hover { background: #0d144d; }
-.btn-open { background: #616161; }
-.btn-open:hover { background: #424242; }
-
-/* ==========================================================
-   4. CARTA (KANAN) - PAPARAN SKRIN
-   ========================================================== */
-.chart-area {
-    flex: 1;
-    height: 100%;
-    overflow: hidden; /* OrgChart handle scroll */
-    background: #ffffff;
-    box-sizing: border-box;
-    display: flex; /* Gunakan Flexbox */
-    flex-direction: column; /* Tajuk atas, carta bawah */
-}
-
-#displayTitle { 
-    text-align: center; 
-    font-size: 24px; 
-    color: #212121; 
-    margin: 20px; 
-    font-weight: 700;
-}
-
-#tree { 
-    flex: 1; /* Ambil baki ruang */
-    width: 100%; 
-    height: 100%; /* OrgChart perlu explicit height */
-}
-
-/* ==========================================================
-   5. MOD CETAK (PRINT) & PDF PREVIEW
-   ========================================================== */
-@media print {
-    /* A. Sembunyikan elemen bukan cetakan */
-    .no-print, .app-header, .sidebar, .header-actions { 
-        display: none !important; 
-    }
-
-    /* B. Set tetapan halaman */
-    @page {
-        size: A4 landscape; /* Disyorkan landscape untuk carta */
-        margin: 10mm; /* Margin bersih */
-    }
-
-    /* C. Susun semula container utama */
-    body { 
-        background: white; 
-        overflow: visible; /* Benarkan scroll/cetak penuh */
-    }
-
-    .main-content { 
-        margin-top: 0; 
-        display: block; /* Tukar dari flex ke block */
-        height: auto;
-    }
-
-    /* D. Fokus pada kawasan carta */
-    .chart-area { 
-        width: 100%; 
-        height: auto;
-        position: static; 
-        padding: 0;
-        background: white;
-        display: block; /* Tukar dari flex ke block */
-    }
-
-    /* E. Tajuk di atas sekali */
-    #displayTitle { 
-        margin: 0 0 10mm 0; /* Jarak bawah tajuk */
-        font-size: 28px; /* Besarkan sedikit untuk cetakan */
-        border-bottom: 2px solid #000; /* Garis bawah formal */
-        padding-bottom: 5mm;
-    }
-
-    /* F. FIX: Carta di Atas (Bukan Tengah Halaman) */
-    #tree { 
-        width: 100% !important; 
-        height: auto !important; /* Benarkan tinggi automatik */
-        min-height: 180mm; /* Pastikan ada ruang minimum */
-        position: relative;
-        top: 0; /* Pastikan melekat di atas selepas tajuk */
-        transform: none !important; /* Buang sebarang transform centering */
-        margin: 0 !important;
-    }
-
-    /* G. OrgChart internal fixes untuk cetakan */
-    .google-visualization-orgchart-node {
-        border: 1px solid #ccc !important;
-        background-color: white !important;
-    }
+    OrgChart.templates.eziCustom.img_0 = 
+        '<clipPath id="ulaImg"><circle cx="45" cy="60" r="35"></circle></clipPath>' +
+        '<image preserveAspectRatio="xMidYMid slice" clip-path="url(#ulaImg)" xlink:href="{val}" x="10" y="25" width="70" height="70"></image>';
 }
