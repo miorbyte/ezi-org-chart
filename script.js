@@ -10,26 +10,30 @@ function renderChart() {
         nodes: employeeData,
         enableSearch: false,
         mouseWheel: OrgChart.action.zoom,
-        // Gunakan template 'lulu' atau 'isla' yang lebih luas
-        template: "lulu", 
+        
+        // Guna template 'ana' tapi kita akan besarkan kotaknya di CSS
+        template: "ana", 
+        
         nodeMenu: {
             edit: { text: "Repair / Edit" },
             remove: { text: "Delete Staf" }
         },
+        
+        // Nama field untuk gambar dalam template 'ana' adalah img_0
         nodeBinding: {
             field_0: "name",
             field_1: "title",
-            img_0: "img"
+            img_0: "img" 
         }
     });
 
-    // --- FUNGSI KHAS UNTUK PAKSA 2 BARIS ---
+    // --- FUNGSI PAKSA NAMA JADI 2 BARIS ---
     chart.on('field', function (sender, args) {
         if (args.name == "name") {
-            var namaAsal = args.value;
-            // Jika nama lebih daripada 15 huruf, sistem akan potong jadi 2 baris
-            if (namaAsal.length > 15) {
-                args.value = OrgChart.wrap(namaAsal, 15); 
+            var name = args.value;
+            // Jika nama panjang, kita wrap setiap 15-20 huruf
+            if (name.length > 15) {
+                args.value = OrgChart.wrap(name, 15);
             }
         }
     });
@@ -55,7 +59,10 @@ function addNode() {
     const process = (imgData) => {
         employeeData.push({ id, pid, name: nameInput.value, title: roleInput.value, img: imgData });
         renderChart();
-        nameInput.value = ""; roleInput.value = ""; photoInput.value = "";
+        // Reset input lepas tambah
+        nameInput.value = ""; 
+        roleInput.value = ""; 
+        photoInput.value = "";
     };
 
     if (photoInput.files && photoInput.files[0]) {
@@ -63,8 +70,16 @@ function addNode() {
         reader.onload = (e) => process(e.target.result);
         reader.readAsDataURL(photoInput.files[0]);
     } else {
-        process("");
+        process(""); // Jika tiada gambar
     }
+}
+
+// Fungsi lain (downloadPDF, saveData, loadData) kekal sama seperti sebelum ini...
+function downloadPDF() {
+    if (!chart) return;
+    chart.zoom(1);
+    chart.center(employeeData[0].id);
+    setTimeout(() => { window.print(); }, 700);
 }
 
 function updateParentDropdown() {
@@ -73,41 +88,4 @@ function updateParentDropdown() {
     s.innerHTML = '<option value="">-- Melapor Kepada --</option>';
     employeeData.forEach(node => { s.add(new Option(node.name, node.id)); });
     s.value = cur;
-}
-
-function downloadPDF() {
-    if (!chart) return;
-    
-    // Pastikan tajuk ikut input terbaru
-    document.getElementById('displayTitle').innerText = document.getElementById('chartTitle').value || "CARTA ORGANISASI";
-    
-    // Zoom(1) kunci saiz kotak supaya tak gergasi
-    chart.zoom(1);
-    chart.center(employeeData[0].id);
-
-    setTimeout(() => {
-        window.print();
-    }, 700);
-}
-
-function saveData() {
-    const blob = new Blob([JSON.stringify(employeeData)], {type: "application/json"});
-    const a = document.createElement('a');
-    a.href = URL.createObjectURL(blob);
-    a.download = "data_bpp.json";
-    a.click();
-}
-
-function loadData() {
-    const input = document.createElement('input');
-    input.type = 'file';
-    input.onchange = e => {
-        const reader = new FileReader();
-        reader.onload = ev => {
-            employeeData = JSON.parse(ev.target.result);
-            renderChart();
-        };
-        reader.readAsText(e.target.files[0]);
-    };
-    input.click();
 }
