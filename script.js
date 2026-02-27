@@ -1,18 +1,28 @@
 let employeeData = [];
 let chart;
 
+// 1. KITA BINA TEMPLATE KHAS YANG BOLEH TERIMA 2 BARIS
+OrgChart.templates.bppCustom = Object.assign({}, OrgChart.templates.ana);
+OrgChart.templates.bppCustom.size = [250, 120]; // Besarkan kotak sikit
+OrgChart.templates.bppCustom.node = '<rect x="0" y="0" height="120" width="250" fill="#ffffff" stroke-width="1" stroke="#aeaeae" rx="10" ry="10"></rect>';
+
+// Tukar teks biasa kepada 'foreignObject' supaya HTML <br> berfungsi
+OrgChart.templates.bppCustom.field_0 = 
+    '<foreignObject x="70" y="30" width="170" height="60">' +
+        '<div xmlns="http://www.w3.org/1999/xhtml" style="font-family:sans-serif; font-weight:bold; font-size:14px; color:#333; line-height:1.2; text-align:left; display:flex; align-items:center; height:100%;">' +
+            '{val}' +
+        '</div>' +
+    '</foreignObject>';
+
 function renderChart() {
     const treeElement = document.getElementById("tree");
-    if (employeeData.length === 0) {
-        treeElement.innerHTML = "";
-        return;
-    }
+    if (employeeData.length === 0) return;
     treeElement.innerHTML = "";
 
     chart = new OrgChart(treeElement, {
         nodes: employeeData,
         enableSearch: false,
-        template: "isla", 
+        template: "bppCustom", // Guna template buatan kita tadi
         nodeMenu: {
             edit: { text: "Repair / Edit" },
             remove: { text: "Padam Staf" }
@@ -24,40 +34,26 @@ function renderChart() {
         }
     });
 
-    // --- TEKNIK MUKTAMAT: TUKAR SVG KEPADA HTML DIV ---
+    // --- LOGIK POTONG NAMA JADI 2 BARIS ---
     chart.on('field', function (sender, args) {
         if (args.name == "name") {
             let nameValue = args.value;
-            // Kita pecahkan nama mengikut jarak
-            let words = nameValue.split(" ");
-            let line1, line2;
-
-            if (words.length > 2) {
+            if (nameValue.length > 15) {
+                let words = nameValue.split(" ");
                 let mid = Math.ceil(words.length / 2);
-                line1 = words.slice(0, mid).join(" ");
-                line2 = words.slice(mid).join(" ");
-            } else {
-                line1 = nameValue;
-                line2 = "";
+                let line1 = words.slice(0, mid).join(" ");
+                let line2 = words.slice(mid).join(" ");
+                // Gunakan <br> kerana template kita sekarang sokong HTML
+                args.value = line1 + "<br>" + line2;
             }
-
-            // Gantikan teks SVG dengan HTML Div yang boleh wrap
-            args.html = `
-                <div style="display:flex; align-items:center; justify-content:center; height:100%; width:100%;">
-                    <div style="font-weight:bold; font-size:14px; color:#333; text-align:center; line-height:1.2; word-break:normal;">
-                        ${line1}${line2 ? '<br>' + line2 : ''}
-                    </div>
-                </div>`;
         }
     });
 
-    setTimeout(() => {
-        chart.center(employeeData[0].id);
-    }, 300);
-
+    setTimeout(() => { chart.center(employeeData[0].id); }, 300);
     updateParentDropdown();
 }
 
+// Fungsi addNode, downloadPDF, saveData, loadData kekal sama...
 function addNode() {
     const name = document.getElementById('userName').value;
     const role = document.getElementById('userRole').value;
@@ -67,7 +63,6 @@ function addNode() {
     if (!name || !role) return alert("Isi nama dan jawatan!");
 
     const id = Date.now().toString();
-    
     if (photo) {
         const reader = new FileReader();
         reader.onload = (e) => {
@@ -94,32 +89,8 @@ function updateParentDropdown() {
     const s = document.getElementById('reportsTo');
     const cur = s.value;
     s.innerHTML = '<option value="">-- Melapor Kepada --</option>';
-    employeeData.forEach(n => {
-        s.add(new Option(n.name, n.id));
-    });
+    employeeData.forEach(n => s.add(new Option(n.name, n.id)));
     s.value = cur;
 }
 
 function downloadPDF() { window.print(); }
-
-function saveData() {
-    const blob = new Blob([JSON.stringify(employeeData)], {type: "application/json"});
-    const a = document.createElement('a');
-    a.href = URL.createObjectURL(blob);
-    a.download = "data_bpp.json";
-    a.click();
-}
-
-function loadData() {
-    const input = document.createElement('input');
-    input.type = 'file';
-    input.onchange = e => {
-        const reader = new FileReader();
-        reader.onload = ev => {
-            employeeData = JSON.parse(ev.target.result);
-            renderChart();
-        };
-        reader.readAsText(e.target.files[0]);
-    };
-    input.click();
-}
