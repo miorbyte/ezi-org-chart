@@ -3,41 +3,70 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Penjana Carta Organisasi BPP</title>
+    <title>Sistem Penjana Carta Organisasi BPP</title>
+    
     <link rel="stylesheet" href="style.css">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    
     <script src="https://balkangraph.com/js/orgchart.js"></script>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
 
     <div class="container">
-        <h1 class="no-print">📊 Pengurusan Carta Organisasi</h1>
+        <header class="no-print">
+            <h1><i class="fas fa-sitemap"></i> Pengurusan Carta Organisasi BPP</h1>
+            <p class="subtitle">Sistem pengurusan staf dan hierarki jabatan secara profesional.</p>
+        </header>
         
         <section class="input-section no-print">
-            <input type="text" id="chartTitle" oninput="document.getElementById('displayTitle').innerText = this.value" placeholder="Masukkan Tajuk Carta (Contoh: Carta Organisasi BPP)">
-            
-            <div class="form-personal">
-                <input type="text" id="userName" placeholder="Nama Kakitangan">
-                <input type="text" id="userRole" placeholder="Jawatan">
-                <select id="reportsTo">
-                    <option value="">-- Melapor Kepada (Pilih Bos) --</option>
-                </select>
-                <div class="upload-wrapper">
-                    <label>Gambar:</label>
-                    <input type="file" id="userPhoto" accept="image/*">
+            <div class="input-card">
+                <h3><i class="fas fa-edit"></i> Maklumat Carta</h3>
+                <input type="text" id="chartTitle" oninput="document.getElementById('displayTitle').innerText = this.value" placeholder="Masukkan Tajuk Carta (Contoh: Unit Teknologi Maklumat)">
+                
+                <hr class="divider">
+                
+                <h3><i class="fas fa-user-plus"></i> Tambah Kakitangan</h3>
+                <div class="form-personal">
+                    <div class="input-group">
+                        <input type="text" id="userName" placeholder="Nama Penuh Kakitangan">
+                    </div>
+                    <div class="input-group">
+                        <input type="text" id="userRole" placeholder="Jawatan">
+                    </div>
+                    <div class="input-group">
+                        <select id="reportsTo">
+                            <option value="">-- Melapor Kepada (Pilih Ketua) --</option>
+                        </select>
+                    </div>
+                    <div class="input-group file-input">
+                        <label for="userPhoto"><i class="fas fa-camera"></i> Foto Staf</label>
+                        <input type="file" id="userPhoto" accept="image/*">
+                    </div>
+                    <button onclick="addNode()" id="addBtn">
+                        <i class="fas fa-plus-circle"></i> Tambah Staf
+                    </button>
                 </div>
-                <button onclick="addNode()" id="addBtn">➕ Tambah Staf</button>
             </div>
         </section>
 
         <section class="action-bar no-print">
-            <button onclick="downloadPDF()" class="btn-pdf">📄 Cetak / Simpan PDF</button>
-            <button onclick="saveData()" class="btn-save">💾 Simpan JSON</button>
-            <button onclick="loadData()" class="btn-open">📂 Buka Fail JSON</button>
+            <button onclick="downloadPDF()" class="btn-pdf">
+                <i class="fas fa-file-pdf"></i> Cetak / Simpan PDF
+            </button>
+            <button onclick="saveData()" class="btn-save">
+                <i class="fas fa-save"></i> Simpan Data (JSON)
+            </button>
+            <button onclick="loadData()" class="btn-open">
+                <i class="fas fa-folder-open"></i> Buka Data
+            </button>
         </section>
 
         <div id="preview-container">
             <div id="print-zone">
-                <h2 id="displayTitle">Tajuk Carta</h2>
+                <h2 id="displayTitle">Tajuk Carta Organisasi</h2>
                 <div id="tree"></div>
             </div>
         </div>
