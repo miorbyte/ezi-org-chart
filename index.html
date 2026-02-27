@@ -2,7 +2,6 @@
 <html lang="ms">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sistem Carta Organisasi BPP</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
@@ -19,9 +18,9 @@
         <section class="input-section no-print">
             <div class="input-card">
                 <h3><i class="fas fa-edit"></i> Maklumat Carta</h3>
-                <input type="text" id="chartTitle" oninput="document.getElementById('displayTitle').innerText = this.value" placeholder="Masukkan Tajuk Carta (Contoh: Unit Pentadbiran BPP)">
+                <input type="text" id="chartTitle" oninput="document.getElementById('displayTitle').innerText = this.value" placeholder="Masukkan Tajuk Carta Di Sini...">
                 
-                <hr class="divider">
+                <hr>
                 
                 <h3><i class="fas fa-user-plus"></i> Tambah Kakitangan</h3>
                 <div class="form-personal">
@@ -30,28 +29,21 @@
                     <select id="reportsTo">
                         <option value="">-- Melapor Kepada --</option>
                     </select>
-                    <div class="file-input-group">
-                        <label for="userPhoto"><i class="fas fa-camera"></i> Foto</label>
-                        <input type="file" id="userPhoto" accept="image/*">
-                    </div>
-                    <button onclick="addNode()" id="addBtn">
-                        <i class="fas fa-plus"></i> Tambah
-                    </button>
+                    <input type="file" id="userPhoto" accept="image/*">
+                    <button onclick="addNode()" id="addBtn">Tambah Staf</button>
                 </div>
             </div>
         </section>
 
         <section class="action-bar no-print">
-            <button onclick="window.print()" class="btn-pdf"><i class="fas fa-print"></i> Cetak PDF</button>
-            <button onclick="saveData()" class="btn-save"><i class="fas fa-save"></i> Simpan JSON</button>
-            <button onclick="loadData()" class="btn-open"><i class="fas fa-folder-open"></i> Buka JSON</button>
+            <button onclick="window.print()" class="btn-pdf">Cetak PDF</button>
+            <button onclick="saveData()" class="btn-save">Simpan JSON</button>
+            <button onclick="loadData()" class="btn-open">Buka JSON</button>
         </section>
 
-        <div id="preview-container">
-            <div id="print-zone">
-                <h2 id="displayTitle">Tajuk Carta</h2>
-                <div id="tree"></div>
-            </div>
+        <div id="print-zone">
+            <h2 id="displayTitle">Tajuk Carta Organisasi</h2>
+            <div id="tree"></div>
         </div>
     </div>
 
