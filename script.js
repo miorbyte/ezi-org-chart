@@ -11,9 +11,9 @@ function renderChart() {
 
     chart = new OrgChart(treeElement, {
         nodes: employeeData,
-        enableSearch: false,
+        enableSearch: false, // Matikan search
         mouseWheel: OrgChart.action.zoom,
-        // Menu repair/edit
+        // Menu Repair & Delete
         nodeMenu: {
             edit: { text: "Repair / Edit" },
             remove: { text: "Delete Staf" }
@@ -25,11 +25,10 @@ function renderChart() {
         }
     });
 
-    // Lepas render, paksa carta ke tengah kawasan preview
+    // Letak di tengah selepas render
     setTimeout(() => {
-        chart.fit();
         chart.center(employeeData[0].id);
-    }, 200);
+    }, 300);
 
     updateParentDropdown();
 }
@@ -70,10 +69,17 @@ function updateParentDropdown() {
 
 function downloadPDF() {
     if (!chart) return;
-    // Paksa carta ke tengah dan muat 1 page sebelum print
-    chart.fit();
+    
+    // Pastikan tajuk ikut input terbaru
+    document.getElementById('displayTitle').innerText = document.getElementById('chartTitle').value || "CARTA ORGANISASI";
+    
+    // Zoom(1) kunci saiz kotak supaya tak gergasi
+    chart.zoom(1);
     chart.center(employeeData[0].id);
-    setTimeout(() => { window.print(); }, 500);
+
+    setTimeout(() => {
+        window.print();
+    }, 700);
 }
 
 function saveData() {
