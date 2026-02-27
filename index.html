@@ -3,40 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ezi Org Chart Generator</title>
+    <title>Ezi Org Chart - BPP Edition</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://balkangraph.com/js/orgchart.js"></script>
 </head>
 <body>
 
     <div class="container">
-        <h1 class="no-print">📊 Ezi Org Chart</h1>
+        <h1 class="no-print">📊 Ezi Org Chart Generator</h1>
         
         <section class="input-section no-print">
-            <input type="text" id="chartTitle" placeholder="Masukkan Tajuk Carta">
+            <input type="text" id="chartTitle" placeholder="Masukkan Tajuk Carta (Contoh: Carta Organisasi BPP)">
             
             <div class="form-personal">
                 <input type="text" id="userName" placeholder="Nama Kakitangan">
                 <input type="text" id="userRole" placeholder="Jawatan">
+                
                 <select id="reportsTo">
                     <option value="">-- Melapor Kepada (Pilih Bos) --</option>
                 </select>
+                
                 <div class="upload-wrapper">
                     <label>Gambar:</label>
                     <input type="file" id="userPhoto" accept="image/*">
                 </div>
+                
                 <button onclick="addNode()" id="addBtn">➕ Tambah Staf</button>
             </div>
-
-            <div style="margin-top: 15px; border-top: 1px solid #ccc; padding-top: 10px;">
-                <label>Pilihan Latar Belakang:</label>
-                <button onclick="changeBg('white')" class="bg-opt">Putih Kosong</button>
-                <button onclick="changeBg('cream-dots')" class="bg-opt" style="background: #fdf5e6; color: #333;">Cream Dots</button>
-            </div>
+            
+            <p style="font-size: 0.85em; color: #666; margin-top: 10px;">
+                💡 <b>Tips:</b> Untuk <b>Edit</b> atau <b>Padam</b> staf, klik pada kotak staf atau ikon menu di penjuru kotak tersebut pada paparan preview di bawah.
+            </p>
         </section>
 
         <section class="action-bar no-print">
-            <button onclick="downloadPDF()" class="btn-pdf">📄 Cetak / Simpan PDF</button>
+            <button onclick="downloadPDF()" class="btn-pdf">📄 Cetak / Simpan PDF (1 Page)</button>
             <button onclick="saveData()" class="btn-save">💾 Simpan Data (.json)</button>
             <button onclick="loadData()" class="btn-open">📂 Buka Fail (.json)</button>
         </section>
