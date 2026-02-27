@@ -79,14 +79,19 @@ function addNode() {
 
 function downloadPDF() {
     if (employeeData.length === 0) return;
+
     document.getElementById('displayTitle').innerText = document.getElementById('chartTitle').value || "CARTA ORGANISASI";
-    
-    // Zoom dilaraskan supaya tidak terlalu besar (fit 1 page)
+
     if (chart) {
-        chart.fit(); 
+        // Zoom(1) bermaksud 100% saiz asal kotak.
+        // Ini akan menghalang kotak jadi terlalu besar atau terlalu kecil.
+        chart.zoom(1);
+        chart.center(employeeData[0].id);
     }
 
-    setTimeout(() => { window.print(); }, 500);
+    setTimeout(() => {
+        window.print();
+    }, 600);
 }
 
 // Fungsi Simpan & Buka JSON
