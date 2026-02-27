@@ -10,7 +10,7 @@ function renderChart() {
         nodes: employeeData,
         enableSearch: false,
         mouseWheel: OrgChart.action.zoom,
-        // Gunakan template 'lulu' kerana ia lebih luas untuk teks
+        // Gunakan template 'lulu' atau 'isla' yang lebih luas
         template: "lulu", 
         nodeMenu: {
             edit: { text: "Repair / Edit" },
@@ -23,13 +23,13 @@ function renderChart() {
         }
     });
 
-    // --- LOGIK PAKSA NAMA PANJANG TURUN BARIS ---
+    // --- FUNGSI KHAS UNTUK PAKSA 2 BARIS ---
     chart.on('field', function (sender, args) {
         if (args.name == "name") {
-            var name = args.value;
-            // Jika nama lebih 20 huruf, kita paksa dia wrap
-            if (name.length > 20) {
-                args.value = OrgChart.wrap(name, 15); // Wrap setiap 15 aksara
+            var namaAsal = args.value;
+            // Jika nama lebih daripada 15 huruf, sistem akan potong jadi 2 baris
+            if (namaAsal.length > 15) {
+                args.value = OrgChart.wrap(namaAsal, 15); 
             }
         }
     });
