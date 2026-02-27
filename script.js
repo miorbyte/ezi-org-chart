@@ -3,74 +3,76 @@ let chart;
 
 function renderChart() {
     const treeElement = document.getElementById("tree");
-    if (employeeData.length === 0) return;
+    if (employeeData.length === 0) {
+        treeElement.innerHTML = "";
+        return;
+    }
     treeElement.innerHTML = "";
 
     chart = new OrgChart(treeElement, {
         nodes: employeeData,
         enableSearch: false,
-        template: "ana",
+        template: "isla", // Template ini lebih luas untuk teks & gambar
         nodeMenu: {
             edit: { text: "Repair / Edit" },
-            remove: { text: "Delete Staf" }
+            remove: { text: "Padam Staf" }
         },
-        nodeBinding: { field_0: "name", field_1: "title", img_0: "img" }
+        nodeBinding: {
+            field_0: "name",
+            field_1: "title",
+            img_0: "img"
+        }
     });
 
-    // --- TEKNIK MANUAL SPLIT UNTUK 2 BARIS ---
+    // --- LOGIK PAKSA 2 BARIS (MUKTAMAT) ---
     chart.on('field', function (sender, args) {
         if (args.name == "name") {
-            let namaAsal = args.value;
-            // Jika nama panjang (lebih 18 huruf), kita paksa pecah
-            if (namaAsal.length > 18) {
-                let kata = namaAsal.split(" ");
-                let baris1 = "";
-                let baris2 = "";
+            let nameValue = args.value;
+            if (nameValue.length > 15) {
+                let words = nameValue.split(" ");
+                let mid = Math.ceil(words.length / 2);
+                let line1 = words.slice(0, mid).join(" ");
+                let line2 = words.slice(mid).join(" ");
                 
-                // Bahagikan perkataan kepada dua baris
-                let tengah = Math.ceil(kata.length / 2);
-                baris1 = kata.slice(0, tengah).join(" ");
-                baris2 = kata.slice(tengah).join(" ");
-                
-                // Gunakan format SVG tspan untuk paksa turun bawah
-                args.value = baris1 + "\n" + baris2;
+                // Menggunakan \n (line break) yang disokong oleh CSS white-space: pre-line
+                args.value = line1 + "\n" + line2;
             }
         }
     });
 
-    setTimeout(() => { chart.center(employeeData[0].id); }, 300);
+    setTimeout(() => {
+        chart.center(employeeData[0].id);
+    }, 300);
+
     updateParentDropdown();
 }
-function addNode() {
-    const nameInput = document.getElementById('userName');
-    const roleInput = document.getElementById('userRole');
-    const parentInput = document.getElementById('reportsTo');
-    const photoInput = document.getElementById('userPhoto');
 
-    if (!nameInput.value || !roleInput.value) {
-        alert("Sila isi nama dan jawatan!");
-        return;
-    }
+function addNode() {
+    const name = document.getElementById('userName').value;
+    const role = document.getElementById('userRole').value;
+    const pid = document.getElementById('reportsTo').value || null;
+    const photo = document.getElementById('userPhoto').files[0];
+
+    if (!name || !role) return alert("Isi nama dan jawatan!");
 
     const id = Date.now().toString();
-    const pid = parentInput.value || null;
-
-    const reader = new FileReader();
-    if (photoInput.files && photoInput.files[0]) {
-        reader.onload = function(e) {
-            employeeData.push({ id: id, pid: pid, name: nameInput.value, title: roleInput.value, img: e.target.result });
+    
+    if (photo) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            employeeData.push({ id, pid, name, title: role, img: e.target.result });
             renderChart();
-            clearInputs();
+            resetInputs();
         };
-        reader.readAsDataURL(photoInput.files[0]);
+        reader.readAsDataURL(photo);
     } else {
-        employeeData.push({ id: id, pid: pid, name: nameInput.value, title: roleInput.value, img: "" });
+        employeeData.push({ id, pid, name, title: role, img: "" });
         renderChart();
-        clearInputs();
+        resetInputs();
     }
 }
 
-function clearInputs() {
+function resetInputs() {
     document.getElementById('userName').value = "";
     document.getElementById('userRole').value = "";
     document.getElementById('userPhoto').value = "";
@@ -81,41 +83,35 @@ function updateParentDropdown() {
     const s = document.getElementById('reportsTo');
     const cur = s.value;
     s.innerHTML = '<option value="">-- Melapor Kepada --</option>';
-    employeeData.forEach(node => {
-        const opt = document.createElement('option');
-        opt.value = node.id;
-        opt.innerHTML = node.name;
-        s.appendChild(opt);
+    employeeData.forEach(n => {
+        s.add(new Option(n.name, n.id));
     });
     s.value = cur;
 }
 
 function downloadPDF() {
-    // Fungsi cetak yang paling asas
+    if (!chart) return;
     window.print();
 }
 
-// Fungsi Simpan/Buka JSON (Pilihan)
 function saveData() {
-    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(employeeData));
-    const downloadAnchorNode = document.createElement('a');
-    downloadAnchorNode.setAttribute("href", dataStr);
-    downloadAnchorNode.setAttribute("download", "data_bpp.json");
-    downloadAnchorNode.click();
-    downloadAnchorNode.remove();
+    const blob = new Blob([JSON.stringify(employeeData)], {type: "application/json"});
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = "data_bpp.json";
+    a.click();
 }
 
 function loadData() {
     const input = document.createElement('input');
     input.type = 'file';
     input.onchange = e => {
-        const file = e.target.files[0];
         const reader = new FileReader();
-        reader.onload = readerEvent => {
-            employeeData = JSON.parse(readerEvent.target.result);
+        reader.onload = ev => {
+            employeeData = JSON.parse(ev.target.result);
             renderChart();
         };
-        reader.readAsText(file);
+        reader.readAsText(e.target.files[0]);
     };
     input.click();
 }
