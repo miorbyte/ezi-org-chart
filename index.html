@@ -159,15 +159,72 @@
             #displayTitle { font-size: 1.8rem; }
         }
 
-        /* PRINT SETTINGS */
+        /* ==========================================================
+           FIXED PRINT PDF: PAKSA CARTA KE PAGE 1
+           ========================================================== */
         @media print {
-            .no-print { display: none !important; }
-            body, .container { background: white; padding: 0; margin: 0; width: 100%; max-width: 100%; }
-            #displayTitle { padding: 10mm 0; font-size: 24pt; text-align: center; }
-            #tree { height: auto !important; min-height: 500px; transform: none !important; }
-            #tree > div { transform: none !important; }
-            svg { transform: none !important; }
-            @page { size: A4 landscape; margin: 1cm; }
+            /* 1. Sembunyikan semua elemen yang tidak perlu */
+            .no-print, 
+            .input-card, 
+            .action-bar, 
+            h1 { 
+                display: none !important; 
+            }
+
+            /* 2. Reset body dan container untuk bermula tepat dari atas */
+            body, html { 
+                margin: 0 !important; 
+                padding: 0 !important; 
+                background: white !important;
+                height: auto !important;
+            }
+
+            .container { 
+                box-shadow: none !important; 
+                padding: 0 !important; 
+                margin: 0 !important; 
+                width: 100% !important; 
+                max-width: 100% !important;
+                display: block !important; /* Paksa mod block, bukan flex */
+            }
+
+            /* 3. Tajuk Carta rapat ke atas */
+            #displayTitle { 
+                display: block !important;
+                margin: 0 !important; 
+                padding: 5mm 0 !important; /* Jarak kecil di atas tajuk */
+                text-align: center !important;
+                font-size: 22pt !important;
+                color: black !important;
+                page-break-after: avoid !important; /* Paksa jangan ada break selepas tajuk */
+            }
+
+            /* 4. Paksa kedudukan carta bermula selepas tajuk */
+            #tree { 
+                position: relative !important;
+                top: 0 !important;
+                left: 0 !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                width: 100% !important;
+                height: 18cm !important; /* Hadkan tinggi supaya muat A4 Landscape */
+                transform: none !important; /* BUANG auto-centering library */
+                page-break-before: avoid !important; /* Paksa jangan ada break sebelum carta */
+                overflow: visible !important;
+            }
+
+            /* 5. Paksa elemen SVG di dalam supaya tidak lari */
+            #tree svg {
+                transform: none !important; /* Membatalkan anjakan automatik library */
+                position: relative !important;
+                top: 0 !important;
+            }
+
+            /* 6. Tetapan Saiz Kertas */
+            @page { 
+                size: A4 landscape; 
+                margin: 1cm; 
+            }
         }
     </style>
 </head>
