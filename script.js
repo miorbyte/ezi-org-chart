@@ -32,7 +32,7 @@ function renderChart() {
     chart = new OrgChart(treeDiv, {
         nodes: employeeData,
         template: "bppCustom",
-        enableSearch: false,
+        enableSearch: false, //
         nodeBinding: { field_0: "name", field_1: "title", img_0: "img" }
     });
 
