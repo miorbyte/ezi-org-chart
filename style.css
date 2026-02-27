@@ -46,3 +46,17 @@ foreignObject { overflow: visible !important; }
 .orgchart-search {
     display: none !important;
 }
+
+/* Guna cara 'Nuclear' untuk paksa kotak carian hilang */
+div[control-search-container], 
+.b3g-search-container, 
+.orgchart-search,
+#tree > div > div:nth-child(2), /* Sasaran spesifik mengikut susunan elemen */
+[class*="search-container"] {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    width: 0 !important;
+    height: 0 !important;
+}
