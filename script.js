@@ -1,12 +1,11 @@
 let employeeData = [];
 let chart;
 
-// 1. Inisialisasi Carta Masa Mula
+// Inisialisasi awal
 window.onload = function() {
     renderChart();
 };
 
-// 2. Fungsi Lukis Carta (OrgChart.js Built-in Export)
 function renderChart() {
     chart = new OrgChart(document.getElementById("tree"), {
         nodes: employeeData,
@@ -14,15 +13,10 @@ function renderChart() {
             field_0: "name",
             field_1: "title",
             img_0: "img"
-        },
-        // Fungsi Export Terbina Dalam (Auto-Fit Support)
-        menu: {
-            pdf: { text: "Export PDF" }
         }
     });
 }
 
-// 3. Tambah Kakitangan
 function addNode() {
     const name = document.getElementById('userName').value;
     const role = document.getElementById('userRole').value;
@@ -33,7 +27,7 @@ function addNode() {
     document.getElementById('displayTitle').innerText = titleText || "Carta Organisasi";
 
     if (!name || !role) { 
-        alert("Sila isi Nama & Jawatan"); 
+        alert("Sila masukkan nama dan jawatan."); 
         return; 
     }
 
@@ -58,9 +52,8 @@ function processNode(name, role, parent, img) {
     
     employeeData.push(newNode);
     updateDropdown(name, id);
-    renderChart();
+    renderChart(); // Lukis semula carta dengan data baru
     
-    // Reset Input
     document.getElementById('userName').value = "";
     document.getElementById('userRole').value = "";
     document.getElementById('userPhoto').value = "";
@@ -74,25 +67,38 @@ function updateDropdown(name, id) {
     select.appendChild(opt);
 }
 
-// 4. Tukar Warna Latar Preview
-function changeBg() {
-    const color = document.getElementById('bgColorPicker').value;
-    document.getElementById('preview-container').style.backgroundColor = color;
+function downloadPDF() {
+    if (!chart || employeeData.length === 0) {
+        alert("Tiada data untuk dicetak.");
+        return;
+    }
+
+    try {
+        // Fungsi eksport rasmi OrgChart.js
+        chart.exportPDF({
+            format: 'A4',
+            landscape: true,
+            header: document.getElementById('chartTitle').value || "Carta Organisasi",
+            footer: "Dihasilkan melalui Ezi Org Chart",
+            margin: [20, 20, 20, 20]
+        });
+    } catch (e) {
+        console.error(e);
+        alert("Ralat cetakan. Sila pastikan anda mempunyai akses internet.");
+    }
 }
 
-// 5. Simpan ke Fail .json
 function saveData() {
-    if (employeeData.length === 0) { alert("Tiada data untuk disimpan"); return; }
+    if (employeeData.length === 0) return;
     const dataStr = JSON.stringify(employeeData);
     const blob = new Blob([dataStr], {type: "application/json"});
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = "ezi_org_data.json";
+    a.download = "data_carta.json";
     a.click();
 }
 
-// 6. Buka Fail .json
 function loadData() {
     const input = document.createElement('input');
     input.type = 'file';
@@ -108,17 +114,4 @@ function loadData() {
         reader.readAsText(e.target.files[0]);
     };
     input.click();
-}
-
-// 7. Fungsi Cetak PDF (Auto-Fit A4 Landscape)
-function downloadPDF() {
-    if (employeeData.length === 0) { alert("Sila tambah kakitangan dulu"); return; }
-    
-    chart.exportPDF({
-        format: 'A4',
-        landscape: true,
-        header: document.getElementById('chartTitle').value || "Carta Organisasi",
-        footer: "Dihasilkan melalui Ezi Org Chart",
-        margin: [20, 20, 20, 20]
-    });
 }
