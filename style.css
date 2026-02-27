@@ -1,6 +1,6 @@
-/* --- GAYA ANTARA MUKA (SKRIN) --- */
+/* --- GAYA ANTARA MUKA (SKRIN/WEB) --- */
 body {
-    font-family: 'Segoe UI', sans-serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-color: #f4f7f6;
     margin: 0;
     padding: 20px;
@@ -12,6 +12,14 @@ body {
     background: white;
     padding: 30px;
     border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+.input-section {
+    background: #e9ecef;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 25px;
 }
 
 #chartTitle {
@@ -20,6 +28,7 @@ body {
     margin-bottom: 15px;
     border: 2px solid #ddd;
     border-radius: 8px;
+    font-size: 16px;
     box-sizing: border-box;
 }
 
@@ -27,13 +36,12 @@ body {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
-    margin-bottom: 20px;
 }
 
 .form-personal input, .form-personal select {
     flex: 1;
     min-width: 200px;
-    padding: 10px;
+    padding: 12px;
     border: 1px solid #ccc;
     border-radius: 8px;
 }
@@ -42,7 +50,7 @@ body {
     background: #27ae60;
     color: white;
     border: none;
-    padding: 10px 20px;
+    padding: 12px 25px;
     border-radius: 8px;
     cursor: pointer;
     font-weight: bold;
@@ -51,7 +59,7 @@ body {
 .action-bar {
     display: flex;
     gap: 10px;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
     justify-content: center;
 }
 
@@ -72,7 +80,7 @@ body {
     border: 2px solid #eee;
     padding: 20px;
     min-height: 600px;
-    background: white;
+    background: white; /* Putih di web */
 }
 
 #displayTitle {
@@ -87,62 +95,63 @@ body {
     height: 600px;
 }
 
-/* SEMBUNYIKAN UI LIBRARY */
-[control-search-container], .b3g-search-container,
-[control-menu-container], .b3g-menu-container,
-svg g[data-on-menu-container] {
+/* BUANG ICON SEARCH ASAL */
+[control-search-container], .b3g-search-container {
     display: none !important;
 }
 
-/* --- LOGIK KHAS CETAKAN (MUKTAMAD: PAGE 1 SAHAJA) --- */
+/* --- LOGIK KHAS CETAKAN (MUKTAMAD: CREAM DOTS + PAGE 1) --- */
 @media print {
-    /* Paksa browser abaikan semua page kecuali yang pertama */
     html, body {
         height: 100%;
         margin: 0 !important;
         padding: 0 !important;
-        overflow: hidden !important; /* Kunci supaya tak melimpah ke Page 2 */
+        overflow: hidden !important;
     }
 
     .no-print, .input-section, .action-bar, h1 {
         display: none !important;
     }
 
-    /* Isikan zon cetakan tepat di Halaman 1 */
     #print-zone {
         visibility: visible !important;
         position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
         display: flex !important;
         flex-direction: column;
         align-items: center;
-        /* Skala 1.25 adalah paling selamat untuk 5 level tanpa tolak ke Page 2 */
-        transform: scale(1.25); 
-        transform-origin: top center;
-        padding-top: 10mm;
+
+        /* LATAR BELAKANG CREAM DOTS HANYA UNTUK PRINT */
+        background-color: #fdf5e6 !important;
+        background-image: radial-gradient(#d3c5a3 1px, transparent 1px) !important;
+        background-size: 20px 20px !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
     }
 
     #displayTitle {
         visibility: visible !important;
         display: block !important;
-        font-size: 20pt;
-        margin-bottom: 10px;
+        font-size: 24pt;
+        margin-top: 15mm;
+        margin-bottom: 10mm;
         color: black;
     }
 
     #tree {
         visibility: visible !important;
-        width: 100% !important;
-        height: 800px !important;
+        width: 150% !important;
+        height: 100% !important;
+        /* Skala 1.4 supay nampak besar dan penuh ke bawah */
+        transform: scale(1.4); 
+        transform-origin: top center;
     }
 
     #tree * { visibility: visible !important; }
 
     @page {
         size: portrait;
-        margin: 0; /* Margin sifar penting untuk kekal Page 1 */
+        margin: 0;
     }
 }
