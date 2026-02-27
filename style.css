@@ -1,130 +1,154 @@
-/* 1. RESET & ASAS */
-* { box-sizing: border-box; margin: 0; padding: 0; }
-
+/* 1. ASAS & TIPOGRAFI */
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f0f4f8;
-    color: #333;
-    padding: 15px;
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background-color: #f0f2f5;
+    margin: 0;
+    padding: 10px;
 }
 
 .container {
-    max-width: 1100px;
-    margin: 0 auto;
-    background: #ffffff;
-    padding: 25px;
-    border-radius: 15px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-}
-
-h1 { text-align: center; color: #1a73e8; margin-bottom: 25px; }
-
-/* 2. BORANG INPUT (Guna Grid supaya tak terkeluar) */
-.input-section {
-    background: #f8f9fa;
+    max-width: 1000px;
+    margin: auto;
+    background: white;
     padding: 20px;
     border-radius: 12px;
-    border: 1px solid #e1e4e8;
-    margin-bottom: 25px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+h1 { 
+    text-align: center; 
+    color: #1a73e8; 
+    margin-bottom: 20px;
+}
+
+/* 2. SEKSYEN INPUT & BORANG */
+.input-section {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
 }
 
 #chartTitle {
     width: 100%;
     padding: 12px;
-    margin-bottom: 20px;
-    border: 1px solid #ccd1d9;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
     border-radius: 8px;
+    box-sizing: border-box;
     font-size: 16px;
 }
 
 .form-personal {
-    display: grid;
-    grid-template-columns: 1fr; /* 1 lajur di phone */
-    gap: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
 }
 
-/* Susunan 2 lajur di skrin PC/Tablet */
-@media (min-width: 768px) {
-    .form-personal { grid-template-columns: 1fr 1fr; }
-}
-
-input, select {
-    width: 100%;
+.form-personal input, 
+.form-personal select {
     padding: 12px;
-    border: 1px solid #ccd1d9;
+    border: 1px solid #ccc;
     border-radius: 8px;
-    font-size: 15px;
+    font-size: 16px;
 }
 
+/* Label & Upload Wrapper */
 .upload-wrapper {
     display: flex;
     flex-direction: column;
     gap: 5px;
+    font-size: 14px;
+    color: #555;
 }
-
-.upload-wrapper label { font-size: 13px; font-weight: bold; color: #555; }
 
 #addBtn {
-    grid-column: 1 / -1; /* Butang lebar penuh */
-    background-color: #28a745;
+    background: #28a745;
     color: white;
     border: none;
-    padding: 15px;
-    font-weight: bold;
+    padding: 14px;
     border-radius: 8px;
+    font-weight: bold;
+    font-size: 16px;
     cursor: pointer;
-    transition: 0.3s;
+    transition: background 0.3s;
 }
 
-#addBtn:hover { background-color: #218838; }
+#addBtn:hover {
+    background: #218838;
+}
 
-/* 3. BUTANG AKSI (PDF/SIMPAN/BUKA) */
+/* 3. SEKSYEN BUTANG AKSI (PDF, SIMPAN, BUKA) */
 .action-bar {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
-    margin-bottom: 25px;
+    margin-bottom: 20px;
     justify-content: center;
 }
 
 .action-bar button {
-    flex: 1;
-    min-width: 130px;
-    padding: 12px;
     border: none;
+    padding: 12px 20px;
     border-radius: 8px;
     color: white;
     font-weight: bold;
+    font-size: 14px;
     cursor: pointer;
+    flex: 1; /* Biar butang seimbang lebar */
+    min-width: 140px;
+    transition: opacity 0.3s;
 }
 
-.btn-pdf { background-color: #e74c3c; }
-.btn-save { background-color: #3498db; }
-.btn-open { background-color: #f39c12; }
+.btn-pdf { background-color: #e74c3c; } /* Merah */
+.btn-save { background-color: #3498db; } /* Biru */
+.btn-open { background-color: #f39c12; } /* Jingga */
 
-.bg-control {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 10px;
+.action-bar button:hover {
+    opacity: 0.9;
 }
 
-/* 4. PREVIEW AREA (SOROK SEARCH) */
-#capture-area {
-    background: white;
-    padding: 20px;
-    border: 1px solid #eee;
+/* 4. SEKSYEN PREVIEW CARTA */
+#preview-container {
+    border: 2px dashed #ccc;
+    padding: 15px;
     border-radius: 10px;
-    overflow-x: auto;
+    background-color: #ffffff; /* Default putih */
+    min-height: 400px;
 }
 
-#displayTitle { text-align: center; margin-bottom: 20px; color: #444; }
+#displayTitle {
+    text-align: center;
+    color: #333;
+    margin-top: 0;
+}
 
-#tree { width: 100%; height: 550px; min-width: 700px; }
+#tree {
+    width: 100%;
+    height: 500px; /* Tinggi kawasan carta */
+    background-color: transparent;
+}
 
-/* SOROK SEARCH BOX SECARA PAKSA */
-[data-n-id="search"], .boc-search, .boc-input {
-    display: none !important;
+/* 5. RESPONSIVE UNTUK PC (Skrin Besar) */
+@media (min-width: 768px) {
+    body {
+        padding: 30px;
+    }
+
+    .form-personal {
+        flex-direction: row; /* Tukar susunan ke melintang */
+        align-items: flex-end;
+    }
+
+    .form-personal input, 
+    .form-personal select, 
+    #addBtn {
+        flex: 1;
+    }
+
+    .action-bar button {
+        flex: none; /* Kekalkan saiz butang asal di PC */
+        width: 180px;
+    }
 }
