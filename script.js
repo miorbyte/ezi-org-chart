@@ -10,15 +10,11 @@ function renderChart() {
         nodes: employeeData,
         enableSearch: false,
         mouseWheel: OrgChart.action.zoom,
+        // Gunakan template 'lulu' kerana ia lebih luas untuk teks
+        template: "lulu", 
         nodeMenu: {
             edit: { text: "Repair / Edit" },
             remove: { text: "Delete Staf" }
-        },
-        // --- TAMBAHAN KRITIKAL UNTUK NAMA PENUH ---
-        tags: {
-            "all": {
-                template: "ana" // Menggunakan template 'ana' yang lebih mesra teks panjang
-            }
         },
         nodeBinding: {
             field_0: "name",
@@ -27,11 +23,14 @@ function renderChart() {
         }
     });
 
-    // Paksa semua elemen teks dalam SVG untuk tidak memotong perkataan
-    chart.on('render-text', function (sender, args) {
-        if (args.text) {
-            // Mematikan fungsi truncate (...) secara total
-            args.text = args.text.replace('...', ''); 
+    // --- LOGIK PAKSA NAMA PANJANG TURUN BARIS ---
+    chart.on('field', function (sender, args) {
+        if (args.name == "name") {
+            var name = args.value;
+            // Jika nama lebih 20 huruf, kita paksa dia wrap
+            if (name.length > 20) {
+                args.value = OrgChart.wrap(name, 15); // Wrap setiap 15 aksara
+            }
         }
     });
 
