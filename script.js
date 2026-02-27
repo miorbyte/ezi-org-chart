@@ -23,20 +23,36 @@ function setupTemplate() {
 
 function renderChart() {
     const treeDiv = document.getElementById("tree");
-    if (employeeData.length === 0) return;
+    if (employeeData.length === 0) {
+        treeDiv.innerHTML = "";
+        return;
+    }
 
     if (!OrgChart.templates.bppCustom) setupTemplate();
 
     chart = new OrgChart(treeDiv, {
         nodes: employeeData,
         template: "bppCustom",
-        enableSearch: false, // Mematikan kotak carian
-        nodeBinding: { field_0: "name", field_1: "title", img_0: "img" }
+        enableSearch: false, // Arahan rasmi untuk tutup carian
+        nodeBinding: { 
+            field_0: "name", 
+            field_1: "title", 
+            img_0: "img" 
+        }
     });
+
+    // LOGIK TAMBAHAN: Padam elemen carian secara paksa dari kod HTML
+    setTimeout(() => {
+        const searchBox = treeDiv.querySelector('[control-search-container]') || 
+                          treeDiv.querySelector('.b3g-search-container');
+        if (searchBox) {
+            searchBox.remove();
+            console.log("Kotak carian telah dibuang secara paksa.");
+        }
+    }, 100);
 
     updateDropdown();
 }
-
 function addNode() {
     const name = document.getElementById('userName').value;
     const role = document.getElementById('userRole').value;
