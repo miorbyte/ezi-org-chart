@@ -1,58 +1,60 @@
 let employeeData = [];
 let chart;
 
+// 1. Update Paparan Nama Fail
+function updateFileName(input) {
+    const display = document.getElementById('file-name-display');
+    if (input.files && input.files.length > 0) {
+        display.textContent = "Foto: " + input.files[0].name;
+        display.style.color = "#059669";
+    } else {
+        display.textContent = "Tiada foto dipilih";
+        display.style.color = "#64748b";
+    }
+}
+
+// 2. Setup Template Kotak Staf
 function setupTemplate() {
     OrgChart.templates.bppCustom = Object.assign({}, OrgChart.templates.ana);
     OrgChart.templates.bppCustom.size = [250, 120];
     OrgChart.templates.bppCustom.node = '<rect x="0" y="0" height="120" width="250" fill="#ffffff" stroke="#3498db" stroke-width="1" rx="10" ry="10"></rect>';
 
+    // Nama (Field 0) - Support Turun Baris
     OrgChart.templates.bppCustom.field_0 = 
         '<foreignObject x="90" y="20" width="150" height="60">' +
             '<div xmlns="http://www.w3.org/1999/xhtml" style="font-weight:bold; font-size:14px; color:#333; line-height:1.2; display:flex; align-items:center; height:100%; word-break: break-word; overflow:hidden;">{val}</div>' +
         '</foreignObject>';
 
+    // Jawatan (Field 1)
     OrgChart.templates.bppCustom.field_1 = 
         '<foreignObject x="90" y="75" width="150" height="40">' +
             '<div xmlns="http://www.w3.org/1999/xhtml" style="font-size:12px; color:#666; word-break: break-word;">{val}</div>' +
         '</foreignObject>';
 
+    // Gambar Bulat
     OrgChart.templates.bppCustom.img_0 = 
         '<clipPath id="ulaImg"><circle cx="45" cy="60" r="35"></circle></clipPath>' +
         '<image preserveAspectRatio="xMidYMid slice" clip-path="url(#ulaImg)" xlink:href="{val}" x="10" y="25" width="70" height="70"></image>';
 }
 
+// 3. Lukis Carta
 function renderChart() {
     const treeDiv = document.getElementById("tree");
-    if (employeeData.length === 0) {
-        treeDiv.innerHTML = "";
-        return;
-    }
+    if (employeeData.length === 0) return;
 
     if (!OrgChart.templates.bppCustom) setupTemplate();
 
     chart = new OrgChart(treeDiv, {
         nodes: employeeData,
         template: "bppCustom",
-        enableSearch: false, // Arahan rasmi untuk tutup carian
-        nodeBinding: { 
-            field_0: "name", 
-            field_1: "title", 
-            img_0: "img" 
-        }
+        enableSearch: false,
+        nodeBinding: { field_0: "name", field_1: "title", img_0: "img" }
     });
-
-    // LOGIK TAMBAHAN: Padam elemen carian secara paksa dari kod HTML
-    setTimeout(() => {
-        const searchBox = treeDiv.querySelector('[control-search-container]') || 
-                          treeDiv.querySelector('.b3g-search-container');
-        if (searchBox) {
-            searchBox.remove();
-            console.log("Kotak carian telah dibuang secara paksa.");
-        }
-    }, 100);
 
     updateDropdown();
 }
+
+// 4. Tambah Staf Baru
 function addNode() {
     const name = document.getElementById('userName').value;
     const role = document.getElementById('userRole').value;
@@ -84,19 +86,22 @@ function addNode() {
 function saveAndRender(id, pid, name, title, img) {
     employeeData.push({ id, pid, name, title, img });
     renderChart();
+    // Reset Input
     document.getElementById('userName').value = "";
     document.getElementById('userRole').value = "";
     document.getElementById('userPhoto').value = "";
+    document.getElementById('file-name-display').textContent = "Tiada foto dipilih";
 }
 
 function updateDropdown() {
     const select = document.getElementById('reportsTo');
     const current = select.value;
-    select.innerHTML = '<option value="">-- Melapor Kepada --</option>';
+    select.innerHTML = '<option value="">-- Melapor Kepada (Ketua) --</option>';
     employeeData.forEach(n => select.add(new Option(n.name, n.id)));
     select.value = current;
 }
 
+// 5. Simpan & Buka JSON
 function saveData() {
     if (employeeData.length === 0) return alert("Tiada data!");
     const blob = new Blob([JSON.stringify(employeeData, null, 2)], {type: "application/json"});
@@ -120,17 +125,3 @@ function loadData() {
     };
     input.click();
 }
-
-// Fungsi untuk tunjuk nama fail yang dipilih pada label
-function updateFileName(input) {
-    const display = document.getElementById('file-name-display');
-    if (input.files && input.files.length > 0) {
-        display.textContent = "Fail: " + input.files[0].name;
-        display.style.color = "#059669"; // Tukar hijau bila ada fail
-    } else {
-        display.textContent = "Tiada fail dipilih";
-        display.style.color = "#94a3b8";
-    }
-}
-
-// ... kekalkan kod renderChart, addNode, dan lain-lain dari versi sebelum ini ...
