@@ -12,7 +12,7 @@ function renderChart() {
     chart = new OrgChart(treeElement, {
         nodes: employeeData,
         enableSearch: false,
-        template: "isla", // Template ini lebih luas untuk teks & gambar
+        template: "isla", 
         nodeMenu: {
             edit: { text: "Repair / Edit" },
             remove: { text: "Padam Staf" }
@@ -24,19 +24,30 @@ function renderChart() {
         }
     });
 
-    // --- LOGIK PAKSA 2 BARIS (MUKTAMAT) ---
+    // --- TEKNIK MUKTAMAT: TUKAR SVG KEPADA HTML DIV ---
     chart.on('field', function (sender, args) {
         if (args.name == "name") {
             let nameValue = args.value;
-            if (nameValue.length > 15) {
-                let words = nameValue.split(" ");
+            // Kita pecahkan nama mengikut jarak
+            let words = nameValue.split(" ");
+            let line1, line2;
+
+            if (words.length > 2) {
                 let mid = Math.ceil(words.length / 2);
-                let line1 = words.slice(0, mid).join(" ");
-                let line2 = words.slice(mid).join(" ");
-                
-                // Menggunakan \n (line break) yang disokong oleh CSS white-space: pre-line
-                args.value = line1 + "\n" + line2;
+                line1 = words.slice(0, mid).join(" ");
+                line2 = words.slice(mid).join(" ");
+            } else {
+                line1 = nameValue;
+                line2 = "";
             }
+
+            // Gantikan teks SVG dengan HTML Div yang boleh wrap
+            args.html = `
+                <div style="display:flex; align-items:center; justify-content:center; height:100%; width:100%;">
+                    <div style="font-weight:bold; font-size:14px; color:#333; text-align:center; line-height:1.2; word-break:normal;">
+                        ${line1}${line2 ? '<br>' + line2 : ''}
+                    </div>
+                </div>`;
         }
     });
 
@@ -89,10 +100,7 @@ function updateParentDropdown() {
     s.value = cur;
 }
 
-function downloadPDF() {
-    if (!chart) return;
-    window.print();
-}
+function downloadPDF() { window.print(); }
 
 function saveData() {
     const blob = new Blob([JSON.stringify(employeeData)], {type: "application/json"});
