@@ -7,30 +7,28 @@ function renderChart() {
         treeElement.innerHTML = "";
         return;
     }
+    
+    // Reset kawasan carta
     treeElement.innerHTML = "";
 
-    chart = new OrgChart(treeElement, {
-        nodes: employeeData,
-        enableSearch: false,
-        mouseWheel: OrgChart.action.zoom,
-        template: "baly", // Template paling stabil untuk gambar & nama
-        nodeMenu: {
-            edit: { text: "Repair / Edit" },
-            remove: { text: "Padam Staf" }
-        },
-        nodeBinding: {
-            field_0: "name",
-            field_1: "title",
-            img_0: "img"
-        }
-    });
-
-    // Kita guna cara manual untuk paksa center
-    setTimeout(() => {
-        chart.center(employeeData[0].id);
-    }, 300);
-
-    updateParentDropdown();
+    try {
+        chart = new OrgChart(treeElement, {
+            nodes: employeeData,
+            enableSearch: false,
+            template: "ana", // Template paling ringan
+            nodeMenu: {
+                edit: { text: "Repair / Edit" },
+                remove: { text: "Padam" }
+            },
+            nodeBinding: {
+                field_0: "name",
+                field_1: "title",
+                img_0: "img"
+            }
+        });
+    } catch (err) {
+        console.error("Gagal bina carta:", err);
+    }
 }
 
 function addNode() {
@@ -39,40 +37,75 @@ function addNode() {
     const parentInput = document.getElementById('reportsTo');
     const photoInput = document.getElementById('userPhoto');
 
-    if (!nameInput.value) return alert("Sila isi nama!");
+    if (!nameInput.value || !roleInput.value) {
+        alert("Sila isi nama dan jawatan!");
+        return;
+    }
 
     const id = Date.now().toString();
     const pid = parentInput.value || null;
 
-    const process = (imgData) => {
-        employeeData.push({ id, pid, name: nameInput.value, title: roleInput.value, img: imgData });
-        renderChart();
-        nameInput.value = ""; 
-        roleInput.value = ""; 
-        photoInput.value = "";
-    };
-
+    const reader = new FileReader();
     if (photoInput.files && photoInput.files[0]) {
-        const reader = new FileReader();
-        reader.onload = (e) => process(e.target.result);
+        reader.onload = function(e) {
+            employeeData.push({ id: id, pid: pid, name: nameInput.value, title: roleInput.value, img: e.target.result });
+            renderChart();
+            clearInputs();
+        };
         reader.readAsDataURL(photoInput.files[0]);
     } else {
-        process("");
+        employeeData.push({ id: id, pid: pid, name: nameInput.value, title: roleInput.value, img: "" });
+        renderChart();
+        clearInputs();
     }
 }
 
-// Fungsi lain (Save/Load/PDF)
+function clearInputs() {
+    document.getElementById('userName').value = "";
+    document.getElementById('userRole').value = "";
+    document.getElementById('userPhoto').value = "";
+    updateParentDropdown();
+}
+
 function updateParentDropdown() {
     const s = document.getElementById('reportsTo');
     const cur = s.value;
     s.innerHTML = '<option value="">-- Melapor Kepada --</option>';
-    employeeData.forEach(node => { s.add(new Option(node.name, node.id)); });
+    employeeData.forEach(node => {
+        const opt = document.createElement('option');
+        opt.value = node.id;
+        opt.innerHTML = node.name;
+        s.appendChild(opt);
+    });
     s.value = cur;
 }
 
 function downloadPDF() {
-    if (!chart) return;
-    chart.zoom(1);
-    chart.center(employeeData[0].id);
-    setTimeout(() => { window.print(); }, 600);
+    // Fungsi cetak yang paling asas
+    window.print();
+}
+
+// Fungsi Simpan/Buka JSON (Pilihan)
+function saveData() {
+    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(employeeData));
+    const downloadAnchorNode = document.createElement('a');
+    downloadAnchorNode.setAttribute("href", dataStr);
+    downloadAnchorNode.setAttribute("download", "data_bpp.json");
+    downloadAnchorNode.click();
+    downloadAnchorNode.remove();
+}
+
+function loadData() {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.onchange = e => {
+        const file = e.target.files[0];
+        const reader = new FileReader();
+        reader.onload = readerEvent => {
+            employeeData = JSON.parse(readerEvent.target.result);
+            renderChart();
+        };
+        reader.readAsText(file);
+    };
+    input.click();
 }
