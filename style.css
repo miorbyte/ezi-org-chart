@@ -1,20 +1,51 @@
-function setupTemplate() {
-    OrgChart.templates.eziCustom = Object.assign({}, OrgChart.templates.ana);
-    OrgChart.templates.eziCustom.size = [250, 120];
+/* KEKALKAN GAYA ASAL */
+:root {
+    --primary: #1e3a8a;
+    --secondary: #2563eb;
+    --success: #059669;
+    --bg: #f8fafc;
+}
+
+body { font-family: 'Inter', sans-serif; background: var(--bg); padding: 20px; }
+.container { max-width: 1200px; margin: auto; background: white; padding: 40px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
+
+/* Tajuk Input */
+#chartTitle { 
+    width: 100%; padding: 15px; font-size: 1.1rem; border: 2px solid #cbd5e1; 
+    border-radius: 8px; box-sizing: border-box; text-align: center; font-weight: 600;
+}
+
+/* Susunan Butang & Borang (Seperti dalam gambar) */
+.form-personal { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; margin-top: 15px; align-items: start; }
+.input-card { padding: 25px; border: 1px solid #e2e8f0; border-radius: 12px; }
+
+/* Gaya Butang Upload Biru Putus-putus */
+.custom-file-upload {
+    border: 2px dashed #2563eb; background: #eff6ff; color: #1e40af;
+    padding: 10px; border-radius: 8px; cursor: pointer; text-align: center;
+    font-size: 13px; font-weight: 600; display: block;
+}
+input[type="file"] { display: none; }
+
+/* Butang Aksi */
+.action-bar { display: flex; justify-content: center; gap: 15px; margin: 30px 0; }
+.btn-pdf { background: #dc2626; color: white; border: none; padding: 10px 20px; border-radius: 6px; font-weight: 600; cursor: pointer; }
+.btn-save { background: #1e3a8a; color: white; border: none; padding: 10px 20px; border-radius: 6px; font-weight: 600; cursor: pointer; }
+.btn-open { background: #64748b; color: white; border: none; padding: 10px 20px; border-radius: 6px; font-weight: 600; cursor: pointer; }
+
+/* FIX PDF: CARTA NAIK KE ATAS */
+@media print {
+    .no-print { display: none !important; }
+    body, .container { background: white; padding: 0; margin: 0; box-shadow: none; width: 100%; max-width: 100%; }
+    #displayTitle { margin-top: 0; padding-top: 10px; text-align: center; }
     
-    // Nama (Field 0)
-    OrgChart.templates.eziCustom.field_0 = 
-        '<foreignObject x="90" y="15" width="150" height="50">' +
-            '<div xmlns="http://www.w3.org/1999/xhtml" style="font-weight:bold; font-size:14px; color:#333; line-height:1.1; display:flex; align-items:center; height:100%; word-break: break-word; overflow:hidden;">{val}</div>' +
-        '</foreignObject>';
-
-    // Jawatan (Field 1) - FIX JARAK BARIS
-    OrgChart.templates.eziCustom.field_1 = 
-        '<foreignObject x="90" y="65" width="150" height="45">' +
-            '<div xmlns="http://www.w3.org/1999/xhtml" style="font-size:12px; color:#666; line-height:1.2; padding-top:2px; word-break: break-word;">{val}</div>' +
-        '</foreignObject>';
-
-    OrgChart.templates.eziCustom.img_0 = 
-        '<clipPath id="ulaImg"><circle cx="45" cy="60" r="35"></circle></clipPath>' +
-        '<image preserveAspectRatio="xMidYMid slice" clip-path="url(#ulaImg)" xlink:href="{val}" x="10" y="25" width="70" height="70"></image>';
+    /* Memaksa elemen bermula dari atas halaman */
+    #print-zone { display: block !important; position: static !important; }
+    #tree { 
+        height: 1000px !important; 
+        margin-top: 0 !important; 
+        position: relative !important;
+        top: 0 !important;
+        transform: none !important; /* Buang auto-centering dari library */
+    }
 }
