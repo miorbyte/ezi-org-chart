@@ -1,22 +1,19 @@
 let employeeData = [];
 let chart;
 
-// 1. Fungsi Utama Melukis Carta
 function renderChart() {
     const treeElement = document.getElementById("tree");
     if (employeeData.length === 0) {
         treeElement.innerHTML = "";
         return;
     }
-
-    treeElement.innerHTML = ""; 
-
+    treeElement.innerHTML = "";
     try {
         chart = new OrgChart(treeElement, {
             nodes: employeeData,
             enableSearch: false,
-            menu: null,          
-            nodeMenu: null,      
+            menu: null,
+            nodeMenu: null,
             mouseWheel: OrgChart.action.zoom,
             nodeBinding: {
                 field_0: "name",
@@ -24,12 +21,9 @@ function renderChart() {
                 img_0: "img"
             }
         });
-    } catch (e) {
-        console.error("Gagal melukis carta:", e);
-    }
+    } catch (e) { console.error(e); }
 }
 
-// 2. Tambah Kakitangan & Kemaskini Tajuk
 function addNode() {
     const titleInput = document.getElementById('chartTitle');
     const displayTitle = document.getElementById('displayTitle');
@@ -38,7 +32,6 @@ function addNode() {
     const parentInput = document.getElementById('reportsTo');
     const photoInput = document.getElementById('userPhoto');
 
-    // Update tajuk di preview segera
     displayTitle.innerText = titleInput.value || "Carta Organisasi";
 
     if (!nameInput.value || !roleInput.value) {
@@ -49,57 +42,41 @@ function addNode() {
     const id = Date.now().toString();
     const pid = (employeeData.length === 0) ? null : (parentInput.value || null);
 
-    const completeProcess = (imgData) => {
+    const process = (imgData) => {
         employeeData.push({ id, pid, name: nameInput.value, title: roleInput.value, img: imgData });
-        
-        // Update senarai pilihan 'Melapor Kepada'
         const opt = document.createElement('option');
-        opt.value = id;
-        opt.text = nameInput.value;
+        opt.value = id; opt.text = nameInput.value;
         parentInput.add(opt);
-        
         renderChart();
-        
-        // Reset borang
-        nameInput.value = "";
-        roleInput.value = "";
-        photoInput.value = "";
+        nameInput.value = ""; roleInput.value = ""; photoInput.value = "";
     };
 
     if (photoInput.files && photoInput.files[0]) {
         const reader = new FileReader();
-        reader.onload = (e) => completeProcess(e.target.result);
+        reader.onload = (e) => process(e.target.result);
         reader.readAsDataURL(photoInput.files[0]);
     } else {
-        completeProcess("");
+        process("");
     }
 }
 
-// 3. Fungsi Cetak (Ditala untuk Portrait Besar)
+// FUNGSI CETAK UNTUK KEKAL PAGE 1
 function downloadPDF() {
-    if (employeeData.length === 0) {
-        alert("Sila masukkan data staf dahulu.");
-        return;
-    }
+    if (employeeData.length === 0) return;
 
-    // Pastikan tajuk dimasukkan ke elemen display
     const titleValue = document.getElementById('chartTitle').value || "CARTA ORGANISASI";
     document.getElementById('displayTitle').innerText = titleValue;
 
     if (chart) {
-        // PENTING: Jangan guna fit()! Guna zoom(1) untuk saiz kotak yang besar
-        chart.zoom(1); 
-        // Fokuskan kepada ketua jabatan (node pertama) supaya seimbang
-        chart.center(employeeData[0].id); 
+        // Gunakan fit() untuk pastikan elemen berada dalam sempadan sebelum cetak
+        chart.fit(); 
     }
 
-    // Beri masa DOM kemaskini
     setTimeout(() => {
         window.print();
-    }, 600);
+    }, 500);
 }
 
-// 4. Simpan Data (.json)
 function saveData() {
     if (employeeData.length === 0) return;
     const blob = new Blob([JSON.stringify(employeeData)], {type: "application/json"});
@@ -109,7 +86,6 @@ function saveData() {
     a.click();
 }
 
-// 5. Buka Data (.json)
 function loadData() {
     const input = document.createElement('input');
     input.type = 'file';
