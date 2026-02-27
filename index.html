@@ -13,28 +13,33 @@
         <h1 class="no-print">📊 Ezi Org Chart</h1>
         
         <section class="input-section no-print">
-            <input type="text" id="chartTitle" placeholder="Masukkan Tajuk Carta">
+            <input type="text" id="chartTitle" placeholder="Masukkan Tajuk Carta (Contoh: Unit IT 2026)">
             
             <div class="form-personal">
-                <input type="text" id="userName" placeholder="Nama">
+                <input type="text" id="userName" placeholder="Nama Kakitangan">
                 <input type="text" id="userRole" placeholder="Jawatan">
                 <select id="reportsTo">
                     <option value="">-- Melapor Kepada (Pilih Bos) --</option>
                 </select>
-                <input type="file" id="userPhoto" accept="image/*">
+                <div class="upload-wrapper">
+                    <label>Gambar:</label>
+                    <input type="file" id="userPhoto" accept="image/*">
+                </div>
                 <button onclick="addNode()" id="addBtn">➕ Tambah Staf</button>
             </div>
         </section>
 
         <section class="action-bar no-print">
-            <button onclick="downloadPDF()" class="btn-pdf">📄 Cetak PDF</button>
-            <button onclick="saveData()" class="btn-save">💾 Simpan (.json)</button>
-            <button onclick="loadData()" class="btn-open">📂 Buka (.json)</button>
+            <button onclick="downloadPDF()" class="btn-pdf">📄 Cetak / Simpan PDF</button>
+            <button onclick="saveData()" class="btn-save">💾 Simpan Data (.json)</button>
+            <button onclick="loadData()" class="btn-open">📂 Buka Fail (.json)</button>
         </section>
 
         <div id="preview-container">
-            <h2 id="displayTitle">Tajuk Carta</h2>
-            <div id="tree"></div>
+            <div id="print-zone">
+                <h2 id="displayTitle">Tajuk Carta</h2>
+                <div id="tree"></div>
+            </div>
         </div>
     </div>
 
