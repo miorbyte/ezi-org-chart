@@ -3,16 +3,17 @@ let chart;
 
 // 1. Inisialisasi - Pastikan library sedia
 window.onload = function() {
-    console.log("Aplikasi Sedia");
+    console.log("Sistem Ezi Org Chart Sedia.");
 };
 
+// 2. Fungsi Utama Melukis Carta
 function renderChart() {
     const treeElement = document.getElementById("tree");
     
-    // Padam kandungan lama
+    // Padam kandungan lama sebelum lukis baru
     treeElement.innerHTML = "";
 
-    // Jika tiada data, jangan lukis apa-apa
+    // Jangan lukis jika tiada data staf
     if (employeeData.length === 0) return;
 
     try {
@@ -25,10 +26,11 @@ function renderChart() {
             }
         });
     } catch (e) {
-        console.error("Gagal melukis carta:", e);
+        console.error("Gagal memaparkan kotak staf:", e);
     }
 }
 
+// 3. Tambah Kakitangan
 function addNode() {
     const name = document.getElementById('userName').value;
     const role = document.getElementById('userRole').value;
@@ -36,17 +38,16 @@ function addNode() {
     const photoInput = document.getElementById('userPhoto');
     const titleText = document.getElementById('chartTitle').value;
 
+    // Kemas kini tajuk carta di atas kotak
     document.getElementById('displayTitle').innerText = titleText || "Carta Organisasi";
 
     if (!name || !role) { 
-        alert("Sila masukkan nama dan jawatan."); 
+        alert("Sila masukkan Nama dan Jawatan."); 
         return; 
     }
 
-    // Tukar ID kepada String supaya stabil
     const id = Date.now().toString();
-
-    // Logik PENTING: Jika staf pertama, PID mesti null
+    // Jika ini staf pertama, PID mesti null (supaya dia jadi kepala carta)
     const pid = (employeeData.length === 0) ? null : (parent ? parent : null);
 
     if (photoInput.files && photoInput.files[0]) {
@@ -65,12 +66,13 @@ function addNode() {
         renderChart();
     }
 
-    // Reset input
+    // Reset borang input
     document.getElementById('userName').value = "";
     document.getElementById('userRole').value = "";
     document.getElementById('userPhoto').value = "";
 }
 
+// 4. Kemas kini senarai "Melapor Kepada"
 function updateDropdown(name, id) {
     const select = document.getElementById('reportsTo');
     const opt = document.createElement('option');
@@ -79,14 +81,16 @@ function updateDropdown(name, id) {
     select.appendChild(opt);
 }
 
+// 5. Fungsi Cetak
 function downloadPDF() {
     if (employeeData.length === 0) {
-        alert("Tiada data untuk dicetak.");
+        alert("Sila masukkan data terlebih dahulu.");
         return;
     }
     window.print();
 }
 
+// 6. Simpan Fail .json
 function saveData() {
     if (employeeData.length === 0) return;
     const dataStr = JSON.stringify(employeeData);
@@ -94,10 +98,11 @@ function saveData() {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = "data_carta.json";
+    a.download = "data_ezi_org.json";
     a.click();
 }
 
+// 7. Buka Fail .json
 function loadData() {
     const input = document.createElement('input');
     input.type = 'file';
@@ -105,14 +110,10 @@ function loadData() {
     input.onchange = e => {
         const reader = new FileReader();
         reader.onload = event => {
-            try {
-                employeeData = JSON.parse(event.target.result);
-                document.getElementById('reportsTo').innerHTML = '<option value="">-- Melapor Kepada --</option>';
-                employeeData.forEach(node => updateDropdown(node.name, node.id));
-                renderChart();
-            } catch (err) {
-                alert("Fail JSON tidak sah!");
-            }
+            employeeData = JSON.parse(event.target.result);
+            document.getElementById('reportsTo').innerHTML = '<option value="">-- Melapor Kepada --</option>';
+            employeeData.forEach(node => updateDropdown(node.name, node.id));
+            renderChart();
         };
         reader.readAsText(e.target.files[0]);
     };
