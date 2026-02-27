@@ -120,3 +120,17 @@ function loadData() {
     };
     input.click();
 }
+
+// Fungsi untuk tunjuk nama fail yang dipilih pada label
+function updateFileName(input) {
+    const display = document.getElementById('file-name-display');
+    if (input.files && input.files.length > 0) {
+        display.textContent = "Fail: " + input.files[0].name;
+        display.style.color = "#059669"; // Tukar hijau bila ada fail
+    } else {
+        display.textContent = "Tiada fail dipilih";
+        display.style.color = "#94a3b8";
+    }
+}
+
+// ... kekalkan kod renderChart, addNode, dan lain-lain dari versi sebelum ini ...
