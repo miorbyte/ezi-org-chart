@@ -76,3 +76,24 @@ body { font-family: 'Segoe UI', sans-serif; background-color: #f4f7f6; margin: 0
 [control-search-container], .b3g-search-container {
     display: none !important;
 }
+
+/* Lebarkan kotak staf secara paksa */
+.node {
+    width: 250px !important; 
+}
+
+/* Pastikan teks nama ada jarak baris yang cantik */
+[data-n-id] text tspan {
+    dy: 1.2em;
+    font-size: 14px;
+}
+
+/* Sembunyikan search jika muncul */
+[control-search-container], .b3g-search-container {
+    display: none !important;
+}
+
+/* Pastikan gambar (img_0) dipaparkan dengan betul */
+[data-n-id] image {
+    display: block !important;
+}
