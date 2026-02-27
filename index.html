@@ -3,42 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ezi Org Chart - BPP Latest</title>
-    <link rel="stylesheet" href="style.css">
+    <title>BPP Org Chart - Final Fix</title>
+    <link rel="stylesheet" href="style_v2.css">
     <script src="https://balkangraph.com/js/orgchart.js"></script>
 </head>
 <body>
 
     <div class="container">
-        <h1 class="no-print">📊 Ezi Org Chart Generator</h1>
+        <h1 class="no-print">📊 Penjana Carta BPP</h1>
         
         <section class="input-section no-print">
-            <input type="text" id="chartTitle" onkeyup="updateTitle()" placeholder="Masukkan Tajuk Carta (Contoh: Carta Organisasi BPP)">
+            <input type="text" id="chartTitle" oninput="document.getElementById('displayTitle').innerText = this.value" placeholder="Taip Tajuk Carta Di Sini...">
             
             <div class="form-personal">
-                <input type="text" id="userName" placeholder="Nama Kakitangan">
+                <input type="text" id="userName" placeholder="Nama">
                 <input type="text" id="userRole" placeholder="Jawatan">
-                
                 <select id="reportsTo">
-                    <option value="">-- Melapor Kepada (Pilih Bos) --</option>
+                    <option value="">-- Pilih Bos --</option>
                 </select>
-                
-                <div class="upload-wrapper">
-                    <label>Gambar:</label>
-                    <input type="file" id="userPhoto" accept="image/*">
-                </div>
-                
-                <button onclick="addNode()" id="addBtn">➕ Tambah Staf</button>
+                <input type="file" id="userPhoto" accept="image/*">
+                <button onclick="addNode()" id="addBtn">➕ Tambah</button>
             </div>
-            <p style="font-size: 0.8em; color: #666; margin-top: 10px;">
-                💡 <b>Repair/Delete:</b> Klik pada kotak staf di preview untuk Edit atau Padam.
-            </p>
         </section>
 
         <section class="action-bar no-print">
-            <button onclick="downloadPDF()" class="btn-pdf">📄 Cetak / Simpan PDF</button>
-            <button onclick="saveData()" class="btn-save">💾 Simpan Data (.json)</button>
-            <button onclick="loadData()" class="btn-open">📂 Buka Fail (.json)</button>
+            <button onclick="downloadPDF()" class="btn-pdf">📄 Cetak / Save PDF</button>
+            <button onclick="saveData()" class="btn-save">💾 Simpan JSON</button>
+            <button onclick="loadData()" class="btn-open">📂 Buka JSON</button>
         </section>
 
         <div id="preview-container">
@@ -49,6 +40,6 @@
         </div>
     </div>
 
-    <script src="script.js"></script>
+    <script src="script_v2.js"></script>
 </body>
 </html>
