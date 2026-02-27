@@ -22,23 +22,17 @@ body { font-family: 'Segoe UI', sans-serif; background: #f4f7f6; padding: 20px; 
 
 /* --- LOGIK KHAS CETAKAN (PORTRAIT 1 PAGE) --- */
 @media print {
-    html, body { height: 100%; margin: 0 !important; overflow: hidden !important; }
-    .no-print, .input-section, .action-bar, h1 { display: none !important; }
+    /* ... kod lain kekal sama ... */
 
-    #print-zone {
+    #tree {
         visibility: visible !important;
-        position: absolute;
-        top: 0; left: 0; width: 100%; height: 100%;
-        display: flex !important;
-        flex-direction: column;
-        
-        /* LATAR BELAKANG CREAM DOTS */
-        background-color: #fdf5e6 !important;
-        background-image: radial-gradient(#d3c5a3 0.8px, transparent 0.8px) !important;
-        background-size: 15px 15px !important;
-        -webkit-print-color-adjust: exact;
-        print-color-adjust: exact;
+        width: 100% !important;
+        height: auto !important;
+        /* Guna 1.05 untuk pembesaran sedikit sahaja, supaya tak pecah */
+        transform: scale(1.05); 
+        transform-origin: top center;
     }
+}
 
     #displayTitle { display: block !important; font-size: 22pt; margin-top: 10mm; }
 
