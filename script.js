@@ -1,22 +1,22 @@
 let employeeData = [];
 let chart;
 
-// Inisialisasi Template Custom
+// 1. SETUP TEMPLATE (Tanpa memanggil OrgChart.wrap)
 function setupTemplate() {
     OrgChart.templates.bppCustom = Object.assign({}, OrgChart.templates.ana);
     OrgChart.templates.bppCustom.size = [250, 120];
     OrgChart.templates.bppCustom.node = '<rect x="0" y="0" height="120" width="250" fill="#ffffff" stroke="#007bff" stroke-width="1" rx="10" ry="10"></rect>';
 
-    // Nama (Field 0) - Boleh 2-3 baris
+    // Nama - Teks akan turun baris sendiri kerana word-break
     OrgChart.templates.bppCustom.field_0 = 
         '<foreignObject x="90" y="20" width="150" height="60">' +
-            '<div xmlns="http://www.w3.org/1999/xhtml" style="font-weight:bold; font-size:14px; color:#333; line-height:1.2; display:flex; align-items:center; height:100%">{val}</div>' +
+            '<div xmlns="http://www.w3.org/1999/xhtml" style="font-weight:bold; font-size:14px; color:#333; line-height:1.2; display:flex; align-items:center; height:100%; word-break: break-word; overflow:hidden;">{val}</div>' +
         '</foreignObject>';
 
-    // Jawatan (Field 1)
+    // Jawatan
     OrgChart.templates.bppCustom.field_1 = 
         '<foreignObject x="90" y="75" width="150" height="40">' +
-            '<div xmlns="http://www.w3.org/1999/xhtml" style="font-size:12px; color:#666;">{val}</div>' +
+            '<div xmlns="http://www.w3.org/1999/xhtml" style="font-size:12px; color:#666; word-break: break-word;">{val}</div>' +
         '</foreignObject>';
 
     // Gambar Staf
@@ -31,16 +31,14 @@ function renderChart() {
 
     if (!OrgChart.templates.bppCustom) setupTemplate();
 
+    // Ralat sebelum ini berlaku di sini, jadi saya sudah buang bahagian 'chart.on'
     chart = new OrgChart(treeDiv, {
         nodes: employeeData,
         template: "bppCustom",
-        nodeBinding: { field_0: "name", field_1: "title", img_0: "img" }
-    });
-
-    // Auto-wrap nama panjang
-    chart.on('field', function (sender, args) {
-        if (args.name == "name") {
-            args.value = OrgChart.wrap(args.value, 15);
+        nodeBinding: { 
+            field_0: "name", 
+            field_1: "title", 
+            img_0: "img" 
         }
     });
 
@@ -48,12 +46,12 @@ function renderChart() {
 }
 
 function addNode() {
-    const name = document.getElementById('userName').value;
-    const role = document.getElementById('userRole').value;
+    const nameInput = document.getElementById('userName');
+    const roleInput = document.getElementById('userRole');
     const pid = document.getElementById('reportsTo').value || null;
     const photo = document.getElementById('userPhoto').files[0];
 
-    if (!name || !role) return alert("Sila isi nama dan jawatan!");
+    if (!nameInput.value || !roleInput.value) return alert("Sila isi nama dan jawatan!");
 
     const id = Date.now().toString();
 
@@ -65,22 +63,21 @@ function addNode() {
                 const canvas = document.createElement('canvas');
                 canvas.width = 150; canvas.height = 150;
                 canvas.getContext('2d').drawImage(img, 0, 0, 150, 150);
-                saveAndRender(id, pid, name, role, canvas.toDataURL('image/jpeg', 0.7));
+                saveAndRender(id, pid, nameInput.value, roleInput.value, canvas.toDataURL('image/jpeg', 0.7));
+                nameInput.value = ""; roleInput.value = ""; // Reset
             };
             img.src = e.target.result;
         };
         reader.readAsDataURL(photo);
     } else {
-        saveAndRender(id, pid, name, role, "");
+        saveAndRender(id, pid, nameInput.value, roleInput.value, "");
+        nameInput.value = ""; roleInput.value = ""; // Reset
     }
 }
 
 function saveAndRender(id, pid, name, title, img) {
     employeeData.push({ id, pid, name, title, img });
     renderChart();
-    document.getElementById('userName').value = "";
-    document.getElementById('userRole').value = "";
-    document.getElementById('userPhoto').value = "";
 }
 
 function updateDropdown() {
