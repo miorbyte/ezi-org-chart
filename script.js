@@ -1,10 +1,19 @@
 let employeeData = [];
 let chart;
 
-// 1. Tukar Warna Latar
-function changeBg() {
-    const color = document.getElementById('bgColorPicker').value;
-    document.getElementById('capture-area').style.backgroundColor = color;
+// 1. Render Carta Tanpa Search/Menu
+function renderChart() {
+    chart = new OrgChart(document.getElementById("tree"), {
+        enableSearch: false,   // Buang kotak search
+        enableDragDrop: false, // Elak tersalah tarik kotak
+        mouseWheel: OrgChart.action.zoom,
+        nodeBinding: {
+            field_0: "name",
+            field_1: "title",
+            img_0: "img"
+        },
+        nodes: employeeData
+    });
 }
 
 // 2. Tambah Kakitangan
@@ -29,15 +38,17 @@ function addNode() {
 }
 
 function processNode(name, role, parent, img) {
-    const id = Date.now(); // Guna timestamp sebagai ID unik
+    const id = Date.now(); 
     const newNode = { id: id, pid: parent, name: name, title: role, img: img };
     
     employeeData.push(newNode);
     updateDropdown(name, id);
     renderChart();
     
+    // Reset Form
     document.getElementById('userName').value = "";
     document.getElementById('userRole').value = "";
+    document.getElementById('userPhoto').value = "";
 }
 
 function updateDropdown(name, id) {
@@ -48,27 +59,23 @@ function updateDropdown(name, id) {
     select.appendChild(opt);
 }
 
-function renderChart() {
-    chart = new OrgChart(document.getElementById("tree"), {
-        nodes: employeeData,
-        nodeBinding: { field_0: "name", field_1: "title", img_0: "img" }
-    });
-}
-
-// 3. Simpan & Buka
+// 3. Simpan Fail .json
 function saveData() {
+    if(employeeData.length === 0) { alert("Tiada data untuk disimpan."); return; }
     const dataStr = JSON.stringify(employeeData);
     const blob = new Blob([dataStr], {type: "application/json"});
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = "chart_data.json";
+    a.download = "my_org_chart.json";
     a.click();
 }
 
+// 4. Buka Fail .json
 function loadData() {
     const input = document.createElement('input');
     input.type = 'file';
+    input.accept = ".json";
     input.onchange = e => {
         const reader = new FileReader();
         reader.onload = event => {
@@ -76,14 +83,28 @@ function loadData() {
             document.getElementById('reportsTo').innerHTML = '<option value="">-- Pilih Bos --</option>';
             employeeData.forEach(node => updateDropdown(node.name, node.id));
             renderChart();
+            alert("Data berjaya dimuat naik!");
         };
         reader.readAsText(e.target.files[0]);
     };
     input.click();
 }
 
-// 4. PDF
+// 5. Cetak PDF
 function downloadPDF() {
     const element = document.getElementById('capture-area');
-    html2pdf().from(element).save('Ezi_Org_Chart.pdf');
+    const opt = {
+        margin: 10,
+        filename: 'Ezi_Org_Chart.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'landscape' }
+    };
+    html2pdf().set(opt).from(element).save();
+}
+
+// 6. Tukar Warna Latar
+function changeBg() {
+    const color = document.getElementById('bgColorPicker').value;
+    document.getElementById('capture-area').style.backgroundColor = color;
 }
