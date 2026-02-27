@@ -3,34 +3,44 @@ let chart;
 
 function renderChart() {
     const treeElement = document.getElementById("tree");
-    if (employeeData.length === 0) {
-        treeElement.innerHTML = "";
-        return;
-    }
-    
-    // Reset kawasan carta
+    if (employeeData.length === 0) return;
     treeElement.innerHTML = "";
 
-    try {
-        chart = new OrgChart(treeElement, {
-            nodes: employeeData,
-            enableSearch: false,
-            template: "ana", // Template paling ringan
-            nodeMenu: {
-                edit: { text: "Repair / Edit" },
-                remove: { text: "Padam" }
-            },
-            nodeBinding: {
-                field_0: "name",
-                field_1: "title",
-                img_0: "img"
-            }
-        });
-    } catch (err) {
-        console.error("Gagal bina carta:", err);
-    }
-}
+    chart = new OrgChart(treeElement, {
+        nodes: employeeData,
+        enableSearch: false,
+        template: "ana",
+        nodeMenu: {
+            edit: { text: "Repair / Edit" },
+            remove: { text: "Delete Staf" }
+        },
+        nodeBinding: { field_0: "name", field_1: "title", img_0: "img" }
+    });
 
+    // --- TEKNIK MANUAL SPLIT UNTUK 2 BARIS ---
+    chart.on('field', function (sender, args) {
+        if (args.name == "name") {
+            let namaAsal = args.value;
+            // Jika nama panjang (lebih 18 huruf), kita paksa pecah
+            if (namaAsal.length > 18) {
+                let kata = namaAsal.split(" ");
+                let baris1 = "";
+                let baris2 = "";
+                
+                // Bahagikan perkataan kepada dua baris
+                let tengah = Math.ceil(kata.length / 2);
+                baris1 = kata.slice(0, tengah).join(" ");
+                baris2 = kata.slice(tengah).join(" ");
+                
+                // Gunakan format SVG tspan untuk paksa turun bawah
+                args.value = baris1 + "\n" + baris2;
+            }
+        }
+    });
+
+    setTimeout(() => { chart.center(employeeData[0].id); }, 300);
+    updateParentDropdown();
+}
 function addNode() {
     const nameInput = document.getElementById('userName');
     const roleInput = document.getElementById('userRole');
