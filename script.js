@@ -1,20 +1,18 @@
 let employeeData = [];
 let chart;
 
-// 1. Fungsi Utama Melukis Carta
 function renderChart() {
-    // Jika tiada data staf, jangan buat apa-apa
+    const treeElement = document.getElementById("tree");
     if (employeeData.length === 0) return;
 
-    // Padam kandungan lama dalam kotak 'tree' sebelum lukis baru
-    const treeElement = document.getElementById("tree");
+    // Bersihkan sebelum lukis
     treeElement.innerHTML = "";
 
     try {
         chart = new OrgChart(treeElement, {
             nodes: employeeData,
-            enableSearch: false, // MEMBUANG KOTAK SEARCH
-            mouseWheel: OrgChart.action.zoom, // Benarkan zoom guna scroll tetikus
+            enableSearch: false, // Konfigurasi utama matikan search
+            enableDragDrop: false,
             nodeBinding: {
                 field_0: "name",
                 field_1: "title",
@@ -22,11 +20,10 @@ function renderChart() {
             }
         });
     } catch (e) {
-        console.error("Gagal memaparkan carta:", e);
+        console.error("Gagal melukis carta:", e);
     }
 }
 
-// 2. Tambah Kakitangan
 function addNode() {
     const name = document.getElementById('userName').value;
     const role = document.getElementById('userRole').value;
@@ -34,23 +31,20 @@ function addNode() {
     const photoInput = document.getElementById('userPhoto');
     const titleText = document.getElementById('chartTitle').value;
 
-    // Kemas kini tajuk carta yang dipaparkan
     document.getElementById('displayTitle').innerText = titleText || "Carta Organisasi";
 
     if (!name || !role) { 
-        alert("Sila masukkan Nama dan Jawatan."); 
+        alert("Sila isi Nama & Jawatan."); 
         return; 
     }
 
     const id = Date.now().toString();
-    // Logik PID: Staf pertama mesti null (Ketua Tertinggi)
-    const pid = (employeeData.length === 0) ? null : (parent ? parent : null);
+    const pid = (employeeData.length === 0) ? null : (parent || null);
 
-    const handleNewNode = (imgData) => {
-        const newNode = { id: id, pid: pid, name: name, title: role, img: imgData };
-        employeeData.push(newNode);
+    const completeAdd = (imgData) => {
+        employeeData.push({ id, pid, name, title: role, img: imgData });
         
-        // Kemas kini dropdown senarai bos
+        // Update senarai dropdown
         const select = document.getElementById('reportsTo');
         const opt = document.createElement('option');
         opt.value = id;
@@ -59,71 +53,54 @@ function addNode() {
         
         renderChart();
         
-        // Kosongkan semula borang input
+        // Reset input
         document.getElementById('userName').value = "";
         document.getElementById('userRole').value = "";
         document.getElementById('userPhoto').value = "";
     };
 
-    // Proses gambar jika ada dimuat naik
     if (photoInput.files && photoInput.files[0]) {
         const reader = new FileReader();
-        reader.onload = (e) => handleNewNode(e.target.result);
+        reader.onload = (e) => completeAdd(e.target.result);
         reader.readAsDataURL(photoInput.files[0]);
     } else {
-        handleNewNode(""); // Tanpa gambar
+        completeAdd("");
     }
 }
 
-// 3. Fungsi Cetak (Menggunakan Print Pelayar)
 function downloadPDF() {
     if (employeeData.length === 0) {
-        alert("Sila masukkan data staf terlebih dahulu.");
+        alert("Tiada data untuk dicetak.");
         return;
     }
     window.print();
 }
 
-// 4. Simpan Data ke fail .json
 function saveData() {
-    if (employeeData.length === 0) {
-        alert("Tiada data untuk disimpan.");
-        return;
-    }
-    const dataStr = JSON.stringify(employeeData);
-    const blob = new Blob([dataStr], {type: "application/json"});
-    const url = URL.createObjectURL(blob);
+    if (employeeData.length === 0) return;
+    const blob = new Blob([JSON.stringify(employeeData)], {type: "application/json"});
     const a = document.createElement('a');
-    a.href = url;
-    a.download = "data_ezi_org.json";
+    a.href = URL.createObjectURL(blob);
+    a.download = "data_ezichart.json";
     a.click();
 }
 
-// 5. Buka Data dari fail .json
 function loadData() {
     const input = document.createElement('input');
     input.type = 'file';
     input.accept = '.json';
     input.onchange = e => {
         const reader = new FileReader();
-        reader.onload = event => {
-            try {
-                employeeData = JSON.parse(event.target.result);
-                // Reset dropdown 'Reports To'
-                const select = document.getElementById('reportsTo');
-                select.innerHTML = '<option value="">-- Melapor Kepada --</option>';
-                
-                // Isi semula dropdown dan lukis carta
-                employeeData.forEach(node => {
-                    const opt = document.createElement('option');
-                    opt.value = node.id;
-                    opt.text = node.name;
-                    select.add(opt);
-                });
-                renderChart();
-            } catch (err) {
-                alert("Ralat: Fail JSON tidak sah!");
-            }
+        reader.onload = ev => {
+            employeeData = JSON.parse(ev.target.result);
+            const select = document.getElementById('reportsTo');
+            select.innerHTML = '<option value="">-- Melapor Kepada --</option>';
+            employeeData.forEach(node => {
+                const opt = document.createElement('option');
+                opt.value = node.id; opt.text = node.name;
+                select.add(opt);
+            });
+            renderChart();
         };
         reader.readAsText(e.target.files[0]);
     };
