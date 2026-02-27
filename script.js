@@ -1,24 +1,29 @@
 let employeeData = [];
 let chart;
 
+// Fungsi tajuk real-time
+function updateTitle() {
+    const val = document.getElementById('chartTitle').value;
+    document.getElementById('displayTitle').innerText = val || "Tajuk Carta";
+}
+
 function renderChart() {
     const treeElement = document.getElementById("tree");
     if (employeeData.length === 0) {
         treeElement.innerHTML = "";
         return;
     }
-
     treeElement.innerHTML = "";
-    
+
     chart = new OrgChart(treeElement, {
         nodes: employeeData,
         enableSearch: false,
-        menu: null,
+        mouseWheel: OrgChart.action.zoom,
         
-        // --- AKTIFKAN EDIT & REPAIR ---
+        // --- AKTIFKAN REPAIR/DELETE ---
         nodeMenu: {
             edit: { text: "Repair / Edit" },
-            remove: { text: "Padam Staf" }
+            remove: { text: "Delete Staf" }
         },
 
         nodeBinding: {
@@ -27,25 +32,17 @@ function renderChart() {
             img_0: "img"
         },
 
-        // Update senarai bos jika ada perubahan nama/padam
+        // Update dropdown bila data berubah
         onUpdate: function() { updateParentDropdown(); },
         onRemove: function() { updateParentDropdown(); }
     });
 
-    updateParentDropdown();
-}
+    // Paksa carta duduk tengah
+    setTimeout(() => {
+        chart.center(employeeData[0].id);
+    }, 300);
 
-function updateParentDropdown() {
-    const select = document.getElementById('reportsTo');
-    const currentVal = select.value;
-    select.innerHTML = '<option value="">-- Melapor Kepada --</option>';
-    employeeData.forEach(node => {
-        const opt = document.createElement('option');
-        opt.value = node.id;
-        opt.text = node.name;
-        select.add(opt);
-    });
-    select.value = currentVal;
+    updateParentDropdown();
 }
 
 function addNode() {
@@ -77,24 +74,31 @@ function addNode() {
     }
 }
 
+function updateParentDropdown() {
+    const select = document.getElementById('reportsTo');
+    const current = select.value;
+    select.innerHTML = '<option value="">-- Melapor Kepada --</option>';
+    employeeData.forEach(node => {
+        const opt = document.createElement('option');
+        opt.value = node.id; opt.text = node.name;
+        select.add(opt);
+    });
+    select.value = current;
+}
+
 function downloadPDF() {
     if (employeeData.length === 0) return;
-
-    document.getElementById('displayTitle').innerText = document.getElementById('chartTitle').value || "CARTA ORGANISASI";
-
-    if (chart) {
-        // Zoom(1) bermaksud 100% saiz asal kotak.
-        // Ini akan menghalang kotak jadi terlalu besar atau terlalu kecil.
-        chart.zoom(1);
-        chart.center(employeeData[0].id);
-    }
+    
+    // Pastikan tajuk dan carta sedia
+    updateTitle();
+    chart.fit(); // Paksa muat 1 page
+    chart.center(employeeData[0].id);
 
     setTimeout(() => {
         window.print();
-    }, 600);
+    }, 500);
 }
 
-// Fungsi Simpan & Buka JSON
 function saveData() {
     const blob = new Blob([JSON.stringify(employeeData)], {type: "application/json"});
     const a = document.createElement('a');
