@@ -1,75 +1,109 @@
-/* ASAS */
+/* --- ASAS & ANTARA MUKA --- */
 body {
-    font-family: 'Segoe UI', Arial, sans-serif;
-    background-color: #f0f2f5;
-    margin: 0; padding: 10px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f7f6;
+    margin: 0;
+    padding: 20px;
 }
 
 .container {
-    max-width: 1000px;
+    max-width: 1100px;
     margin: auto;
     background: white;
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
 }
 
-h1 { text-align: center; color: #1a73e8; }
+h1 { text-align: center; color: #2c3e50; }
 
-/* INPUT SECTION */
+/* SEKSYEN INPUT */
 .input-section {
-    background: #f8f9fa;
-    padding: 15px;
+    background: #e9ecef;
+    padding: 20px;
     border-radius: 10px;
-    margin-bottom: 20px;
-    border: 1px solid #ddd;
+    margin-bottom: 25px;
 }
 
 #chartTitle {
-    width: 100%; padding: 12px; margin-bottom: 15px;
-    border: 1px solid #ccc; border-radius: 8px; box-sizing: border-box;
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    font-size: 16px;
 }
 
 .form-personal {
-    display: flex; flex-direction: column; gap: 12px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
 }
 
 .form-personal input, .form-personal select {
-    padding: 12px; border: 1px solid #ccc; border-radius: 8px; font-size: 16px;
+    flex: 1;
+    min-width: 200px;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
 }
 
 #addBtn {
-    background: #28a745; color: white; border: none; padding: 14px;
-    border-radius: 8px; font-weight: bold; cursor: pointer;
+    background: #27ae60;
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.3s;
 }
 
-/* ACTION BUTTONS */
+#addBtn:hover { background: #219150; }
+
+/* BUTANG AKSI */
 .action-bar {
-    display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; justify-content: center;
+    display: flex;
+    gap: 10px;
+    margin-bottom: 30px;
+    justify-content: center;
 }
 
 .action-bar button {
-    border: none; padding: 12px 20px; border-radius: 8px; color: white;
-    font-weight: bold; cursor: pointer; flex: 1; min-width: 140px;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
 }
 
-.btn-pdf { background-color: #e74c3c; }
-.btn-save { background-color: #3498db; }
+.btn-pdf { background-color: #c0392b; }
+.btn-save { background-color: #2980b9; }
 .btn-open { background-color: #f39c12; }
 
-/* PREVIEW CONTAINER */
+/* PREVIEW CARTA */
 #preview-container {
-    border: 2px dashed #ccc; padding: 15px; border-radius: 10px; background-color: white;
-    position: relative;
+    border: 2px solid #eee;
+    padding: 20px;
+    border-radius: 10px;
+    min-height: 600px;
 }
 
-#tree { 
-    width: 100%; 
-    height: 600px; /* Kekalkan tinggi ini supaya kotak muncul */
+#displayTitle {
+    text-align: center;
+    color: #333;
+    margin-top: 0;
+    font-size: 26px;
+    display: block !important; /* Pastikan sentiasa muncul */
 }
 
-/* --- NUCLEAR OPTION: SEMBUNYIKAN SEARCH & MENU SECARA PAKSA --- */
-/* Menyasarkan elemen dalam SVG yang dihasilkan oleh OrgChart.js */
+#tree {
+    width: 100%;
+    height: 600px;
+}
+
+/* --- NUCLEAR OPTION: SEMBUNYI SEARCH & UI LIBRARY --- */
 [control-search-container], 
 .b3g-search-container,
 [control-menu-container],
@@ -77,37 +111,38 @@ h1 { text-align: center; color: #1a73e8; }
 .orgchart-search-container {
     display: none !important;
     visibility: hidden !important;
-    opacity: 0 !important;
 }
 
-/* RESPONSIVE */
-@media (min-width: 768px) {
-    .form-personal { flex-direction: row; align-items: flex-end; }
-    .action-bar button { flex: none; width: 180px; }
-}
-
+/* --- TETAPAN KHAS UNTUK CETAKAN PDF --- */
 @media print {
-    .no-print { display: none !important; }
+    .no-print, .input-section, .action-bar, h1 {
+        display: none !important;
+    }
+
     body { background-color: white; padding: 0; }
-    .container { box-shadow: none; border: none; width: 100%; max-width: 100%; }
-    #tree { height: 1000px !important; }
-}
+    
+    .container {
+        box-shadow: none;
+        border: none;
+        width: 100%;
+        max-width: 100%;
+        padding: 0;
+    }
 
-/* PAKSA SEMBUNYI SEARCH & ZOOM (NUCLEAR OPTION) */
-#tree [control-search-container], 
-#tree .b3g-search-container,
-#tree [control-expander-container],
-#tree svg > g[data-on-search-container],
-.orgchart-search-container {
-    display: none !important;
-    visibility: hidden !important;
-}
+    #preview-container { border: none; padding: 0; }
 
-/* Pastikan tajuk nampak besar dalam preview */
-#displayTitle {
-    text-align: center;
-    font-size: 24px;
-    font-weight: bold;
-    margin-bottom: 20px;
-    display: block !important;
+    #displayTitle {
+        display: block !important;
+        visibility: visible !important;
+        text-align: center;
+        font-size: 30px;
+        margin-top: 50px;
+        margin-bottom: 40px;
+        color: black;
+    }
+
+    #tree {
+        width: 100% !important;
+        height: 1200px !important; /* Ruang lebih untuk PDF */
+    }
 }
