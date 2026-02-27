@@ -1,21 +1,32 @@
 let employeeData = [];
 let chart;
 
+// 1. Inisialisasi - Pastikan library sedia
 window.onload = function() {
-    renderChart();
+    console.log("Aplikasi Sedia");
 };
 
 function renderChart() {
-    // Bersihkan kawasan carta sebelum lukis
-    document.getElementById("tree").innerHTML = "";
-    chart = new OrgChart(document.getElementById("tree"), {
-        nodes: employeeData,
-        nodeBinding: {
-            field_0: "name",
-            field_1: "title",
-            img_0: "img"
-        }
-    });
+    const treeElement = document.getElementById("tree");
+    
+    // Padam kandungan lama
+    treeElement.innerHTML = "";
+
+    // Jika tiada data, jangan lukis apa-apa
+    if (employeeData.length === 0) return;
+
+    try {
+        chart = new OrgChart(treeElement, {
+            nodes: employeeData,
+            nodeBinding: {
+                field_0: "name",
+                field_1: "title",
+                img_0: "img"
+            }
+        });
+    } catch (e) {
+        console.error("Gagal melukis carta:", e);
+    }
 }
 
 function addNode() {
@@ -32,30 +43,29 @@ function addNode() {
         return; 
     }
 
+    // Tukar ID kepada String supaya stabil
+    const id = Date.now().toString();
+
+    // Logik PENTING: Jika staf pertama, PID mesti null
+    const pid = (employeeData.length === 0) ? null : (parent ? parent : null);
+
     if (photoInput.files && photoInput.files[0]) {
         const reader = new FileReader();
-        reader.onload = (e) => processNode(name, role, parent, e.target.result);
+        reader.onload = (e) => {
+            const newNode = { id: id, pid: pid, name: name, title: role, img: e.target.result };
+            employeeData.push(newNode);
+            updateDropdown(name, id);
+            renderChart();
+        };
         reader.readAsDataURL(photoInput.files[0]);
     } else {
-        processNode(name, role, parent, "");
+        const newNode = { id: id, pid: pid, name: name, title: role, img: "" };
+        employeeData.push(newNode);
+        updateDropdown(name, id);
+        renderChart();
     }
-}
 
-function processNode(name, role, parent, img) {
-    const id = Date.now().toString();
-    const newNode = { 
-        id: id, 
-        pid: parent ? parent : null, 
-        name: name, 
-        title: role, 
-        img: img 
-    };
-    
-    employeeData.push(newNode);
-    updateDropdown(name, id);
-    renderChart();
-    
-    // Kosongkan input selepas tambah
+    // Reset input
     document.getElementById('userName').value = "";
     document.getElementById('userRole').value = "";
     document.getElementById('userPhoto').value = "";
@@ -71,10 +81,10 @@ function updateDropdown(name, id) {
 
 function downloadPDF() {
     if (employeeData.length === 0) {
-        alert("Sila masukkan data terlebih dahulu.");
+        alert("Tiada data untuk dicetak.");
         return;
     }
-    window.print(); // Membuka dialog cetakan pelayar
+    window.print();
 }
 
 function saveData() {
@@ -84,7 +94,7 @@ function saveData() {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = "ezi_org_data.json";
+    a.download = "data_carta.json";
     a.click();
 }
 
@@ -95,10 +105,14 @@ function loadData() {
     input.onchange = e => {
         const reader = new FileReader();
         reader.onload = event => {
-            employeeData = JSON.parse(event.target.result);
-            document.getElementById('reportsTo').innerHTML = '<option value="">-- Melapor Kepada --</option>';
-            employeeData.forEach(node => updateDropdown(node.name, node.id));
-            renderChart();
+            try {
+                employeeData = JSON.parse(event.target.result);
+                document.getElementById('reportsTo').innerHTML = '<option value="">-- Melapor Kepada --</option>';
+                employeeData.forEach(node => updateDropdown(node.name, node.id));
+                renderChart();
+            } catch (err) {
+                alert("Fail JSON tidak sah!");
+            }
         };
         reader.readAsText(e.target.files[0]);
     };
