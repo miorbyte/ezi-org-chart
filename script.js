@@ -1,20 +1,40 @@
 let employeeData = [];
 let chart;
 
+// 1. Fungsi Melukis Carta
 function renderChart() {
     const treeElement = document.getElementById("tree");
     if (employeeData.length === 0) {
         treeElement.innerHTML = "";
         return;
     }
+
     treeElement.innerHTML = "";
+
     try {
         chart = new OrgChart(treeElement, {
             nodes: employeeData,
             enableSearch: false,
             menu: null,
-            nodeMenu: null,
-            mouseWheel: OrgChart.action.zoom,
+            
+            // TAMBAH MENU EDIT & PADAM
+            nodeMenu: {
+                edit: { text: "Repair / Edit" },
+                remove: { text: "Delete Staf" }
+            },
+            
+            // Kemaskini data secara automatik selepas edit/padam
+            onRemove: function(id) {
+                employeeData = employeeData.filter(node => node.id !== id);
+                updateParentDropdown();
+            },
+            onUpdate: function(node) {
+                // Mencari dan mengemaskini data dalam array asal
+                const index = employeeData.findIndex(item => item.id === node.id);
+                if (index !== -1) employeeData[index] = node;
+                updateParentDropdown();
+            },
+
             nodeBinding: {
                 field_0: "name",
                 field_1: "title",
@@ -22,31 +42,43 @@ function renderChart() {
             }
         });
     } catch (e) { console.error(e); }
+
+    updateParentDropdown();
 }
 
+// 2. Kemaskini Senarai Pilihan Bos
+function updateParentDropdown() {
+    const select = document.getElementById('reportsTo');
+    const currentValue = select.value;
+    select.innerHTML = '<option value="">-- Melapor Kepada (Pilih Bos) --</option>';
+    
+    employeeData.forEach(node => {
+        const opt = document.createElement('option');
+        opt.value = node.id;
+        opt.text = node.name;
+        select.add(opt);
+    });
+    select.value = currentValue;
+}
+
+// 3. Tambah Staf Baru
 function addNode() {
     const titleInput = document.getElementById('chartTitle');
-    const displayTitle = document.getElementById('displayTitle');
     const nameInput = document.getElementById('userName');
     const roleInput = document.getElementById('userRole');
     const parentInput = document.getElementById('reportsTo');
     const photoInput = document.getElementById('userPhoto');
 
-    displayTitle.innerText = titleInput.value || "Carta Organisasi";
-
     if (!nameInput.value || !roleInput.value) {
-        alert("Sila isi Nama dan Jawatan.");
+        alert("Sila masukkan Nama dan Jawatan.");
         return;
     }
 
     const id = Date.now().toString();
-    const pid = (employeeData.length === 0) ? null : (parentInput.value || null);
+    const pid = parentInput.value || null;
 
     const process = (imgData) => {
         employeeData.push({ id, pid, name: nameInput.value, title: roleInput.value, img: imgData });
-        const opt = document.createElement('option');
-        opt.value = id; opt.text = nameInput.value;
-        parentInput.add(opt);
         renderChart();
         nameInput.value = ""; roleInput.value = ""; photoInput.value = "";
     };
@@ -60,16 +92,15 @@ function addNode() {
     }
 }
 
-// FUNGSI CETAK UNTUK KEKAL PAGE 1
+// 4. Fungsi Cetak
 function downloadPDF() {
     if (employeeData.length === 0) return;
-
-    const titleValue = document.getElementById('chartTitle').value || "CARTA ORGANISASI";
-    document.getElementById('displayTitle').innerText = titleValue;
+    
+    document.getElementById('displayTitle').innerText = document.getElementById('chartTitle').value || "CARTA ORGANISASI";
 
     if (chart) {
-        // Gunakan fit() untuk pastikan elemen berada dalam sempadan sebelum cetak
-        chart.fit(); 
+        chart.zoom(1.2); 
+        chart.center(employeeData[0].id);
     }
 
     setTimeout(() => {
@@ -77,6 +108,7 @@ function downloadPDF() {
     }, 500);
 }
 
+// 5. Simpan/Buka Data (JSON)
 function saveData() {
     if (employeeData.length === 0) return;
     const blob = new Blob([JSON.stringify(employeeData)], {type: "application/json"});
@@ -94,13 +126,6 @@ function loadData() {
         const reader = new FileReader();
         reader.onload = ev => {
             employeeData = JSON.parse(ev.target.result);
-            const select = document.getElementById('reportsTo');
-            select.innerHTML = '<option value="">-- Melapor Kepada --</option>';
-            employeeData.forEach(node => {
-                const opt = document.createElement('option');
-                opt.value = node.id; opt.text = node.name;
-                select.add(opt);
-            });
             renderChart();
         };
         reader.readAsText(e.target.files[0]);
