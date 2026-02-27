@@ -1,43 +1,17 @@
-body { font-family: 'Inter', sans-serif; background-color: #f4f7f6; margin: 0; padding: 20px; }
-.container { max-width: 1200px; margin: auto; background: white; padding: 30px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
-
-h1 { color: #2c3e50; text-align: center; margin-bottom: 5px; }
-.input-section { margin-bottom: 25px; }
-.input-card { background: #e9ecef; padding: 25px; border-radius: 12px; }
-
-/* FIX KOTAK TAJUK JADI PANJANG */
-#chartTitle { 
+body { font-family: sans-serif; background: #f4f7f6; padding: 20px; }
+.container { max-width: 1100px; margin: auto; background: white; padding: 20px; border-radius: 10px; }
+.input-card { background: #eee; padding: 20px; margin-bottom: 20px; border-radius: 8px; }
+.form-personal { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px; }
+.form-personal input, select { padding: 10px; border-radius: 5px; border: 1px solid #ccc; }
+#chartTitle { width: 100%; padding: 12px; font-size: 18px; }
+#tree { 
     width: 100%; 
-    padding: 15px; 
-    border: 2px solid #ddd; 
-    border-radius: 8px; 
-    font-size: 18px; 
-    box-sizing: border-box; 
-    margin-bottom: 20px;
+    height: 600px; /* WAJIB ADA HEIGHT */
+    border: 1px solid #ddd; 
+    background: #fff;
 }
+.no-print { display: block; }
+@media print { .no-print { display: none !important; } }
 
-.form-personal { display: flex; flex-wrap: wrap; gap: 10px; }
-.form-personal input, .form-personal select { flex: 1; min-width: 180px; padding: 12px; border: 1px solid #ccc; border-radius: 8px; }
-
-.file-input { background: white; padding: 10px; border-radius: 8px; border: 1px solid #ccc; display: flex; align-items: center; gap: 5px; }
-#addBtn { background: #27ae60; color: white; border: none; padding: 12px 25px; border-radius: 8px; cursor: pointer; font-weight: bold; }
-
-.action-bar { display: flex; gap: 10px; margin-bottom: 30px; justify-content: center; }
-.action-bar button { border: none; padding: 12px 20px; border-radius: 8px; color: white; font-weight: bold; cursor: pointer; }
-.btn-pdf { background-color: #c0392b; } .btn-save { background-color: #2980b9; } .btn-open { background-color: #f39c12; }
-
-#tree { width: 100%; height: 650px; }
-#displayTitle { text-align: center; color: #333; font-size: 26px; margin-bottom: 20px; }
-
-/* FIX PENTING: NAMA & GAMBAR */
+/* Fix untuk HTML dalam SVG */
 foreignObject { overflow: visible !important; }
-[control-search-container], .b3g-search-container { display: none !important; }
-
-@media print {
-    .no-print { display: none !important; }
-    #print-zone { 
-        background-color: #fdf5e6 !important; 
-        -webkit-print-color-adjust: exact; 
-        display: flex; flex-direction: column; align-items: center; 
-    }
-}
