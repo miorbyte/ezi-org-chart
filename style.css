@@ -1,69 +1,58 @@
 /* 1. RESET & ASAS */
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
+* { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
-    font-family: 'Segoe UI', Roboto, sans-serif;
-    background-color: #f4f7f6;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f0f4f8;
     color: #333;
-    line-height: 1.6;
-    padding: 20px;
+    padding: 15px;
 }
 
 .container {
-    max-width: 1000px;
+    max-width: 1100px;
     margin: 0 auto;
-    background: #fff;
-    padding: 30px;
-    border-radius: 12px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    background: #ffffff;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
 }
 
-h1 {
-    text-align: center;
-    margin-bottom: 25px;
-    color: #1a73e8;
-}
+h1 { text-align: center; color: #1a73e8; margin-bottom: 25px; }
 
-/* 2. BAHAGIAN BORANG (INPUT) */
+/* 2. BORANG INPUT (Guna Grid supaya tak terkeluar) */
 .input-section {
-    background: #f9f9f9;
+    background: #f8f9fa;
     padding: 20px;
-    border-radius: 10px;
-    border: 1px solid #eee;
-    margin-bottom: 20px;
+    border-radius: 12px;
+    border: 1px solid #e1e4e8;
+    margin-bottom: 25px;
 }
 
 #chartTitle {
     width: 100%;
     padding: 12px;
     margin-bottom: 20px;
-    border: 1px solid #ddd;
-    border-radius: 6px;
+    border: 1px solid #ccd1d9;
+    border-radius: 8px;
     font-size: 16px;
 }
 
 .form-personal {
     display: grid;
-    grid-template-columns: 1fr; /* Default: 1 baris di phone */
+    grid-template-columns: 1fr; /* 1 lajur di phone */
     gap: 15px;
 }
 
-/* Susunan 2 baris di PC untuk borang */
+/* Susunan 2 lajur di skrin PC/Tablet */
 @media (min-width: 768px) {
-    .form-personal {
-        grid-template-columns: 1fr 1fr; 
-    }
+    .form-personal { grid-template-columns: 1fr 1fr; }
 }
 
 input, select {
     width: 100%;
     padding: 12px;
-    border: 1px solid #ddd;
-    border-radius: 6px;
+    border: 1px solid #ccd1d9;
+    border-radius: 8px;
     font-size: 15px;
 }
 
@@ -73,29 +62,23 @@ input, select {
     gap: 5px;
 }
 
-.upload-wrapper label {
-    font-size: 13px;
-    font-weight: bold;
-    color: #666;
-}
+.upload-wrapper label { font-size: 13px; font-weight: bold; color: #555; }
 
 #addBtn {
+    grid-column: 1 / -1; /* Butang lebar penuh */
     background-color: #28a745;
     color: white;
     border: none;
     padding: 15px;
     font-weight: bold;
-    border-radius: 6px;
+    border-radius: 8px;
     cursor: pointer;
     transition: 0.3s;
-    grid-column: 1 / -1; /* Biar butang ni panjang penuh */
 }
 
-#addBtn:hover {
-    background-color: #218838;
-}
+#addBtn:hover { background-color: #218838; }
 
-/* 3. BAHAGIAN BUTANG AKSI (SIMPAN/BUKA) */
+/* 3. BUTANG AKSI (PDF/SIMPAN/BUKA) */
 .action-bar {
     display: flex;
     flex-wrap: wrap;
@@ -106,10 +89,10 @@ input, select {
 
 .action-bar button {
     flex: 1;
-    min-width: 140px;
+    min-width: 130px;
     padding: 12px;
     border: none;
-    border-radius: 6px;
+    border-radius: 8px;
     color: white;
     font-weight: bold;
     cursor: pointer;
@@ -122,24 +105,26 @@ input, select {
 .bg-control {
     width: 100%;
     display: flex;
-    align-items: center;
     justify-content: center;
+    align-items: center;
     gap: 10px;
     margin-bottom: 10px;
 }
 
-/* 4. PREVIEW AREA */
+/* 4. PREVIEW AREA (SOROK SEARCH) */
 #capture-area {
     background: white;
-    border: 2px solid #eee;
-    border-radius: 8px;
     padding: 20px;
-    overflow-x: auto; /* Penting untuk phone skrol kiri-kanan */
-    text-align: center;
+    border: 1px solid #eee;
+    border-radius: 10px;
+    overflow-x: auto;
 }
 
-#tree {
-    width: 100%;
-    height: 500px;
-    min-width: 700px; /* Biar carta tak mengecil sangat */
+#displayTitle { text-align: center; margin-bottom: 20px; color: #444; }
+
+#tree { width: 100%; height: 550px; min-width: 700px; }
+
+/* SOROK SEARCH BOX SECARA PAKSA */
+[data-n-id="search"], .boc-search, .boc-input {
+    display: none !important;
 }
