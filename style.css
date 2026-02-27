@@ -1,6 +1,5 @@
-/* ASAS & TIPOGRAFI */
 body {
-    font-family: 'Segoe UI', Roboto, sans-serif;
+    font-family: 'Segoe UI', sans-serif;
     background-color: #f0f2f5;
     margin: 0; padding: 10px;
 }
@@ -16,7 +15,6 @@ body {
 
 h1 { text-align: center; color: #1a73e8; }
 
-/* SEKSYEN INPUT */
 .input-section {
     background: #f8f9fa;
     padding: 15px;
@@ -43,7 +41,6 @@ h1 { text-align: center; color: #1a73e8; }
     border-radius: 8px; font-weight: bold; cursor: pointer;
 }
 
-/* BUTANG AKSI */
 .action-bar {
     display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; justify-content: center;
 }
@@ -57,26 +54,31 @@ h1 { text-align: center; color: #1a73e8; }
 .btn-save { background-color: #3498db; }
 .btn-open { background-color: #f39c12; }
 
-/* PREVIEW */
+/* --- BAHAGIAN PREVIEW (INI YANG PENTING) --- */
 #preview-container {
-    border: 2px dashed #ccc; padding: 15px; border-radius: 10px; background-color: white;
+    border: 2px dashed #ccc; 
+    padding: 20px; 
+    border-radius: 10px; 
+    background-color: white;
+    min-height: 550px; /* Ruang minimum untuk container */
 }
 
-#displayTitle { text-align: center; }
+#tree { 
+    width: 100%; 
+    height: 500px !important; /* WAJIB: Supaya kotak staf nampak */
+    background-color: white;
+}
 
-#tree { width: 100%; height: 500px; }
+#displayTitle { text-align: center; margin-top: 0; }
 
-/* PC RESPONSIVE */
 @media (min-width: 768px) {
     .form-personal { flex-direction: row; align-items: flex-end; }
     .action-bar button { flex: none; width: 180px; }
 }
 
-/* KOD KHAS UNTUK CETAKAN PDF */
 @media print {
     .no-print { display: none !important; }
     body { background-color: white; padding: 0; }
-    .container { box-shadow: none; border: none; width: 100%; max-width: 100%; }
-    #preview-container { border: none; }
-    #tree { height: 1000px !important; } /* Beri ruang lebih tinggi di PDF */
+    .container { box-shadow: none; border: none; width: 100%; }
+    #tree { height: 1000px !important; }
 }
