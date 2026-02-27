@@ -6,7 +6,6 @@ function setupTemplate() {
     OrgChart.templates.bppCustom.size = [250, 120];
     OrgChart.templates.bppCustom.node = '<rect x="0" y="0" height="120" width="250" fill="#ffffff" stroke="#3498db" stroke-width="1" rx="10" ry="10"></rect>';
 
-    // Nama - Menggunakan word-break supaya turun baris sendiri
     OrgChart.templates.bppCustom.field_0 = 
         '<foreignObject x="90" y="20" width="150" height="60">' +
             '<div xmlns="http://www.w3.org/1999/xhtml" style="font-weight:bold; font-size:14px; color:#333; line-height:1.2; display:flex; align-items:center; height:100%; word-break: break-word; overflow:hidden;">{val}</div>' +
@@ -28,11 +27,10 @@ function renderChart() {
 
     if (!OrgChart.templates.bppCustom) setupTemplate();
 
-    // Bahagian Wrap yang menyebabkan ralat sebelum ini telah DIBUANG
     chart = new OrgChart(treeDiv, {
         nodes: employeeData,
         template: "bppCustom",
-        enableSearch: false, //
+        enableSearch: false, // Mematikan kotak carian
         nodeBinding: { field_0: "name", field_1: "title", img_0: "img" }
     });
 
