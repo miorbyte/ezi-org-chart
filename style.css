@@ -1,47 +1,52 @@
-/* --- ASAS --- */
-body { font-family: 'Segoe UI', sans-serif; background: #f4f7f6; padding: 20px; }
+/* --- UI WEB --- */
+body { font-family: 'Segoe UI', sans-serif; background-color: #f4f7f6; margin: 0; padding: 20px; }
 .container { max-width: 1100px; margin: auto; background: white; padding: 30px; border-radius: 15px; }
 
-/* INPUT & ACTION BAR */
 .input-section { background: #e9ecef; padding: 20px; border-radius: 10px; margin-bottom: 25px; }
-#chartTitle { width: 100%; padding: 12px; margin-bottom: 15px; border: 2px solid #ddd; border-radius: 8px; }
+#chartTitle { width: 100%; padding: 12px; margin-bottom: 15px; border: 2px solid #ddd; border-radius: 8px; font-size: 16px; box-sizing: border-box; }
 .form-personal { display: flex; flex-wrap: wrap; gap: 10px; }
-.form-personal input, .form-personal select { flex: 1; min-width: 200px; padding: 10px; border: 1px solid #ccc; border-radius: 8px; }
-#addBtn { background: #27ae60; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; }
+.form-personal input, .form-personal select { flex: 1; min-width: 200px; padding: 12px; border: 1px solid #ccc; border-radius: 8px; }
+#addBtn { background: #27ae60; color: white; border: none; padding: 12px 25px; border-radius: 8px; cursor: pointer; font-weight: bold; }
 
-.action-bar { display: flex; gap: 10px; margin-bottom: 20px; justify-content: center; }
+.action-bar { display: flex; gap: 10px; margin-bottom: 30px; justify-content: center; }
 .action-bar button { border: none; padding: 12px 20px; border-radius: 8px; color: white; font-weight: bold; cursor: pointer; }
-.btn-pdf { background: #c0392b; }
-.btn-save { background: #2980b9; }
-.btn-open { background: #f39c12; }
+.btn-pdf { background-color: #c0392b; }
+.btn-save { background-color: #2980b9; }
+.btn-open { background-color: #f39c12; }
 
-/* PREVIEW */
-#preview-container { border: 2px solid #eee; min-height: 600px; background: white; position: relative; }
-#displayTitle { text-align: center; color: #333; font-size: 26px; padding: 20px; margin: 0; }
+#preview-container { border: 2px solid #eee; padding: 20px; min-height: 600px; background: white; }
+#displayTitle { text-align: center; color: #333; font-size: 26px; margin-bottom: 20px; }
 #tree { width: 100%; height: 600px; }
 
-/* --- LOGIK KHAS CETAKAN (PORTRAIT 1 PAGE) --- */
+/* BUANG SEARCH ICON */
+[control-search-container], .b3g-search-container { display: none !important; }
+
+/* --- TETAPAN CETAKAN (PORTRAIT 1 PAGE + CREAM DOTS) --- */
 @media print {
-    /* ... kod lain kekal sama ... */
+    html, body { height: 100%; margin: 0 !important; padding: 0 !important; overflow: hidden !important; }
+    .no-print { display: none !important; }
 
-    #tree {
+    #print-zone {
         visibility: visible !important;
-        width: 100% !important;
-        height: auto !important;
-        /* Guna 1.05 untuk pembesaran sedikit sahaja, supaya tak pecah */
-        transform: scale(1.05); 
-        transform-origin: top center;
+        position: absolute;
+        top: 0; left: 0; width: 100%; height: 100%;
+        display: flex !important;
+        flex-direction: column;
+        align-items: center; /* Paksa ke tengah */
+        background-color: #fdf5e6 !important;
+        background-image: radial-gradient(#d3c5a3 0.8px, transparent 0.8px) !important;
+        background-size: 20px 20px !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
     }
-}
 
-    #displayTitle { display: block !important; font-size: 22pt; margin-top: 10mm; }
+    #displayTitle { display: block !important; font-size: 22pt; margin-top: 15mm; font-weight: bold; }
 
     #tree {
         flex: 1;
         width: 100% !important;
         height: auto !important;
-        /* Skala dikecilkan ke 1.1 supaya muat 1 page */
-        transform: scale(1.1); 
+        transform: scale(1.0); /* Saiz standard supaya tak lari ke kiri */
         transform-origin: top center;
     }
 
