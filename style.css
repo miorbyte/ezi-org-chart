@@ -1,17 +1,30 @@
-body { font-family: sans-serif; background: #f4f7f6; padding: 20px; }
-.container { max-width: 1100px; margin: auto; background: white; padding: 20px; border-radius: 10px; }
-.input-card { background: #eee; padding: 20px; margin-bottom: 20px; border-radius: 8px; }
-.form-personal { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px; }
-.form-personal input, select { padding: 10px; border-radius: 5px; border: 1px solid #ccc; }
-#chartTitle { width: 100%; padding: 12px; font-size: 18px; }
-#tree { 
-    width: 100%; 
-    height: 600px; /* WAJIB ADA HEIGHT */
-    border: 1px solid #ddd; 
-    background: #fff;
-}
-.no-print { display: block; }
-@media print { .no-print { display: none !important; } }
+body { font-family: 'Inter', sans-serif; background-color: #f4f7f6; margin: 0; padding: 20px; }
+.container { max-width: 1200px; margin: auto; background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
 
-/* Fix untuk HTML dalam SVG */
+h1 { text-align: center; color: #2c3e50; }
+.input-card { background: #f8f9fa; padding: 20px; border-radius: 10px; border: 1px solid #dee2e6; margin-bottom: 20px; }
+
+/* TAJUK INPUT PANJANG */
+#chartTitle { width: 100%; padding: 12px; font-size: 18px; border-radius: 8px; border: 2px solid #ddd; box-sizing: border-box; margin-bottom: 15px; }
+
+.form-personal { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.form-personal input, .form-personal select { flex: 1; min-width: 150px; padding: 10px; border: 1px solid #ccc; border-radius: 6px; }
+
+.file-input-group { background: white; padding: 5px 10px; border-radius: 6px; border: 1px solid #ccc; display: flex; align-items: center; gap: 5px; font-size: 14px; }
+#addBtn { background: #27ae60; color: white; border: none; padding: 11px 20px; border-radius: 6px; cursor: pointer; font-weight: bold; }
+
+.action-bar { display: flex; justify-content: center; gap: 15px; margin-bottom: 25px; }
+.action-bar button { padding: 12px 18px; border: none; border-radius: 8px; color: white; font-weight: bold; cursor: pointer; }
+.btn-pdf { background: #e74c3c; } .btn-save { background: #3498db; } .btn-open { background: #f39c12; }
+
+#tree { width: 100%; height: 600px; border: 1px solid #eee; }
+#displayTitle { text-align: center; font-size: 24px; color: #333; }
+
+/* FIX UNTUK NAMA 2 BARIS */
 foreignObject { overflow: visible !important; }
+[control-search-container] { display: none !important; }
+
+@media print {
+    .no-print { display: none !important; }
+    #print-zone { display: block !important; width: 100%; }
+}
