@@ -39,3 +39,10 @@ foreignObject { overflow: visible !important; }
     .no-print { display: none !important; }
     #print-zone { width: 100%; text-align: center; }
 }
+
+/* Menghilangkan sebarang elemen carian Balkangraph */
+.b3g-search-container, 
+[control-search-container],
+.orgchart-search {
+    display: none !important;
+}
