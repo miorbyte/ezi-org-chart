@@ -10,12 +10,12 @@ function renderChart() {
         nodes: employeeData,
         nodeMenu: {
             edit: { text: "Repair / Edit" },
-            remove: { text: "Padam" }
+            remove: { text: "Delete Staf" }
         },
         nodeBinding: { field_0: "name", field_1: "title", img_0: "img" }
     });
 
-    // Paksa ke tengah setiap kali render
+    // Paksa carta ke tengah setiap kali render
     setTimeout(() => { chart.center(employeeData[0].id); }, 300);
     updateParentDropdown();
 }
@@ -26,12 +26,14 @@ function addNode() {
     const pid = document.getElementById('reportsTo').value || null;
     const file = document.getElementById('userPhoto').files[0];
 
-    if (!name || !role) return alert("Isi nama & jawatan!");
+    if (!name || !role) return alert("Sila isi nama dan jawatan!");
 
     const id = Date.now().toString();
     const process = (img) => {
         employeeData.push({ id, pid, name, title: role, img });
         renderChart();
+        document.getElementById('userName').value = "";
+        document.getElementById('userRole').value = "";
     };
 
     if (file) {
@@ -51,11 +53,12 @@ function updateParentDropdown() {
 
 function downloadPDF() {
     if (!chart) return;
-    // Paksa setting 1 page sebelum print
+    chart.center(employeeData[0].id);
     chart.fit();
     setTimeout(() => { window.print(); }, 500);
 }
 
+// Tambah fungsi Save/Load JSON jika perlu
 function saveData() {
     const blob = new Blob([JSON.stringify(employeeData)], {type: "application/json"});
     const a = document.createElement('a');
