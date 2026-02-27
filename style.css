@@ -1,62 +1,155 @@
-body { font-family: sans-serif; background-color: #f4f7f6; padding: 20px; }
-.container { max-width: 1200px; margin: auto; background: white; padding: 25px; border-radius: 10px; }
+/* 1. ASAS & WARNA TEMA */
+:root {
+    --primary-color: #1e3a8a; /* Biru Gelap Korporat */
+    --secondary-color: #2563eb;
+    --success-color: #059669;
+    --danger-color: #dc2626;
+    --bg-color: #f1f5f9;
+}
 
-h1 { text-align: center; color: #333; }
+body { 
+    font-family: 'Inter', system-ui, -apple-system, sans-serif; 
+    background-color: var(--bg-color); 
+    margin: 0; 
+    padding: 20px; 
+    color: #1e293b;
+}
 
-/* Pusatkan Tajuk Preview */
+.container { 
+    max-width: 1300px; 
+    margin: auto; 
+    background: white; 
+    padding: 40px; 
+    border-radius: 16px; 
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1); 
+}
+
+/* 2. HEADER */
+h1 { 
+    text-align: center; 
+    color: var(--primary-color); 
+    font-size: 2.2rem;
+    margin-bottom: 30px;
+    letter-spacing: -1px;
+}
+
+/* 3. BAHAGIAN INPUT (MODEN) */
+.input-card { 
+    background: #ffffff; 
+    padding: 25px; 
+    border: 1px solid #e2e8f0; 
+    border-radius: 12px; 
+    margin-bottom: 30px;
+    box-shadow: inset 0 2px 4px 0 rgba(0,0,0,0.05);
+}
+
+#chartTitle { 
+    width: 100%; 
+    padding: 15px; 
+    font-size: 1.1rem; 
+    border: 2px solid #cbd5e1; 
+    border-radius: 8px; 
+    transition: all 0.3s;
+    outline: none;
+    text-align: center;
+    font-weight: 600;
+}
+
+#chartTitle:focus { border-color: var(--secondary-color); box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1); }
+
+.form-personal { 
+    display: grid; 
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
+    gap: 15px; 
+    margin-top: 20px; 
+}
+
+.form-personal input, .form-personal select { 
+    padding: 12px; 
+    border: 1px solid #cbd5e1; 
+    border-radius: 8px; 
+    font-size: 0.95rem;
+}
+
+/* BUTANG TAMBAH */
+#addBtn { 
+    background: var(--success-color); 
+    color: white; 
+    border: none; 
+    padding: 12px; 
+    border-radius: 8px; 
+    cursor: pointer; 
+    font-weight: 700;
+    transition: 0.2s;
+}
+#addBtn:hover { transform: translateY(-1px); filter: brightness(110%); }
+
+/* 4. ACTION BAR */
+.action-bar { 
+    display: flex; 
+    justify-content: center; 
+    gap: 12px; 
+    margin-bottom: 40px; 
+    border-top: 1px solid #f1f5f9;
+    padding-top: 25px;
+}
+
+.action-bar button { 
+    padding: 12px 24px; 
+    border: none; 
+    border-radius: 8px; 
+    color: white; 
+    font-weight: 600; 
+    cursor: pointer; 
+    display: flex; 
+    align-items: center; 
+    gap: 8px;
+    font-size: 0.9rem;
+}
+
+.btn-pdf { background: var(--danger-color); }
+.btn-save { background: var(--primary-color); }
+.btn-open { background: #64748b; }
+
+/* 5. PRATONTON CARTA */
 #displayTitle { 
     text-align: center; 
-    margin: 30px 0; 
-    font-size: 26px; 
-    font-weight: bold;
-    color: #2c3e50;
-    text-transform: uppercase;
+    font-size: 2rem; 
+    font-weight: 800; 
+    color: #0f172a; 
+    margin-top: 0;
+    margin-bottom: 10px;
 }
 
-.input-card { background: #fff; padding: 20px; border: 1px solid #ddd; border-radius: 8px; margin-bottom: 20px; }
-#chartTitle { width: 100%; padding: 12px; font-size: 16px; box-sizing: border-box; border: 2px solid #3498db; border-radius: 5px; }
-
-.form-personal { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 15px; }
-.form-personal input, .form-personal select { flex: 1; min-width: 150px; padding: 10px; border: 1px solid #ccc; border-radius: 5px; }
-
-#addBtn { background: #27ae60; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-weight: bold; }
-
-.action-bar { display: flex; justify-content: center; gap: 10px; margin-bottom: 20px; }
-.action-bar button { padding: 10px 15px; border: none; border-radius: 5px; color: white; cursor: pointer; font-weight: bold; }
-.btn-pdf { background: #e74c3c; } .btn-save { background: #3498db; } .btn-open { background: #f39c12; color: black; }
-
-/* Ketinggian wajib supaya kotak muncul */
 #tree { 
     width: 100%; 
-    height: 700px; 
-    background: #fff;
-    margin-top: 10px;
+    height: 750px; 
+    border: 1px solid #f1f5f9; 
+    border-radius: 12px;
+    background-image: radial-gradient(#e2e8f0 1px, transparent 1px);
+    background-size: 20px 20px;
 }
 
-foreignObject { overflow: visible !important; }
-
+/* 6. MOD CETAK (FORMAL) */
 @media print {
+    body { background: white; padding: 0; margin: 0; }
+    .container { box-shadow: none; padding: 0; width: 100%; max-width: 100%; }
     .no-print { display: none !important; }
-    #print-zone { width: 100%; text-align: center; }
+    
+    #displayTitle { 
+        font-size: 22pt; 
+        color: black; 
+        border-bottom: 3px double #000; 
+        padding-bottom: 10px;
+        margin-bottom: 30px;
+    }
+    
+    #print-zone { width: 100%; }
+    #tree { border: none; height: auto !important; min-height: 800px; }
+    
+    /* Paksa warna background keluar dalam PDF */
+    * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
 }
 
-/* Menghilangkan sebarang elemen carian Balkangraph */
-.b3g-search-container, 
-[control-search-container],
-.orgchart-search {
-    display: none !important;
-}
-
-/* Guna cara 'Nuclear' untuk paksa kotak carian hilang */
-div[control-search-container], 
-.b3g-search-container, 
-.orgchart-search,
-#tree > div > div:nth-child(2), /* Sasaran spesifik mengikut susunan elemen */
-[class*="search-container"] {
-    display: none !important;
-    visibility: hidden !important;
-    opacity: 0 !important;
-    pointer-events: none !important;
-    width: 0 !important;
-    height: 0 !important;
-}
+/* HILANGKAN SEARCH SECARA PAKSA */
+[control-search-container], .b3g-search-container { display: none !important; }
