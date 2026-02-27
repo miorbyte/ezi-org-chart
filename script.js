@@ -1,102 +1,59 @@
 let employeeData = [];
 let chart;
 
-// Fungsi tajuk real-time
-function updateTitle() {
-    const val = document.getElementById('chartTitle').value;
-    document.getElementById('displayTitle').innerText = val || "Tajuk Carta";
-}
-
 function renderChart() {
     const treeElement = document.getElementById("tree");
-    if (employeeData.length === 0) {
-        treeElement.innerHTML = "";
-        return;
-    }
+    if (employeeData.length === 0) return;
     treeElement.innerHTML = "";
 
     chart = new OrgChart(treeElement, {
         nodes: employeeData,
-        enableSearch: false,
-        mouseWheel: OrgChart.action.zoom,
-        
-        // --- AKTIFKAN REPAIR/DELETE ---
         nodeMenu: {
             edit: { text: "Repair / Edit" },
-            remove: { text: "Delete Staf" }
+            remove: { text: "Padam" }
         },
-
-        nodeBinding: {
-            field_0: "name",
-            field_1: "title",
-            img_0: "img"
-        },
-
-        // Update dropdown bila data berubah
-        onUpdate: function() { updateParentDropdown(); },
-        onRemove: function() { updateParentDropdown(); }
+        nodeBinding: { field_0: "name", field_1: "title", img_0: "img" }
     });
 
-    // Paksa carta duduk tengah
-    setTimeout(() => {
-        chart.center(employeeData[0].id);
-    }, 300);
-
+    // Paksa ke tengah setiap kali render
+    setTimeout(() => { chart.center(employeeData[0].id); }, 300);
     updateParentDropdown();
 }
 
 function addNode() {
-    const nameInput = document.getElementById('userName');
-    const roleInput = document.getElementById('userRole');
-    const parentInput = document.getElementById('reportsTo');
-    const photoInput = document.getElementById('userPhoto');
+    const name = document.getElementById('userName').value;
+    const role = document.getElementById('userRole').value;
+    const pid = document.getElementById('reportsTo').value || null;
+    const file = document.getElementById('userPhoto').files[0];
 
-    if (!nameInput.value || !roleInput.value) {
-        alert("Sila isi nama dan jawatan.");
-        return;
-    }
+    if (!name || !role) return alert("Isi nama & jawatan!");
 
     const id = Date.now().toString();
-    const pid = parentInput.value || null;
-
-    const process = (imgData) => {
-        employeeData.push({ id, pid, name: nameInput.value, title: roleInput.value, img: imgData });
+    const process = (img) => {
+        employeeData.push({ id, pid, name, title: role, img });
         renderChart();
-        nameInput.value = ""; roleInput.value = ""; photoInput.value = "";
     };
 
-    if (photoInput.files && photoInput.files[0]) {
+    if (file) {
         const reader = new FileReader();
         reader.onload = (e) => process(e.target.result);
-        reader.readAsDataURL(photoInput.files[0]);
-    } else {
-        process("");
-    }
+        reader.readAsDataURL(file);
+    } else { process(""); }
 }
 
 function updateParentDropdown() {
-    const select = document.getElementById('reportsTo');
-    const current = select.value;
-    select.innerHTML = '<option value="">-- Melapor Kepada --</option>';
-    employeeData.forEach(node => {
-        const opt = document.createElement('option');
-        opt.value = node.id; opt.text = node.name;
-        select.add(opt);
-    });
-    select.value = current;
+    const s = document.getElementById('reportsTo');
+    const cur = s.value;
+    s.innerHTML = '<option value="">-- Pilih Bos --</option>';
+    employeeData.forEach(n => { s.add(new Option(n.name, n.id)); });
+    s.value = cur;
 }
 
 function downloadPDF() {
-    if (employeeData.length === 0) return;
-    
-    // Pastikan tajuk dan carta sedia
-    updateTitle();
-    chart.fit(); // Paksa muat 1 page
-    chart.center(employeeData[0].id);
-
-    setTimeout(() => {
-        window.print();
-    }, 500);
+    if (!chart) return;
+    // Paksa setting 1 page sebelum print
+    chart.fit();
+    setTimeout(() => { window.print(); }, 500);
 }
 
 function saveData() {
@@ -110,7 +67,6 @@ function saveData() {
 function loadData() {
     const input = document.createElement('input');
     input.type = 'file';
-    input.accept = '.json';
     input.onchange = e => {
         const reader = new FileReader();
         reader.onload = ev => {
