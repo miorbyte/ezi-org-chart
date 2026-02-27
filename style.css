@@ -1,30 +1,72 @@
-/* Kemas kini bahagian ini sahaja */
+/* 1. RESET & ASAS */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Segoe UI', Roboto, sans-serif;
+    background-color: #f4f7f6;
+    color: #333;
+    line-height: 1.6;
+    padding: 20px;
+}
+
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    background: #fff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 25px;
+    color: #1a73e8;
+}
+
+/* 2. BAHAGIAN BORANG (INPUT) */
+.input-section {
+    background: #f9f9f9;
+    padding: 20px;
+    border-radius: 10px;
+    border: 1px solid #eee;
+    margin-bottom: 20px;
+}
+
+#chartTitle {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 16px;
+}
+
 .form-personal {
-    display: flex;
-    flex-wrap: wrap; /* Paling penting: supaya tak terkeluar ke kanan */
+    display: grid;
+    grid-template-columns: 1fr; /* Default: 1 baris di phone */
     gap: 15px;
-    justify-content: flex-start;
-    align-items: flex-end; /* Supaya label dan input selari di bawah */
 }
 
-/* Pastikan setiap input ada lebar yang munasabah di Web */
-.form-personal input, 
-.form-personal select, 
-.upload-wrapper {
-    flex: 1; /* Biar dia membesar ikut ruang */
-    min-width: 200px; /* Tapi jangan kurang dari 200px (elak terlalu sempit) */
-    max-width: 100%; /* Elak terkeluar dari container */
+/* Susunan 2 baris di PC untuk borang */
+@media (min-width: 768px) {
+    .form-personal {
+        grid-template-columns: 1fr 1fr; 
+    }
 }
 
-/* Khusus untuk butang "Tambah Staf" supaya dia tak terlalu lebar di PC */
-#addBtn {
-    flex: none;
-    width: auto;
-    padding: 0 30px;
-    height: 48px;
+input, select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 15px;
 }
 
-/* Tambahan untuk bahagian muat naik gambar */
 .upload-wrapper {
     display: flex;
     flex-direction: column;
@@ -32,7 +74,72 @@
 }
 
 .upload-wrapper label {
-    font-size: 12px;
+    font-size: 13px;
     font-weight: bold;
     color: #666;
+}
+
+#addBtn {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 15px;
+    font-weight: bold;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.3s;
+    grid-column: 1 / -1; /* Biar butang ni panjang penuh */
+}
+
+#addBtn:hover {
+    background-color: #218838;
+}
+
+/* 3. BAHAGIAN BUTANG AKSI (SIMPAN/BUKA) */
+.action-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 25px;
+    justify-content: center;
+}
+
+.action-bar button {
+    flex: 1;
+    min-width: 140px;
+    padding: 12px;
+    border: none;
+    border-radius: 6px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.btn-pdf { background-color: #e74c3c; }
+.btn-save { background-color: #3498db; }
+.btn-open { background-color: #f39c12; }
+
+.bg-control {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+/* 4. PREVIEW AREA */
+#capture-area {
+    background: white;
+    border: 2px solid #eee;
+    border-radius: 8px;
+    padding: 20px;
+    overflow-x: auto; /* Penting untuk phone skrol kiri-kanan */
+    text-align: center;
+}
+
+#tree {
+    width: 100%;
+    height: 500px;
+    min-width: 700px; /* Biar carta tak mengecil sangat */
 }
