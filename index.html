@@ -5,8 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ezi Org Chart Generator</title>
     <link rel="stylesheet" href="style.css">
-    <script src="https://balkangraph.com/js/orgchart.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="https://balkangraph.com/js/latest/orgchart.js"></script>
 </head>
 <body>
 
@@ -23,7 +22,7 @@
                     <option value="">-- Melapor Kepada (Pilih Bos) --</option>
                 </select>
                 <div class="upload-wrapper">
-                    <label for="userPhoto">Gambar Passport:</label>
+                    <label>Gambar Passport:</label>
                     <input type="file" id="userPhoto" accept="image/*">
                 </div>
                 <button onclick="addNode()" id="addBtn">➕ Tambah Staf</button>
@@ -32,15 +31,15 @@
 
         <section class="action-bar">
             <div class="bg-control">
-                <label>Latar:</label>
+                <label>Warna Latar Preview:</label>
                 <input type="color" id="bgColorPicker" value="#ffffff" onchange="changeBg()">
             </div>
-            <button onclick="downloadPDF()" class="btn-pdf">📄 Cetak PDF</button>
+            <button onclick="downloadPDF()" class="btn-pdf">📄 Cetak PDF (Auto-Fit)</button>
             <button onclick="saveData()" class="btn-save">💾 Simpan (.json)</button>
             <button onclick="loadData()" class="btn-open">📂 Buka Fail</button>
         </section>
 
-        <div id="capture-area">
+        <div id="preview-container">
             <h2 id="displayTitle">Tajuk Carta</h2>
             <div id="tree"></div>
         </div>
