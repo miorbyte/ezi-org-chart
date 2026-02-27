@@ -1,31 +1,22 @@
-body { font-family: 'Segoe UI', sans-serif; background-color: #f4f7f6; margin: 0; padding: 20px; }
-.container { max-width: 1200px; margin: auto; background: white; padding: 30px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
-
-.input-section { background: #e9ecef; padding: 20px; border-radius: 10px; margin-bottom: 25px; }
-.form-personal { display: flex; flex-wrap: wrap; gap: 10px; }
-.form-personal input, .form-personal select { flex: 1; min-width: 200px; padding: 12px; border: 1px solid #ccc; border-radius: 8px; }
-#addBtn { background: #27ae60; color: white; border: none; padding: 12px 25px; border-radius: 8px; cursor: pointer; font-weight: bold; }
-
-.action-bar { display: flex; gap: 10px; margin-bottom: 30px; justify-content: center; }
-.action-bar button { border: none; padding: 12px 20px; border-radius: 8px; color: white; font-weight: bold; cursor: pointer; }
-.btn-pdf { background-color: #c0392b; } .btn-save { background-color: #2980b9; } .btn-open { background-color: #f39c12; }
-
-#tree { width: 100%; height: 600px; background: white; }
-#displayTitle { text-align: center; color: #333; font-size: 26px; margin-bottom: 20px; }
-
-/* --- FIX: PAKSA HTML UNTUK NAMPAK --- */
+/* Pastikan 'foreignObject' tidak disekat paparan */
 foreignObject {
     overflow: visible !important;
 }
 
-[control-search-container], .b3g-search-container { display: none !important; }
+#tree {
+    width: 100%;
+    height: 700px; /* Lebihkan sikit ruang */
+}
+
+/* Sembunyikan search jika masih muncul */
+[control-search-container], .b3g-search-container {
+    display: none !important;
+}
 
 @media print {
     .no-print { display: none !important; }
     #print-zone {
         background-color: #fdf5e6 !important;
-        background-image: radial-gradient(#d3c5a3 0.8px, transparent 0.8px) !important;
-        background-size: 20px 20px !important;
         -webkit-print-color-adjust: exact;
         display: flex; flex-direction: column; align-items: center;
     }
