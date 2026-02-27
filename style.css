@@ -1,6 +1,6 @@
 /* --- GAYA ANTARA MUKA (SKRIN) --- */
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Segoe UI', sans-serif;
     background-color: #f4f7f6;
     margin: 0;
     padding: 20px;
@@ -12,16 +12,6 @@ body {
     background: white;
     padding: 30px;
     border-radius: 15px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-}
-
-h1 { text-align: center; color: #2c3e50; }
-
-.input-section {
-    background: #e9ecef;
-    padding: 20px;
-    border-radius: 10px;
-    margin-bottom: 25px;
 }
 
 #chartTitle {
@@ -30,7 +20,6 @@ h1 { text-align: center; color: #2c3e50; }
     margin-bottom: 15px;
     border: 2px solid #ddd;
     border-radius: 8px;
-    font-size: 16px;
     box-sizing: border-box;
 }
 
@@ -38,12 +27,13 @@ h1 { text-align: center; color: #2c3e50; }
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
+    margin-bottom: 20px;
 }
 
 .form-personal input, .form-personal select {
     flex: 1;
     min-width: 200px;
-    padding: 12px;
+    padding: 10px;
     border: 1px solid #ccc;
     border-radius: 8px;
 }
@@ -52,7 +42,7 @@ h1 { text-align: center; color: #2c3e50; }
     background: #27ae60;
     color: white;
     border: none;
-    padding: 12px 25px;
+    padding: 10px 20px;
     border-radius: 8px;
     cursor: pointer;
     font-weight: bold;
@@ -61,7 +51,7 @@ h1 { text-align: center; color: #2c3e50; }
 .action-bar {
     display: flex;
     gap: 10px;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
     justify-content: center;
 }
 
@@ -78,11 +68,9 @@ h1 { text-align: center; color: #2c3e50; }
 .btn-save { background-color: #2980b9; }
 .btn-open { background-color: #f39c12; }
 
-/* PREVIEW DI WEB */
 #preview-container {
     border: 2px solid #eee;
     padding: 20px;
-    border-radius: 10px;
     min-height: 600px;
     background: white;
 }
@@ -99,52 +87,62 @@ h1 { text-align: center; color: #2c3e50; }
     height: 600px;
 }
 
-/* BUANG ICON MENU & SEARCH */
-[control-search-container], 
-.b3g-search-container,
-[control-menu-container],
-.b3g-menu-container,
+/* SEMBUNYIKAN UI LIBRARY */
+[control-search-container], .b3g-search-container,
+[control-menu-container], .b3g-menu-container,
 svg g[data-on-menu-container] {
     display: none !important;
 }
 
-/* --- TETAPAN KHAS CETAKAN (PORTRAIT PENUAH) --- */
+/* --- LOGIK KHAS CETAKAN (MUKTAMAD: PAGE 1 SAHAJA) --- */
 @media print {
-    /* Sembunyikan semua elemen UI */
-    body * { visibility: hidden; }
-    #print-zone, #print-zone * { visibility: visible; }
-    
+    /* Paksa browser abaikan semua page kecuali yang pertama */
+    html, body {
+        height: 100%;
+        margin: 0 !important;
+        padding: 0 !important;
+        overflow: hidden !important; /* Kunci supaya tak melimpah ke Page 2 */
+    }
+
+    .no-print, .input-section, .action-bar, h1 {
+        display: none !important;
+    }
+
+    /* Isikan zon cetakan tepat di Halaman 1 */
     #print-zone {
+        visibility: visible !important;
         position: absolute;
-        left: 0;
         top: 0;
+        left: 0;
         width: 100%;
-        display: block !important;
-        /* PAKSA BESAR: Scale 1.5 untuk memenuhkan kertas Portrait */
-        transform: scale(1.5); 
+        height: 100%;
+        display: flex !important;
+        flex-direction: column;
+        align-items: center;
+        /* Skala 1.25 adalah paling selamat untuk 5 level tanpa tolak ke Page 2 */
+        transform: scale(1.25); 
         transform-origin: top center;
-        padding-top: 15mm; 
+        padding-top: 10mm;
     }
 
     #displayTitle {
+        visibility: visible !important;
         display: block !important;
-        text-align: center;
-        font-size: 24pt;
-        font-weight: bold;
-        margin-bottom: 20px;
+        font-size: 20pt;
+        margin-bottom: 10px;
         color: black;
-        text-transform: uppercase;
     }
 
     #tree {
+        visibility: visible !important;
         width: 100% !important;
-        /* Kunci tinggi yang besar supaya tidak terpotong semasa scaling */
-        height: 1800px !important; 
+        height: 800px !important;
     }
 
-    /* Hilangkan margin browser untuk guna ruang maksimum */
+    #tree * { visibility: visible !important; }
+
     @page {
         size: portrait;
-        margin: 0;
+        margin: 0; /* Margin sifar penting untuk kekal Page 1 */
     }
 }
