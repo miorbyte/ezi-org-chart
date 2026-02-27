@@ -2,6 +2,7 @@
 <html lang="ms">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sistem Carta Organisasi BPP</title>
     <script src="https://balkangraph.com/js/orgchart.js"></script>
     <link rel="stylesheet" href="style.css">
@@ -18,33 +19,35 @@
         <section class="input-section no-print">
             <div class="input-card">
                 <h3><i class="fas fa-edit"></i> Maklumat Carta</h3>
-                <input type="text" id="chartTitle" oninput="document.getElementById('displayTitle').innerText = this.value" placeholder="Masukkan Tajuk Carta Di Sini...">
+                <input type="text" id="chartTitle" oninput="document.getElementById('displayTitle').innerText = this.value" placeholder="Masukkan Tajuk Carta (Contoh: Unit Pentadbiran BPP)">
                 
-                <hr style="margin: 20px 0; border: 0; border-top: 1px solid #e2e8f0;">
+                <hr style="margin: 25px 0; border: 0; border-top: 1px solid #e2e8f0;">
                 
                 <h3><i class="fas fa-user-plus"></i> Tambah Kakitangan</h3>
                 <div class="form-personal">
                     <input type="text" id="userName" placeholder="Nama Penuh">
                     <input type="text" id="userRole" placeholder="Jawatan">
                     <select id="reportsTo">
-                        <option value="">-- Melapor Kepada --</option>
+                        <option value="">-- Melapor Kepada (Ketua) --</option>
                     </select>
                     
                     <div class="upload-wrapper">
                         <label for="userPhoto" class="custom-file-upload">
-                            <i class="fas fa-camera"></i> Muat Naik Foto Staf
+                            <i class="fas fa-image"></i> Klik Untuk Muat Naik Foto Profil
                         </label>
                         <input type="file" id="userPhoto" accept="image/*" onchange="updateFileName(this)">
-                        <span id="file-name-display">Tiada fail dipilih</span>
+                        <span id="file-name-display">Tiada foto dipilih</span>
                     </div>
 
-                    <button onclick="addNode()" id="addBtn">Tambah Staf</button>
+                    <button onclick="addNode()" id="addBtn">
+                        <i class="fas fa-plus-circle"></i> Tambah Staf
+                    </button>
                 </div>
             </div>
         </section>
 
         <section class="action-bar no-print">
-            <button onclick="window.print()" class="btn-pdf"><i class="fas fa-print"></i> Cetak PDF</button>
+            <button onclick="window.print()" class="btn-pdf"><i class="fas fa-file-pdf"></i> Cetak PDF</button>
             <button onclick="saveData()" class="btn-save"><i class="fas fa-save"></i> Simpan JSON</button>
             <button onclick="loadData()" class="btn-open"><i class="fas fa-folder-open"></i> Buka JSON</button>
         </section>
