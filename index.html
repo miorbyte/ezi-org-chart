@@ -5,6 +5,7 @@
     <title>Sistem Carta Organisasi BPP</title>
     <script src="https://balkangraph.com/js/orgchart.js"></script>
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
@@ -19,15 +20,24 @@
                 <h3><i class="fas fa-edit"></i> Maklumat Carta</h3>
                 <input type="text" id="chartTitle" oninput="document.getElementById('displayTitle').innerText = this.value" placeholder="Masukkan Tajuk Carta Di Sini...">
                 
-                <hr>
+                <hr style="margin: 20px 0; border: 0; border-top: 1px solid #e2e8f0;">
                 
+                <h3><i class="fas fa-user-plus"></i> Tambah Kakitangan</h3>
                 <div class="form-personal">
                     <input type="text" id="userName" placeholder="Nama Penuh">
                     <input type="text" id="userRole" placeholder="Jawatan">
                     <select id="reportsTo">
                         <option value="">-- Melapor Kepada --</option>
                     </select>
-                    <input type="file" id="userPhoto" accept="image/*">
+                    
+                    <div class="upload-wrapper">
+                        <label for="userPhoto" class="custom-file-upload">
+                            <i class="fas fa-camera"></i> Muat Naik Foto Staf
+                        </label>
+                        <input type="file" id="userPhoto" accept="image/*" onchange="updateFileName(this)">
+                        <span id="file-name-display">Tiada fail dipilih</span>
+                    </div>
+
                     <button onclick="addNode()" id="addBtn">Tambah Staf</button>
                 </div>
             </div>
