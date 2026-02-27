@@ -8,6 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://balkangraph.com/js/orgchart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
     <style>
         :root {
@@ -15,6 +16,7 @@
             --secondary: #3b82f6;
             --success: #059669;
             --danger: #dc2626;
+            --warning: #f59e0b;
             --bg: #f1f5f9;
             --cream: #fffdf5;
             --dot: #d1d5db;
@@ -52,15 +54,18 @@
         #addBtn { background: var(--success); color: white; border: none; padding: 12px; border-radius: 8px; font-weight: 700; cursor: pointer; height: 48px; }
 
         .action-bar { display: grid; grid-template-columns: 1fr; gap: 10px; margin: 20px 0; }
-        @media (min-width: 600px) { .action-bar { grid-template-columns: repeat(3, 1fr); } }
+        @media (min-width: 600px) { .action-bar { grid-template-columns: repeat(2, 1fr); } }
+        @media (min-width: 992px) { .action-bar { grid-template-columns: repeat(4, 1fr); } }
 
-        .btn { border: none; padding: 12px; border-radius: 8px; color: white; font-weight: 700; cursor: pointer; text-align: center; text-decoration: none; }
+        .btn { border: none; padding: 12px; border-radius: 8px; color: white; font-weight: 700; cursor: pointer; text-align: center; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 8px; }
         .btn-pdf { background: var(--danger); }
+        .btn-png { background: var(--warning); } /* Butang PNG kekal Amber */
         .btn-save { background: var(--primary); }
         .btn-open { background: #64748b; }
 
         #displayTitle { text-align: center; color: var(--primary); margin-top: 30px; font-weight: 800; font-size: 1.2rem; }
 
+        /* AREA PREVIEW CARTA */
         #tree { 
             width: 100%; height: 550px; border: 1px solid #e2e8f0; border-radius: 12px; margin-top: 10px; 
             background-color: var(--cream);
@@ -71,9 +76,8 @@
 
         @media (min-width: 768px) { #tree { height: 750px; } #displayTitle { font-size: 1.8rem; } }
 
-        @media print {
-            .no-print { display: none !important; }
-        }
+        .no-print { display: block; }
+        @media print { .no-print { display: none !important; } }
     </style>
 </head>
 <body>
@@ -106,13 +110,14 @@
         </div>
 
         <div class="action-bar">
-            <button onclick="printChartOnly()" class="btn btn-pdf"><i class="fas fa-file-pdf"></i> Cetak PDF (Gerenti Latar Belakang)</button>
+            <button onclick="printChartOnly()" class="btn btn-pdf"><i class="fas fa-file-pdf"></i> PDF</button>
+            <button onclick="exportToTransparentPNG()" class="btn btn-png"><i class="fas fa-file-image"></i> PNG (Transparent)</button>
             <button onclick="saveData()" class="btn btn-save"><i class="fas fa-save"></i> Simpan JSON</button>
             <button onclick="loadData()" class="btn btn-open"><i class="fas fa-folder-open"></i> Buka JSON</button>
         </div>
     </div>
 
-    <div id="print-zone">
+    <div id="capture-zone">
         <h2 id="displayTitle">Tajuk Carta Organisasi</h2>
         <div id="tree"></div>
     </div>
@@ -121,59 +126,58 @@
         let employeeData = [];
         let chart;
 
-        function printChartOnly() {
+        // FUNGSI BARU: Eksport ke PNG TRANSPARENT
+        async function exportToTransparentPNG() {
             if (employeeData.length === 0) {
                 alert("Sila tambah staf terlebih dahulu.");
                 return;
             }
 
-            const chartSvg = document.querySelector('#tree svg');
-            if (!chartSvg) return;
+            const captureZone = document.getElementById('capture-zone');
+            
+            // Beri notifikasi sekejap
+            const btnPng = document.querySelector('.btn-png');
+            const originalText = btnPng.innerHTML;
+            btnPng.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memproses...';
 
-            const tajuk = document.getElementById('displayTitle').innerText;
-            
-            const printWin = window.open('', '', 'width=1100,height=850');
-            
-            printWin.document.write(`
-                <html>
-                <head>
-                    <title>Cetak Carta Organisasi</title>
-                    <style>
-                        body { 
-                            margin: 0; padding: 40px; font-family: 'Inter', sans-serif; text-align: center;
-                            background-color: #fffdf5 !important;
-                            background-image: radial-gradient(#d1d5db 1px, transparent 1px) !important;
-                            background-size: 20px 20px !important;
-                            /* PAKSA WARNA KELUAR DI PRINT */
-                            -webkit-print-color-adjust: exact !important;
-                            print-color-adjust: exact !important;
-                        }
-                        h2 { color: #1e3a8a; margin-bottom: 20px; font-size: 24pt; }
-                        #print-wrapper { width: 100%; display: flex; justify-content: center; }
-                        svg { width: 100% !important; height: auto !important; max-height: 80vh; }
-                        @page { size: A4 landscape; margin: 0; }
-                    </style>
-                </head>
-                <body>
-                    <h2>${tajuk}</h2>
-                    <div id="print-wrapper">
-                        ${chartSvg.outerHTML}
-                    </div>
-                </body>
-                </html>
-            `);
-
-            printWin.document.close();
-            
-            // Beri masa untuk rendering corak dot-dot
-            setTimeout(() => {
-                printWin.focus();
-                printWin.print();
-                printWin.close();
-            }, 800);
+            // PAKSA SEMUA BACKGROUND JADI TRANSPARENT SEMASA TANGKAPAN
+            html2canvas(captureZone, {
+                backgroundColor: null,      // KUNCI: Jadikan background capture NULL (Transparent)
+                useCORS: true,              // Benarkan imej CORS
+                scale: 2,                   // Kualiti HD
+                onclone: (clonedDoc) => {
+                    // Paksa div #tree di dalam klon untuk buang background cream/dot
+                    const clonedTree = clonedDoc.getElementById('tree');
+                    if (clonedTree) {
+                        clonedTree.style.backgroundColor = 'transparent';
+                        clonedTree.style.backgroundImage = 'none';
+                        clonedTree.style.border = 'none'; // Buang border juga untuk hasil bersih
+                    }
+                }
+            }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = 'carta_organisasi_ezi_transparent.png';
+                link.href = canvas.toDataURL("image/png");
+                link.click();
+                
+                // Kembalikan butang asal
+                btnPng.innerHTML = originalText;
+            });
         }
 
         // --- FUNGSI ASAL KEKAL ---
+        function printChartOnly() {
+            if (employeeData.length === 0) return;
+            const chartSvg = document.querySelector('#tree svg');
+            if (!chartSvg) return;
+            const tajuk = document.getElementById('displayTitle').innerText;
+            const printWin = window.open('', '', 'width=1100,height=850');
+            printWin.document.write(`<html><head><title>Cetak</title><style>body{margin:0;padding:40px;font-family:'Inter',sans-serif;text-align:center;background-color:#fffdf5!important;background-image:radial-gradient(#d1d5db 1px,transparent 1px)!important;background-size:20px 20px!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;}h2{color:#1e3a8a;margin-bottom:20px;font-size:24pt;}#print-wrapper{width:100%;display:flex;justify-content:center;}svg{width:100%!important;height:auto!important;max-height:80vh;}@page{size:A4 landscape;margin:0;}</style></head><body><h2>${tajuk}</h2><div id="print-wrapper">${chartSvg.outerHTML}</div></body></html>`);
+            printWin.document.close();
+            setTimeout(() => { printWin.focus(); printWin.print(); printWin.close(); }, 800);
+        }
+
+        // --- FUNGSI LOGIK ASAL KEKAL ---
         function updateDisplayTitle(val) { document.getElementById('displayTitle').innerText = val || "Tajuk Carta Organisasi"; }
         function updateFileName(input) { const display = document.getElementById('file-name-display'); display.textContent = input.files.length > 0 ? "Fail: " + input.files[0].name : "Tiada foto"; }
         function setupTemplate() {
