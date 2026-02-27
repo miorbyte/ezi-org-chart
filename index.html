@@ -13,7 +13,7 @@
         <h1 class="no-print">📊 Ezi Org Chart</h1>
         
         <section class="input-section no-print">
-            <input type="text" id="chartTitle" placeholder="Masukkan Tajuk Carta (Contoh: Unit IT 2026)">
+            <input type="text" id="chartTitle" placeholder="Masukkan Tajuk Carta">
             
             <div class="form-personal">
                 <input type="text" id="userName" placeholder="Nama Kakitangan">
@@ -26,6 +26,12 @@
                     <input type="file" id="userPhoto" accept="image/*">
                 </div>
                 <button onclick="addNode()" id="addBtn">➕ Tambah Staf</button>
+            </div>
+
+            <div style="margin-top: 15px; border-top: 1px solid #ccc; padding-top: 10px;">
+                <label>Pilihan Latar Belakang:</label>
+                <button onclick="changeBg('white')" class="bg-opt">Putih Kosong</button>
+                <button onclick="changeBg('cream-dots')" class="bg-opt" style="background: #fdf5e6; color: #333;">Cream Dots</button>
             </div>
         </section>
 
