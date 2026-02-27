@@ -1,15 +1,18 @@
 let employeeData = [];
 let chart;
 
+// 1. Kemaskini Tajuk Secara Live
 function updateDisplayTitle(val) {
     document.getElementById('displayTitle').innerText = val || "Tajuk Carta Organisasi";
 }
 
+// 2. Tunjuk Nama Fail Foto
 function updateFileName(input) {
     const display = document.getElementById('file-name-display');
     display.textContent = input.files.length > 0 ? "Fail: " + input.files[0].name : "Tiada foto dipilih";
 }
 
+// 3. Setup Template Kotak (Premium & Fix Jarak Baris)
 function setupTemplate() {
     OrgChart.templates.eziCustom = Object.assign({}, OrgChart.templates.ana);
     OrgChart.templates.eziCustom.size = [250, 130];
@@ -21,7 +24,7 @@ function setupTemplate() {
             '<div xmlns="http://www.w3.org/1999/xhtml" style="font-weight:800; font-size:14px; color:#1e3a8a; line-height:1.1; display:flex; align-items:center; height:100%; word-break:break-word;">{val}</div>' +
         '</foreignObject>';
 
-    // Jawatan (FIXED: Jarak baris dilaraskan supaya baris 2 nampak)
+    // Jawatan (FIX: Line height 1.3 supaya baris 2 nampak)
     OrgChart.templates.eziCustom.field_1 = 
         '<foreignObject x="95" y="65" width="145" height="55">' +
             '<div xmlns="http://www.w3.org/1999/xhtml" style="font-size:12px; color:#64748b; line-height:1.3; font-weight:500; display:block; word-break:break-word; overflow:hidden;">{val}</div>' +
@@ -33,6 +36,7 @@ function setupTemplate() {
         '<image preserveAspectRatio="xMidYMid slice" clip-path="url(#ulaImg)" xlink:href="{val}" x="7" y="27" width="76" height="76"></image>';
 }
 
+// 4. Render Carta
 function renderChart() {
     const treeDiv = document.getElementById("tree");
     if (employeeData.length === 0) return;
@@ -46,15 +50,27 @@ function renderChart() {
     updateDropdown();
 }
 
+// 5. FUNGSI UTAMA: TAMBAH STAF (FIXED LOGIC)
 function addNode() {
-    const name = document.getElementById('userName').value;
-    const role = document.getElementById('userRole').value;
-    const pid = document.getElementById('reportsTo').value || null;
-    const photo = document.getElementById('userPhoto').files[0];
+    // Ambil elemen secara terus menggunakan ID
+    const nameInput = document.getElementById('userName');
+    const roleInput = document.getElementById('userRole');
+    const reportsToInput = document.getElementById('reportsTo');
+    const photoInput = document.getElementById('userPhoto');
 
-    if (!name || !role) return alert("Isi Nama & Jawatan!");
+    const name = nameInput.value.trim();
+    const role = roleInput.value.trim();
+    const pid = reportsToInput.value || null;
+    const photo = photoInput.files[0];
+
+    // Validasi ringkas
+    if (!name || !role) {
+        alert("Sila isi Nama Penuh dan Jawatan!");
+        return;
+    }
 
     const id = Date.now().toString();
+
     if (photo) {
         const reader = new FileReader();
         reader.onload = function(e) {
@@ -71,17 +87,20 @@ function addNode() {
     } else {
         saveAndRender(id, pid, name, role, "");
     }
+
+    // Reset Form selepas tambah
+    nameInput.value = "";
+    roleInput.value = "";
+    photoInput.value = "";
+    document.getElementById('file-name-display').textContent = "Tiada foto dipilih";
 }
 
 function saveAndRender(id, pid, name, title, img) {
     employeeData.push({ id, pid, name, title, img });
     renderChart();
-    document.getElementById('userName').value = "";
-    document.getElementById('userRole').value = "";
-    document.getElementById('userPhoto').value = "";
-    document.getElementById('file-name-display').textContent = "Tiada foto dipilih";
 }
 
+// 6. Kemaskini Dropdown Ketua
 function updateDropdown() {
     const select = document.getElementById('reportsTo');
     const current = select.value;
@@ -90,6 +109,7 @@ function updateDropdown() {
     select.value = current;
 }
 
+// 7. Simpan & Buka JSON
 function saveData() {
     if (employeeData.length === 0) return;
     const blob = new Blob([JSON.stringify(employeeData, null, 2)], {type: "application/json"});
@@ -105,8 +125,12 @@ function loadData() {
     input.onchange = e => {
         const reader = new FileReader();
         reader.onload = ev => {
-            employeeData = JSON.parse(ev.target.result);
-            renderChart();
+            try {
+                employeeData = JSON.parse(ev.target.result);
+                renderChart();
+            } catch (err) {
+                alert("Fail JSON tidak sah!");
+            }
         };
         reader.readAsText(e.target.files[0]);
     };
