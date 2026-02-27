@@ -1,9 +1,8 @@
-/* 1. ASAS & TIPOGRAFI */
+/* ASAS & TIPOGRAFI */
 body {
-    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    font-family: 'Segoe UI', Roboto, sans-serif;
     background-color: #f0f2f5;
-    margin: 0;
-    padding: 10px;
+    margin: 0; padding: 10px;
 }
 
 .container {
@@ -15,13 +14,9 @@ body {
     box-shadow: 0 4px 15px rgba(0,0,0,0.1);
 }
 
-h1 { 
-    text-align: center; 
-    color: #1a73e8; 
-    margin-bottom: 20px;
-}
+h1 { text-align: center; color: #1a73e8; }
 
-/* 2. SEKSYEN INPUT & BORANG */
+/* SEKSYEN INPUT */
 .input-section {
     background: #f8f9fa;
     padding: 15px;
@@ -31,124 +26,57 @@ h1 {
 }
 
 #chartTitle {
-    width: 100%;
-    padding: 12px;
-    margin-bottom: 15px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    box-sizing: border-box;
-    font-size: 16px;
+    width: 100%; padding: 12px; margin-bottom: 15px;
+    border: 1px solid #ccc; border-radius: 8px; box-sizing: border-box;
 }
 
 .form-personal {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
+    display: flex; flex-direction: column; gap: 12px;
 }
 
-.form-personal input, 
-.form-personal select {
-    padding: 12px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    font-size: 16px;
-}
-
-/* Label & Upload Wrapper */
-.upload-wrapper {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-    font-size: 14px;
-    color: #555;
+.form-personal input, .form-personal select {
+    padding: 12px; border: 1px solid #ccc; border-radius: 8px; font-size: 16px;
 }
 
 #addBtn {
-    background: #28a745;
-    color: white;
-    border: none;
-    padding: 14px;
-    border-radius: 8px;
-    font-weight: bold;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background 0.3s;
+    background: #28a745; color: white; border: none; padding: 14px;
+    border-radius: 8px; font-weight: bold; cursor: pointer;
 }
 
-#addBtn:hover {
-    background: #218838;
-}
-
-/* 3. SEKSYEN BUTANG AKSI (PDF, SIMPAN, BUKA) */
+/* BUTANG AKSI */
 .action-bar {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-bottom: 20px;
-    justify-content: center;
+    display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; justify-content: center;
 }
 
 .action-bar button {
-    border: none;
-    padding: 12px 20px;
-    border-radius: 8px;
-    color: white;
-    font-weight: bold;
-    font-size: 14px;
-    cursor: pointer;
-    flex: 1; /* Biar butang seimbang lebar */
-    min-width: 140px;
-    transition: opacity 0.3s;
+    border: none; padding: 12px 20px; border-radius: 8px; color: white;
+    font-weight: bold; cursor: pointer; flex: 1; min-width: 140px;
 }
 
-.btn-pdf { background-color: #e74c3c; } /* Merah */
-.btn-save { background-color: #3498db; } /* Biru */
-.btn-open { background-color: #f39c12; } /* Jingga */
+.btn-pdf { background-color: #e74c3c; }
+.btn-save { background-color: #3498db; }
+.btn-open { background-color: #f39c12; }
 
-.action-bar button:hover {
-    opacity: 0.9;
-}
-
-/* 4. SEKSYEN PREVIEW CARTA */
+/* PREVIEW */
 #preview-container {
-    border: 2px dashed #ccc;
-    padding: 15px;
-    border-radius: 10px;
-    background-color: #ffffff; /* Default putih */
-    min-height: 400px;
+    border: 2px dashed #ccc; padding: 15px; border-radius: 10px; background-color: white;
 }
 
-#displayTitle {
-    text-align: center;
-    color: #333;
-    margin-top: 0;
-}
+#displayTitle { text-align: center; }
 
-#tree {
-    width: 100%;
-    height: 500px; /* Tinggi kawasan carta */
-    background-color: transparent;
-}
+#tree { width: 100%; height: 500px; }
 
-/* 5. RESPONSIVE UNTUK PC (Skrin Besar) */
+/* PC RESPONSIVE */
 @media (min-width: 768px) {
-    body {
-        padding: 30px;
-    }
+    .form-personal { flex-direction: row; align-items: flex-end; }
+    .action-bar button { flex: none; width: 180px; }
+}
 
-    .form-personal {
-        flex-direction: row; /* Tukar susunan ke melintang */
-        align-items: flex-end;
-    }
-
-    .form-personal input, 
-    .form-personal select, 
-    #addBtn {
-        flex: 1;
-    }
-
-    .action-bar button {
-        flex: none; /* Kekalkan saiz butang asal di PC */
-        width: 180px;
-    }
+/* KOD KHAS UNTUK CETAKAN PDF */
+@media print {
+    .no-print { display: none !important; }
+    body { background-color: white; padding: 0; }
+    .container { box-shadow: none; border: none; width: 100%; max-width: 100%; }
+    #preview-container { border: none; }
+    #tree { height: 1000px !important; } /* Beri ruang lebih tinggi di PDF */
 }
