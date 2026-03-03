@@ -463,12 +463,38 @@ function renderAll() { updateDropdown(); renderStaffList(); renderChart(); }
 
 function printChart() {
   if (!nodes.length) { showToast('⚠️ Carta masih kosong!','var(--red)'); return; }
+
+  // Kira semula bounding box carta
+  var layout = buildLayout(); var pos = layout.positions;
+  var maxX = 0, maxY = 0;
+  Object.keys(pos).forEach(function(id){ maxX=Math.max(maxX,pos[id].x+NW); maxY=Math.max(maxY,pos[id].y+NH); });
+  var vw = maxX + 60, vh = maxY + 60;
+
+  // Clone SVG dan set viewBox betul tanpa transform pan/zoom
   var svg = document.getElementById('chart-svg');
   var clone = svg.cloneNode(true);
-  clone.querySelector('#chart-root').setAttribute('transform','');
+  clone.querySelector('#chart-root').setAttribute('transform', 'translate(30, 30)');
+  clone.setAttribute('viewBox', '0 0 ' + vw + ' ' + vh);
+  clone.setAttribute('width', '100%');
+  clone.setAttribute('height', 'auto');
+  clone.removeAttribute('style');
+
   var tajuk = document.getElementById('displayTitle').textContent;
-  var w = window.open('','','width=1100,height=850');
-  w.document.write('<!DOCTYPE html><html><head><title>'+tajuk+'</title><link href="https://fonts.googleapis.com/css2?family=Syne:wght@800&display=swap" rel="stylesheet"><style>body{margin:0;padding:32px;background:#fff;font-family:Syne,Arial;text-align:center;-webkit-print-color-adjust:exact;print-color-adjust:exact;}h2{margin-bottom:20px;font-size:16pt;font-weight:800;text-transform:uppercase;letter-spacing:2px;}svg{width:100%;height:auto;max-height:82vh;}@page{size:A4 landscape;margin:0;}</style></head><body><h2>'+tajuk+'</h2>'+clone.outerHTML+'<script>window.onload=function(){window.print();window.close();}<\/script></body></html>');
+  var w = window.open('','','width=1200,height=900');
+  w.document.write('<!DOCTYPE html><html><head><title>'+tajuk+'</title>' +
+    '<link href="https://fonts.googleapis.com/css2?family=Syne:wght@800&display=swap" rel="stylesheet">' +
+    '<style>' +
+    'html,body{margin:0;padding:0;background:#fff;-webkit-print-color-adjust:exact;print-color-adjust:exact;}' +
+    'body{padding:20mm;font-family:Syne,Arial;text-align:center;}' +
+    'h2{margin:0 0 16px;font-size:15pt;font-weight:800;text-transform:uppercase;letter-spacing:2px;color:#111;}' +
+    '.svg-wrap{width:100%;display:flex;justify-content:center;}' +
+    'svg{width:100%!important;height:auto!important;}' +
+    '@page{size:A4 landscape;margin:0;}' +
+    '</style></head><body>' +
+    '<h2>'+tajuk+'</h2>' +
+    '<div class="svg-wrap">'+clone.outerHTML+'</div>' +
+    '<script>window.onload=function(){window.print();window.close();}<\/script>' +
+    '</body></html>');
   w.document.close();
 }
 
