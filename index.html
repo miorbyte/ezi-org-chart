@@ -408,10 +408,14 @@ function renderChart() {
 
 function autoCenter(vw, vh) {
   var c = document.getElementById('chart-container');
-  var cw = c.clientWidth, ch = c.clientHeight;
-  svgScale = Math.min((cw-40)/vw, (ch-40)/vh, 1.2);
-  svgOffX = (cw - vw*svgScale)/2;
-  svgOffY = (ch - vh*svgScale)/2;
+  var cw = c.clientWidth || 800;
+  var ch = c.clientHeight || 500;
+  // Set viewBox to match actual content size so coordinates are in px not %
+  var svg = document.getElementById('chart-svg');
+  svg.setAttribute('viewBox', '0 0 ' + cw + ' ' + ch);
+  svgScale = Math.min((cw - 60) / vw, (ch - 60) / vh, 1.5);
+  svgOffX = (cw - vw * svgScale) / 2;
+  svgOffY = (ch - vh * svgScale) / 2;
   applyTransform();
 }
 
@@ -426,7 +430,7 @@ function resetZoom() {
   var layout = buildLayout(); var pos = layout.positions;
   var maxX = 0, maxY = 0;
   Object.keys(pos).forEach(function(id){ maxX = Math.max(maxX, pos[id].x+NW); maxY = Math.max(maxY, pos[id].y+NH); });
-  autoCenter(maxX+60, maxY+60);
+  autoCenter(maxX + 60, maxY + 60);
 }
 
 var cont = document.getElementById('chart-container');
