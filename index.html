@@ -7,28 +7,32 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg:#080b10;--surface:#0f1420;--surface2:#141926;--surface3:#1a2030;
-  --border:rgba(255,255,255,0.06);--border2:rgba(255,255,255,0.11);
-  --gold:#c8a86b;--gold2:#e4c98a;--gold-dim:rgba(200,168,107,0.10);--gold-glow:rgba(200,168,107,0.22);
-  --green:#2dd68a;--red:#f05252;--red-dim:rgba(240,82,82,0.09);
-  --blue:#60a5fa;--blue-dim:rgba(96,165,250,0.09);--amber:#fbbf24;--amber-dim:rgba(251,191,36,0.09);
-  --text:#e4e9f2;--text2:#8896ad;--text3:#3d4d62;
-  --font:'DM Sans',sans-serif;--mono:'DM Mono',monospace;--display:'Syne',sans-serif;
-  --r:12px;--r-sm:7px;
+  --bg:#080b10; --surface:#0f1420; --surface2:#141926; --surface3:#1a2030;
+  --border:rgba(255,255,255,0.06); --border2:rgba(255,255,255,0.11);
+  --gold:#c8a86b; --gold2:#e4c98a; --gold-dim:rgba(200,168,107,0.10); --gold-glow:rgba(200,168,107,0.22);
+  --green:#2dd68a; --red:#f05252; --red-dim:rgba(240,82,82,0.09);
+  --blue:#60a5fa; --blue-dim:rgba(96,165,250,0.09);
+  --amber:#fbbf24; --amber-dim:rgba(251,191,36,0.09);
+  --text:#e4e9f2; --text2:#8896ad; --text3:#3d4d62;
+  --font:'DM Sans',sans-serif; --display:'Syne',sans-serif;
+  --r:12px; --r-sm:7px;
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
-body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:13px;height:100vh;overflow:hidden;
+body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:13px;
+  height:100vh;overflow:hidden;
   background-image:radial-gradient(ellipse 70% 40% at 50% 0%,rgba(200,168,107,0.04) 0%,transparent 55%);}
 @media(max-width:820px){body{height:auto;overflow:auto;}}
 ::-webkit-scrollbar{width:4px;height:4px;}
 ::-webkit-scrollbar-thumb{background:var(--surface3);border-radius:2px;}
 
+/* NAV */
 .top-nav{background:rgba(15,20,32,0.98);border-bottom:1px solid var(--border);padding:0 16px;height:58px;
   display:flex;align-items:center;justify-content:space-between;gap:12px;
   position:sticky;top:0;z-index:100;backdrop-filter:blur(20px);}
 .nav-brand{display:flex;align-items:center;gap:10px;flex-shrink:0;}
-.nav-logo{background:linear-gradient(135deg,var(--gold),var(--gold2));color:#080b10;font-family:var(--display);
-  font-weight:800;font-size:9px;padding:5px 9px;border-radius:5px;letter-spacing:1.5px;box-shadow:0 2px 12px var(--gold-glow);}
+.nav-logo{background:linear-gradient(135deg,var(--gold),var(--gold2));color:#080b10;
+  font-family:var(--display);font-weight:800;font-size:9px;padding:5px 9px;
+  border-radius:5px;letter-spacing:1.5px;box-shadow:0 2px 12px var(--gold-glow);}
 .nav-title{font-family:var(--display);font-size:13px;font-weight:700;color:var(--text2);white-space:nowrap;}
 @media(max-width:480px){.nav-title{display:none;}}
 .nav-actions{display:flex;gap:6px;align-items:center;}
@@ -43,12 +47,14 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:13
 .btn-nav span{display:none;}
 @media(min-width:640px){.btn-nav span{display:inline;}}
 
+/* MOBILE TOGGLE */
 .view-toggle{display:none;background:var(--surface);border-bottom:1px solid var(--border);}
 .view-toggle button{padding:11px 22px;background:none;border:none;border-bottom:2px solid transparent;
   color:var(--text3);font-family:var(--font);font-weight:700;font-size:12px;cursor:pointer;}
 .view-toggle button.active{color:var(--gold);border-bottom-color:var(--gold);}
 @media(max-width:820px){.view-toggle{display:flex;}}
 
+/* LAYOUT */
 .main-wrap{display:grid;grid-template-columns:340px 1fr;height:calc(100vh - 58px);}
 @media(max-width:820px){
   .main-wrap{grid-template-columns:1fr;height:auto;}
@@ -57,99 +63,112 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:13
   .panel-left.hide{display:none;}
 }
 
-.panel-left{background:var(--surface);border-right:1px solid var(--border);overflow-y:auto;padding:16px;padding-bottom:60px;
+/* LEFT PANEL */
+.panel-left{background:var(--surface);border-right:1px solid var(--border);
+  overflow-y:auto;padding:16px;padding-bottom:40px;
   display:flex;flex-direction:column;gap:12px;}
 
-.panel-right{background:var(--bg);overflow:hidden;display:flex;flex-direction:column;position:relative;}
-.chart-header{padding:16px 20px 8px;flex-shrink:0;text-align:center;}
-.chart-title-display{font-family:var(--display);font-size:18px;font-weight:800;color:var(--gold2);letter-spacing:1.5px;text-transform:uppercase;}
-.chart-subtitle{font-size:10px;color:var(--text3);letter-spacing:2px;text-transform:uppercase;margin-top:3px;}
+/* RIGHT PANEL */
+.panel-right{background:var(--bg);display:flex;flex-direction:column;overflow:hidden;}
+.chart-header{padding:14px 20px 8px;flex-shrink:0;text-align:center;}
+.chart-title-display{font-family:var(--display);font-size:18px;font-weight:800;
+  color:var(--gold2);letter-spacing:1.5px;text-transform:uppercase;}
+.chart-subtitle{font-size:10px;color:var(--text3);letter-spacing:2px;margin-top:3px;}
 
-#chart-container{flex:1;position:relative;overflow:hidden;margin:0 16px 16px;border-radius:var(--r);
-  border:1px solid var(--border);background:var(--surface);
+/* CHART AREA */
+#chart-wrap{flex:1;margin:0 16px 16px;border-radius:var(--r);border:1px solid var(--border);
+  background:var(--surface);
   background-image:radial-gradient(rgba(61,77,98,0.4) 0.5px,transparent 0.5px);
-  background-size:22px 22px;cursor:grab;}
-#chart-container:active{cursor:grabbing;}
-#chart-svg{width:100%;height:100%;display:block;}
-@media(max-width:820px){#chart-container{height:480px;flex:none;}}
+  background-size:22px 22px;
+  overflow:hidden;position:relative;cursor:grab;}
+#chart-wrap:active{cursor:grabbing;}
+#chart-svg{width:100%;height:100%;}
+@media(max-width:820px){#chart-wrap{height:460px;flex:none;}}
 
-.zoom-controls{position:absolute;bottom:14px;right:14px;display:flex;flex-direction:column;gap:4px;z-index:10;}
-.zoom-btn{width:32px;height:32px;border-radius:var(--r-sm);background:var(--surface3);border:1px solid var(--border2);
-  color:var(--text2);cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;
-  transition:all 0.2s;font-weight:700;}
+.zoom-controls{position:absolute;bottom:12px;right:12px;display:flex;flex-direction:column;gap:4px;z-index:5;}
+.zoom-btn{width:30px;height:30px;border-radius:var(--r-sm);background:var(--surface2);
+  border:1px solid var(--border2);color:var(--text2);cursor:pointer;font-size:15px;
+  display:flex;align-items:center;justify-content:center;font-weight:700;transition:all 0.2s;}
 .zoom-btn:hover{border-color:var(--gold);color:var(--gold);background:var(--gold-dim);}
 
+/* CARDS */
 .card{background:var(--surface2);border:1px solid var(--border);border-radius:var(--r);padding:16px;position:relative;}
-.card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--gold),transparent);opacity:0.35;pointer-events:none;z-index:0;}
-.card-h{font-family:var(--display);font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:2px;color:var(--gold);
-  margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border2);display:flex;align-items:center;gap:8px;}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--gold),transparent);opacity:0.35;pointer-events:none;}
+.card-h{font-family:var(--display);font-size:10px;font-weight:800;text-transform:uppercase;
+  letter-spacing:2px;color:var(--gold);margin-bottom:14px;padding-bottom:10px;
+  border-bottom:1px solid var(--border2);display:flex;align-items:center;gap:8px;}
 .card-h::before{content:'';display:inline-block;width:3px;height:12px;background:var(--gold);border-radius:2px;flex-shrink:0;}
 
-label:not(.upload-label){font-size:9px;font-weight:700;color:var(--text3);display:block;margin-bottom:5px;margin-top:12px;text-transform:uppercase;letter-spacing:1px;}
-label:not(.upload-label):first-of-type{margin-top:0;}
-input[type="text"],select{width:100%;padding:10px 12px;background:var(--surface3);border:1px solid var(--border2);
-  border-radius:var(--r-sm);color:var(--text);font-family:var(--font);font-size:13px;outline:none;
-  transition:border-color 0.2s,box-shadow 0.2s;-webkit-appearance:none;}
+/* FORM */
+.frm-label{font-size:9px;font-weight:700;color:var(--text3);display:block;
+  margin-bottom:5px;margin-top:12px;text-transform:uppercase;letter-spacing:1px;}
+.frm-label:first-of-type{margin-top:0;}
+input[type="text"],select{width:100%;padding:10px 12px;background:var(--surface3);
+  border:1px solid var(--border2);border-radius:var(--r-sm);color:var(--text);
+  font-family:var(--font);font-size:13px;outline:none;transition:border-color 0.2s,box-shadow 0.2s;
+  -webkit-appearance:none;}
 input:focus,select:focus{border-color:var(--gold);box-shadow:0 0 0 3px var(--gold-dim);background:var(--bg);}
 select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' fill='%233d4d62' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
   background-repeat:no-repeat;background-position:right 12px center;padding-right:30px;}
 select option{background:var(--surface3);}
-.title-input{width:100%;padding:11px 14px;background:var(--surface3);border:1px solid var(--border2);
-  border-radius:var(--r-sm);color:var(--gold2);font-family:var(--display);font-size:14px;font-weight:700;
-  outline:none;text-align:center;letter-spacing:1px;transition:border-color 0.2s;}
+.title-input{width:100%;padding:10px 14px;background:var(--surface3);border:1px solid var(--border2);
+  border-radius:var(--r-sm);color:var(--gold2);font-family:var(--display);font-size:14px;
+  font-weight:700;outline:none;text-align:center;letter-spacing:1px;transition:border-color 0.2s;}
 .title-input:focus{border-color:var(--gold);box-shadow:0 0 0 3px var(--gold-dim);}
 .title-input::placeholder{color:var(--text3);}
-
 #userPhoto{display:none;}
-.upload-label{display:flex;align-items:center;justify-content:center;gap:8px;border:1px dashed var(--border2);
-  background:var(--surface3);color:var(--text3);padding:10px;border-radius:var(--r-sm);cursor:pointer;
-  font-size:12px;font-weight:600;transition:all 0.2s;}
-.upload-label:hover{border-color:var(--gold);color:var(--gold);background:var(--gold-dim);}
+.upload-btn{display:flex;align-items:center;justify-content:center;gap:8px;
+  border:1px dashed var(--border2);background:var(--surface3);color:var(--text3);
+  padding:10px;border-radius:var(--r-sm);cursor:pointer;font-size:12px;font-weight:600;transition:all 0.2s;}
+.upload-btn:hover{border-color:var(--gold);color:var(--gold);background:var(--gold-dim);}
 .file-name{font-size:10px;color:var(--text3);margin-top:4px;text-align:center;}
+.btn-add{width:100%;padding:12px;margin-top:14px;
+  background:linear-gradient(135deg,var(--gold),var(--gold2));color:#080b10;
+  border:none;border-radius:var(--r-sm);font-family:var(--display);font-weight:800;
+  font-size:13px;cursor:pointer;box-shadow:0 3px 12px var(--gold-glow);transition:all 0.2s;display:block;}
+.btn-add:hover{opacity:0.88;transform:translateY(-1px);}
 
-.btn-add-main{width:100%;padding:13px;margin-top:16px;
-  background:linear-gradient(135deg,var(--gold),var(--gold2));color:#080b10;border:none;
-  border-radius:var(--r-sm);font-family:var(--display);font-weight:800;font-size:13px;
-  cursor:pointer;box-shadow:0 3px 16px var(--gold-glow);transition:all 0.2s;
-  position:relative;z-index:5;display:block;}
-.btn-add-main:hover{opacity:0.88;transform:translateY(-1px);}
-
-.staff-item{display:flex;align-items:center;gap:10px;background:var(--surface3);border:1px solid var(--border);
-  border-radius:var(--r-sm);padding:9px 12px;margin-bottom:6px;transition:border-color 0.2s;}
-.staff-item:hover{border-color:var(--border2);}
-.staff-avatar{width:34px;height:34px;border-radius:50%;background:var(--surface2);border:1px solid var(--border2);
-  overflow:hidden;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--text3);}
-.staff-avatar img{width:100%;height:100%;object-fit:cover;}
-.staff-info{flex:1;min-width:0;}
-.staff-name{font-size:12px;font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.staff-role{font-size:10px;color:var(--text3);margin-top:1px;}
-.staff-reports{font-size:9px;color:var(--gold);margin-top:1px;}
+/* STAFF LIST */
+.staff-item{display:flex;align-items:center;gap:10px;background:var(--surface3);
+  border:1px solid var(--border);border-radius:var(--r-sm);padding:9px 12px;margin-bottom:6px;}
+.s-avatar{width:34px;height:34px;border-radius:50%;background:var(--surface2);
+  border:1px solid var(--border2);overflow:hidden;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--text3);}
+.s-avatar img{width:100%;height:100%;object-fit:cover;}
+.s-info{flex:1;min-width:0;}
+.s-name{font-size:12px;font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.s-role{font-size:10px;color:var(--text3);margin-top:1px;}
+.s-parent{font-size:9px;color:var(--gold);margin-top:1px;}
 .btn-del{background:none;border:1px solid rgba(240,82,82,0.2);color:var(--red);
-  padding:4px 9px;border-radius:var(--r-sm);cursor:pointer;font-size:13px;transition:all 0.15s;flex-shrink:0;}
+  padding:4px 9px;border-radius:var(--r-sm);cursor:pointer;font-size:13px;
+  transition:all 0.15s;flex-shrink:0;}
 .btn-del:hover{background:var(--red-dim);border-color:var(--red);}
-.empty-list{text-align:center;padding:24px 16px;color:var(--text3);font-size:12px;line-height:1.9;}
-.empty-icon{font-size:28px;margin-bottom:8px;opacity:0.2;}
+.empty-list{text-align:center;padding:24px 16px;color:var(--text3);font-size:12px;line-height:2;}
+.empty-icon{font-size:28px;margin-bottom:6px;opacity:0.2;}
 
+/* MOBILE ACTION GRID */
 .action-grid{display:none;grid-template-columns:1fr 1fr;gap:8px;}
 @media(max-width:820px){.action-grid{display:grid;}}
-.btn-action{padding:11px;border-radius:var(--r-sm);font-weight:700;font-size:11px;cursor:pointer;
+.btn-act{padding:11px;border-radius:var(--r-sm);font-weight:700;font-size:11px;cursor:pointer;
   font-family:var(--font);display:flex;align-items:center;justify-content:center;gap:6px;
   border:1px solid var(--border2);background:var(--surface3);color:var(--text2);transition:all 0.2s;}
-.btn-action.pdf{border-color:rgba(240,82,82,0.25);color:var(--red);}
-.btn-action.png{border-color:rgba(251,191,36,0.25);color:var(--amber);}
-.btn-action.save{border-color:rgba(96,165,250,0.25);color:var(--blue);}
-.btn-action:hover{border-color:var(--gold);color:var(--gold);background:var(--gold-dim);}
+.btn-act.pdf{border-color:rgba(240,82,82,0.25);color:var(--red);}
+.btn-act.png{border-color:rgba(251,191,36,0.25);color:var(--amber);}
+.btn-act.save{border-color:rgba(96,165,250,0.25);color:var(--blue);}
+.btn-act:hover{border-color:var(--gold);color:var(--gold);background:var(--gold-dim);}
 
-.toast{position:fixed;top:70px;right:16px;z-index:9999;background:var(--surface3);border:1px solid var(--border2);
-  border-left:3px solid var(--green);color:var(--text);padding:11px 16px;border-radius:var(--r-sm);
-  font-weight:600;font-size:13px;box-shadow:0 8px 30px rgba(0,0,0,0.5);animation:toastIn 0.3s ease;max-width:300px;}
+/* TOAST */
+.toast{position:fixed;top:70px;right:16px;z-index:9999;background:var(--surface3);
+  border:1px solid var(--border2);border-left:3px solid var(--green);color:var(--text);
+  padding:11px 16px;border-radius:var(--r-sm);font-weight:600;font-size:13px;
+  box-shadow:0 8px 30px rgba(0,0,0,0.5);animation:toastIn 0.3s ease;max-width:300px;}
 @keyframes toastIn{from{opacity:0;transform:translateX(14px);}to{opacity:1;transform:translateX(0);}}
 
 @media print{
   .top-nav,.panel-left,.view-toggle{display:none!important;}
   .main-wrap{display:block!important;}
   .panel-right{display:block!important;height:auto!important;}
-  #chart-container{height:90vh!important;margin:0!important;border-radius:0!important;border:none!important;background:white!important;background-image:none!important;}
   body{background:white!important;}
 }
 </style>
@@ -162,414 +181,451 @@ select option{background:var(--surface3);}
     <div class="nav-title">Org Chart Generator</div>
   </div>
   <div class="nav-actions">
-    <button class="btn-nav pdf" onclick="printChart()">📄 <span>PDF</span></button>
-    <button class="btn-nav png" onclick="exportPNG()">🖼️ <span>PNG</span></button>
-    <button class="btn-nav save" onclick="saveData()">💾 <span>Simpan</span></button>
-    <button class="btn-nav gold" onclick="loadData()">📂 <span>Buka</span></button>
+    <button class="btn-nav pdf" onclick="doPrint()">📄 <span>PDF</span></button>
+    <button class="btn-nav png" onclick="doPNG()">🖼️ <span>PNG</span></button>
+    <button class="btn-nav save" onclick="doSave()">💾 <span>Simpan</span></button>
+    <button class="btn-nav gold" onclick="doLoad()">📂 <span>Buka</span></button>
   </div>
 </div>
 
 <div class="view-toggle">
-  <button class="active" id="tog-left" onclick="switchView('left')">⌨️ Editor</button>
-  <button id="tog-right" onclick="switchView('right')">🗂️ Carta</button>
+  <button class="active" id="tog-l" onclick="switchView('left')">⌨️ Editor</button>
+  <button id="tog-r" onclick="switchView('right')">🗂️ Carta</button>
 </div>
 
 <div class="main-wrap">
+  <!-- LEFT -->
   <div class="panel-left" id="panel-left">
     <div class="card">
       <div class="card-h">🏷️ Tajuk Carta</div>
-      <input type="text" class="title-input" id="chartTitle" oninput="updateTitle(this.value)" placeholder="Nama Unit / Organisasi">
+      <input class="title-input" type="text" id="chartTitle" oninput="document.getElementById('dispTitle').textContent=this.value||'Carta Organisasi'" placeholder="Nama Unit / Organisasi">
     </div>
+
     <div class="card">
       <div class="card-h">➕ Tambah Staf</div>
-      <label>Nama Penuh</label>
-      <input type="text" id="userName" placeholder="cth: Ahmad bin Ali">
-      <label>Jawatan</label>
-      <input type="text" id="userRole" placeholder="cth: Pengarah">
-      <label>Melapor Kepada</label>
-      <select id="reportsTo"><option value="">— Tiada (Peringkat Teratas) —</option></select>
-      <label>Foto Profil</label>
-      <label for="userPhoto" class="upload-label">📷 Muat Naik Foto</label>
-      <input type="file" id="userPhoto" accept="image/*" onchange="updateFileName(this)">
-      <div class="file-name" id="fname">Tiada foto dipilih</div>
-      <button class="btn-add-main" onclick="addNode()">+ Tambah ke Carta</button>
+      <span class="frm-label">Nama Penuh</span>
+      <input type="text" id="uName" placeholder="cth: Ahmad bin Ali">
+      <span class="frm-label">Jawatan</span>
+      <input type="text" id="uRole" placeholder="cth: Pengarah">
+      <span class="frm-label">Melapor Kepada</span>
+      <select id="uParent"><option value="">— Tiada (Peringkat Teratas) —</option></select>
+      <span class="frm-label">Foto Profil</span>
+      <label for="uPhoto" class="upload-btn">📷 Muat Naik Foto</label>
+      <input type="file" id="uPhoto" accept="image/*" onchange="document.getElementById('fName').textContent=this.files.length?'📎 '+this.files[0].name:'Tiada foto'">
+      <div class="file-name" id="fName">Tiada foto dipilih</div>
+      <button class="btn-add" onclick="addStaf()">+ Tambah ke Carta</button>
     </div>
+
     <div class="card" style="flex:1;">
       <div class="card-h">👥 Senarai Staf</div>
-      <div id="staff-list">
-        <div class="empty-list"><div class="empty-icon">🗂️</div>Belum ada staf.<br>Tambah staf untuk bina carta.</div>
-      </div>
+      <div id="staffList"><div class="empty-list"><div class="empty-icon">🗂️</div>Belum ada staf.<br>Tambah staf untuk bina carta.</div></div>
     </div>
+
     <div class="card action-grid" style="padding:12px;">
-      <button class="btn-action pdf" onclick="printChart()">📄 PDF</button>
-      <button class="btn-action png" onclick="exportPNG()">🖼️ PNG</button>
-      <button class="btn-action save" onclick="saveData()">💾 Simpan</button>
-      <button class="btn-action" onclick="loadData()">📂 Buka</button>
+      <button class="btn-act pdf" onclick="doPrint()">📄 PDF</button>
+      <button class="btn-act png" onclick="doPNG()">🖼️ PNG</button>
+      <button class="btn-act save" onclick="doSave()">💾 Simpan</button>
+      <button class="btn-act" onclick="doLoad()">📂 Buka</button>
     </div>
   </div>
 
+  <!-- RIGHT -->
   <div class="panel-right" id="panel-right">
     <div class="chart-header">
-      <div class="chart-title-display" id="displayTitle">Carta Organisasi</div>
+      <div class="chart-title-display" id="dispTitle">Carta Organisasi</div>
       <div class="chart-subtitle">Carta Hierarki • EZI Org Chart Generator</div>
     </div>
-    <div id="chart-container">
-      <svg id="chart-svg" xmlns="http://www.w3.org/2000/svg">
-        <defs><clipPath id="dummy"><circle cx="0" cy="0" r="1"/></clipPath></defs>
-        <g id="chart-root"></g>
+    <div id="chart-wrap">
+      <svg id="chart-svg" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+        <defs id="svg-defs"></defs>
+        <g id="chart-g"></g>
       </svg>
       <div class="zoom-controls">
-        <button class="zoom-btn" onclick="zoom(1.2)">+</button>
-        <button class="zoom-btn" onclick="zoom(0.83)">−</button>
-        <button class="zoom-btn" onclick="resetZoom()" style="font-size:11px;">↺</button>
+        <button class="zoom-btn" onclick="doZoom(1.25)">+</button>
+        <button class="zoom-btn" onclick="doZoom(0.8)">−</button>
+        <button class="zoom-btn" onclick="doReset()" style="font-size:11px;">↺</button>
       </div>
     </div>
   </div>
 </div>
 
 <script>
+// ─── DATA ────────────────────────────────────────────────────
 var nodes = [];
-var svgScale = 1, svgOffX = 0, svgOffY = 0;
-var dragging = false, lastX = 0, lastY = 0;
-var NW = 210, NH = 105, HGAP = 40, VGAP = 65;
 
+// ─── NODE SIZE (fixed, small) ────────────────────────────────
+var NW = 160, NH = 80, HGAP = 30, VGAP = 50;
+
+// ─── TOAST ───────────────────────────────────────────────────
+function toast(msg, col) {
+  var t = document.createElement('div');
+  t.className = 'toast';
+  t.style.borderLeftColor = col || 'var(--green)';
+  t.innerHTML = msg;
+  document.body.appendChild(t);
+  setTimeout(function(){ t.remove(); }, 2600);
+}
+
+// ─── MOBILE TOGGLE ───────────────────────────────────────────
 function switchView(s) {
   var l = document.getElementById('panel-left');
   var r = document.getElementById('panel-right');
-  var bl = document.getElementById('tog-left');
-  var br = document.getElementById('tog-right');
-  if (s === 'left') { l.classList.remove('hide'); r.classList.remove('show'); bl.classList.add('active'); br.classList.remove('active'); }
-  else { l.classList.add('hide'); r.classList.add('show'); bl.classList.remove('active'); br.classList.add('active'); }
+  if (s === 'left') {
+    l.classList.remove('hide'); r.classList.remove('show');
+    document.getElementById('tog-l').classList.add('active');
+    document.getElementById('tog-r').classList.remove('active');
+  } else {
+    l.classList.add('hide'); r.classList.add('show');
+    document.getElementById('tog-l').classList.remove('active');
+    document.getElementById('tog-r').classList.add('active');
+  }
 }
 
-function showToast(msg, col) {
-  var t = document.createElement('div'); t.className = 'toast';
-  t.style.borderLeftColor = col || 'var(--green)';
-  t.innerHTML = msg; document.body.appendChild(t);
-  setTimeout(function(){ t.remove(); }, 2800);
-}
-
-function updateTitle(v) { document.getElementById('displayTitle').textContent = v || 'Carta Organisasi'; }
-function updateFileName(inp) { document.getElementById('fname').textContent = inp.files.length ? '📎 ' + inp.files[0].name : 'Tiada foto dipilih'; }
-
-function addNode() {
-  var name = document.getElementById('userName').value.trim();
-  var role = document.getElementById('userRole').value.trim();
-  var pid  = document.getElementById('reportsTo').value || null;
-  var file = document.getElementById('userPhoto').files[0];
-  if (!name || !role) { showToast('⚠️ Sila isi Nama dan Jawatan!', 'var(--red)'); return; }
+// ─── ADD STAF ────────────────────────────────────────────────
+function addStaf() {
+  var name = document.getElementById('uName').value.trim();
+  var role = document.getElementById('uRole').value.trim();
+  var pid  = document.getElementById('uParent').value || null;
+  var file = document.getElementById('uPhoto').files[0];
+  if (!name || !role) { toast('⚠️ Isi Nama dan Jawatan!', 'var(--red)'); return; }
   var id = 'n' + Date.now();
   if (file) {
-    var reader = new FileReader();
-    reader.onload = function(e) {
+    var fr = new FileReader();
+    fr.onload = function(e) {
       var img = new Image();
       img.onload = function() {
-        var c = document.createElement('canvas'); c.width = 120; c.height = 120;
-        c.getContext('2d').drawImage(img, 0, 0, 120, 120);
-        pushNode(id, pid, name, role, c.toDataURL('image/jpeg', 0.75));
+        var cv = document.createElement('canvas');
+        cv.width = 100; cv.height = 100;
+        cv.getContext('2d').drawImage(img, 0, 0, 100, 100);
+        push(id, pid, name, role, cv.toDataURL('image/jpeg', 0.7));
       };
       img.src = e.target.result;
     };
-    reader.readAsDataURL(file);
-  } else { pushNode(id, pid, name, role, ''); }
-  document.getElementById('userName').value = '';
-  document.getElementById('userRole').value = '';
-  document.getElementById('userPhoto').value = '';
-  document.getElementById('fname').textContent = 'Tiada foto dipilih';
+    fr.readAsDataURL(file);
+  } else {
+    push(id, pid, name, role, '');
+  }
+  document.getElementById('uName').value = '';
+  document.getElementById('uRole').value = '';
+  document.getElementById('uPhoto').value = '';
+  document.getElementById('fName').textContent = 'Tiada foto dipilih';
 }
 
-function pushNode(id, pid, name, role, img) {
+function push(id, pid, name, role, img) {
   nodes.push({ id:id, pid:pid, name:name, role:role, img:img });
-  renderAll();
-  showToast('✅ <strong>' + name + '</strong> ditambah!');
+  redraw();
+  toast('✅ <strong>' + name + '</strong> ditambah!');
 }
 
-function removeNode(id) {
+function removeStaf(id) {
   var n = nodes.find(function(x){ return x.id === id; });
   if (!n || !confirm('Padam "' + n.name + '"?')) return;
   nodes = nodes.filter(function(x){ return x.id !== id && x.pid !== id; });
-  renderAll();
-  showToast('🗑️ ' + n.name + ' dipadamkan.', 'var(--red)');
+  redraw();
+  toast('🗑️ ' + n.name + ' dipadamkan.', 'var(--red)');
 }
 
-function subtreeWidth(id, childMap) {
-  var ch = childMap[id] || [];
-  if (ch.length === 0) return NW;
-  var total = ch.reduce(function(s,c){ return s + subtreeWidth(c.id, childMap); }, 0) + HGAP * (ch.length - 1);
+// ─── LAYOUT ──────────────────────────────────────────────────
+function getChildren(id) {
+  return nodes.filter(function(n){ return n.pid === id; });
+}
+
+function subtreeW(id) {
+  var ch = getChildren(id);
+  if (!ch.length) return NW;
+  var total = ch.reduce(function(s,c){ return s + subtreeW(c.id); }, 0) + HGAP * (ch.length - 1);
   return Math.max(NW, total);
 }
 
-function buildLayout() {
-  var childMap = {};
-  nodes.forEach(function(n){ childMap[n.id] = nodes.filter(function(x){ return x.pid === n.id; }); });
+function layout() {
   var roots = nodes.filter(function(n){ return !n.pid || !nodes.find(function(x){ return x.id === n.pid; }); });
-  var positions = {};
+  var pos = {};
   function place(id, x, y) {
-    positions[id] = { x:x, y:y };
-    var ch = childMap[id] || [];
+    pos[id] = { x:x, y:y };
+    var ch = getChildren(id);
     if (!ch.length) return;
-    var totalW = ch.reduce(function(s,c){ return s + subtreeWidth(c.id, childMap); }, 0) + HGAP * (ch.length - 1);
-    var curX = x + NW/2 - totalW/2;
-    ch.forEach(function(c){ place(c.id, curX, y + NH + VGAP); curX += subtreeWidth(c.id, childMap) + HGAP; });
+    var tw = ch.reduce(function(s,c){ return s + subtreeW(c.id); }, 0) + HGAP * (ch.length - 1);
+    var cx = x + NW/2 - tw/2;
+    ch.forEach(function(c){ place(c.id, cx, y + NH + VGAP); cx += subtreeW(c.id) + HGAP; });
   }
-  var curX = 0;
-  roots.forEach(function(r){ var rw = subtreeWidth(r.id, childMap); place(r.id, curX, 30); curX += rw + HGAP*2; });
-  return { positions:positions, childMap:childMap };
+  var rx = 0;
+  roots.forEach(function(r){ place(r.id, rx, 0); rx += subtreeW(r.id) + HGAP * 2; });
+  return pos;
 }
 
-function svgEl(tag, attrs) {
-  var el = document.createElementNS('http://www.w3.org/2000/svg', tag);
-  Object.keys(attrs).forEach(function(k){ el.setAttribute(k, attrs[k]); });
-  return el;
+// ─── SVG HELPERS ─────────────────────────────────────────────
+var NS = 'http://www.w3.org/2000/svg';
+function el(tag, attrs, txt) {
+  var e = document.createElementNS(NS, tag);
+  Object.keys(attrs).forEach(function(k){ e.setAttribute(k, attrs[k]); });
+  if (txt !== undefined) e.textContent = txt;
+  return e;
 }
 
-function wrapText(text, maxLen) {
-  var words = text.split(' '); var l1 = '', l2 = '';
-  words.forEach(function(w){ if ((l1+' '+w).trim().length <= maxLen) l1 = (l1+' '+w).trim(); else l2 = (l2+' '+w).trim(); });
-  return [l1, l2];
+// Wrap text into lines
+function wrap(text, charPerLine) {
+  var words = text.split(' '), lines = [], cur = '';
+  words.forEach(function(w){
+    if ((cur ? cur+' '+w : w).length <= charPerLine) { cur = cur ? cur+' '+w : w; }
+    else { if (cur) lines.push(cur); cur = w; }
+  });
+  if (cur) lines.push(cur);
+  return lines.slice(0, 2); // max 2 lines
 }
 
-function renderChart() {
-  var g = document.getElementById('chart-root');
+// ─── RENDER ──────────────────────────────────────────────────
+function redraw() {
+  updateDropdown();
+  updateStaffList();
+
+  var g   = document.getElementById('chart-g');
+  var svg = document.getElementById('chart-svg');
+  var defs = document.getElementById('svg-defs');
   g.innerHTML = '';
-  // Clear old clip paths except dummy
-  var defs = document.querySelector('#chart-svg defs');
-  defs.innerHTML = '<clipPath id="dummy"><circle cx="0" cy="0" r="1"/></clipPath>';
+  defs.innerHTML = '';
 
-  if (nodes.length === 0) return;
-  var layout = buildLayout();
-  var positions = layout.positions;
-  var childMap = layout.childMap;
+  if (!nodes.length) return;
 
-  var maxX = 0, maxY = 0;
-  Object.keys(positions).forEach(function(id){ var p = positions[id]; maxX = Math.max(maxX, p.x+NW); maxY = Math.max(maxY, p.y+NH); });
+  var pos = layout();
 
-  var connG = svgEl('g',{});
-  nodes.forEach(function(n) {
-    var ch = childMap[n.id] || [];
-    var p = positions[n.id];
-    ch.forEach(function(c) {
-      var cp = positions[c.id];
-      var x1 = p.x+NW/2, y1 = p.y+NH, x2 = cp.x+NW/2, y2 = cp.y, my = (y1+y2)/2;
-      var path = svgEl('path',{ d:'M '+x1+' '+y1+' C '+x1+' '+my+', '+x2+' '+my+', '+x2+' '+y2, stroke:'rgba(200,168,107,0.3)', 'stroke-width':'1.5', fill:'none' });
-      connG.appendChild(path);
+  // Bounding box
+  var minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+  nodes.forEach(function(n){
+    var p = pos[n.id];
+    minX = Math.min(minX, p.x); minY = Math.min(minY, p.y);
+    maxX = Math.max(maxX, p.x + NW); maxY = Math.max(maxY, p.y + NH);
+  });
+
+  var PAD = 24;
+  var vw = (maxX - minX) + PAD * 2;
+  var vh = (maxY - minY) + PAD * 2;
+  var ox = PAD - minX; // offset so everything starts at PAD
+  var oy = PAD - minY;
+
+  // Set viewBox to match content exactly → nodes will be correct size
+  svg.setAttribute('viewBox', '0 0 ' + vw + ' ' + vh);
+
+  // ── Connectors ──
+  nodes.forEach(function(n){
+    var ch = getChildren(n.id);
+    var p = pos[n.id];
+    ch.forEach(function(c){
+      var cp = pos[c.id];
+      var x1 = p.x + ox + NW/2,  y1 = p.y + oy + NH;
+      var x2 = cp.x + ox + NW/2, y2 = cp.y + oy;
+      var my = (y1 + y2) / 2;
+      g.appendChild(el('path', {
+        d: 'M '+x1+' '+y1+' C '+x1+' '+my+','+x2+' '+my+','+x2+' '+y2,
+        stroke: 'rgba(200,168,107,0.3)', 'stroke-width': '1.5', fill: 'none'
+      }));
     });
   });
-  g.appendChild(connG);
 
-  nodes.forEach(function(n) {
-    var p = positions[n.id];
-    var ng = svgEl('g',{ transform:'translate('+p.x+','+p.y+')' });
+  // ── Nodes ──
+  nodes.forEach(function(n){
+    var p  = pos[n.id];
+    var px = p.x + ox, py = p.y + oy;
+    var ng = el('g', { transform: 'translate('+px+','+py+')' });
 
-    // Shadow
-    ng.appendChild(svgEl('rect',{ x:'2',y:'4',width:NW,height:NH,rx:'12',ry:'12',fill:'rgba(0,0,0,0.3)' }));
-    // Card
-    ng.appendChild(svgEl('rect',{ x:'0',y:'0',width:NW,height:NH,rx:'12',ry:'12',fill:'#141926',stroke:'rgba(200,168,107,0.22)','stroke-width':'1.5' }));
-    // Gold accent
-    ng.appendChild(svgEl('rect',{ x:'14',y:'0',width:'70',height:'3',rx:'1.5',fill:'#c8a86b',opacity:'0.65' }));
+    // Drop shadow
+    ng.appendChild(el('rect', { x:'2', y:'3', width:NW, height:NH, rx:'10', ry:'10', fill:'rgba(0,0,0,0.28)' }));
+    // Card background
+    ng.appendChild(el('rect', { x:'0', y:'0', width:NW, height:NH, rx:'10', ry:'10',
+      fill:'#141926', stroke:'rgba(200,168,107,0.2)', 'stroke-width':'1.5' }));
+    // Gold top accent bar
+    ng.appendChild(el('rect', { x:'12', y:'0', width:'55', height:'2.5', rx:'1.2',
+      fill:'#c8a86b', opacity:'0.7' }));
 
     var hasImg = !!n.img;
-    var tx = hasImg ? 80 : 16;
+    var tx = hasImg ? 60 : 12; // text x position
 
+    // Photo
     if (hasImg) {
-      var cid = 'clip_' + n.id;
-      var cp2 = svgEl('clipPath',{ id:cid });
-      cp2.appendChild(svgEl('circle',{ cx:'40',cy:'54',r:'28' }));
-      defs.appendChild(cp2);
-      ng.appendChild(svgEl('circle',{ cx:'40',cy:'54',r:'30',fill:'#1a2030',stroke:'rgba(200,168,107,0.28)','stroke-width':'1.5' }));
-      var imgEl = svgEl('image',{ href:n.img, x:'12',y:'26',width:'56',height:'56','clip-path':'url(#'+cid+')','preserveAspectRatio':'xMidYMid slice' });
+      var cid = 'c_' + n.id;
+      var cp = el('clipPath', { id: cid });
+      cp.appendChild(el('circle', { cx:'30', cy:'42', r:'22' }));
+      defs.appendChild(cp);
+      ng.appendChild(el('circle', { cx:'30', cy:'42', r:'24',
+        fill:'#1a2030', stroke:'rgba(200,168,107,0.25)', 'stroke-width':'1.5' }));
+      var imgEl = el('image', { href:n.img, x:'8', y:'20', width:'44', height:'44',
+        'clip-path':'url(#'+cid+')', preserveAspectRatio:'xMidYMid slice' });
       ng.appendChild(imgEl);
     } else {
-      ng.appendChild(svgEl('circle',{ cx:'30',cy:'54',r:'18',fill:'#1a2030',stroke:'rgba(61,77,98,0.5)','stroke-width':'1' }));
-      var ico = svgEl('text',{ x:'30',y:'60','text-anchor':'middle','font-size':'14' });
-      ico.textContent = '👤'; ng.appendChild(ico);
+      ng.appendChild(el('circle', { cx:'26', cy:'42', r:'16',
+        fill:'#1a2030', stroke:'rgba(61,77,98,0.5)', 'stroke-width':'1' }));
+      ng.appendChild(el('text', { x:'26', y:'47', 'text-anchor':'middle', 'font-size':'12' }, '👤'));
     }
 
-    // Name
-    var nameLines = wrapText(n.name, 18);
-    var nameG = svgEl('text',{ x:String(tx), y:'28', 'font-family':'Syne,sans-serif', 'font-size':'11', 'font-weight':'800', fill:'#e4e9f2', 'text-anchor':'start' });
-    var ts1 = svgEl('tspan',{ x:String(tx), dy:'0' }); ts1.textContent = nameLines[0]; nameG.appendChild(ts1);
-    if (nameLines[1]) { var ts2 = svgEl('tspan',{ x:String(tx), dy:'14' }); ts2.textContent = nameLines[1].substring(0,20); nameG.appendChild(ts2); }
+    // Name (max 2 lines, ~14 chars each)
+    var textW = NW - tx - 10;
+    var nameLines = wrap(n.name, Math.floor(textW / 7));
+    var nameG = el('text', { x:String(tx), y:'18',
+      'font-family':'Syne,sans-serif', 'font-size':'9.5', 'font-weight':'800',
+      fill:'#e4e9f2', 'text-anchor':'start' });
+    nameLines.forEach(function(line, i){
+      var ts = el('tspan', { x:String(tx), dy: i === 0 ? '0' : '12' });
+      ts.textContent = line;
+      nameG.appendChild(ts);
+    });
     ng.appendChild(nameG);
 
-    // Role
-    var roleLines = wrapText(n.role, 22);
-    var baseY = nameLines[1] ? 66 : 54;
-    var roleG = svgEl('text',{ x:String(tx), y:String(baseY), 'font-family':'DM Sans,sans-serif', 'font-size':'9.5', fill:'#c8a86b', 'text-anchor':'start' });
-    var rs1 = svgEl('tspan',{ x:String(tx), dy:'0' }); rs1.textContent = roleLines[0]; roleG.appendChild(rs1);
-    if (roleLines[1]) { var rs2 = svgEl('tspan',{ x:String(tx), dy:'13' }); rs2.textContent = roleLines[1].substring(0,24); roleG.appendChild(rs2); }
+    // Role (max 2 lines)
+    var baseY = nameLines.length > 1 ? 52 : 42;
+    var roleLines = wrap(n.role, Math.floor(textW / 6.5));
+    var roleG = el('text', { x:String(tx), y:String(baseY),
+      'font-family':'DM Sans,sans-serif', 'font-size':'8',
+      fill:'#c8a86b', 'text-anchor':'start' });
+    roleLines.forEach(function(line, i){
+      var ts = el('tspan', { x:String(tx), dy: i === 0 ? '0' : '11' });
+      ts.textContent = line;
+      roleG.appendChild(ts);
+    });
     ng.appendChild(roleG);
 
     g.appendChild(ng);
   });
-
-  var _svg=document.getElementById("chart-svg"),_p=40;
-  _svg.setAttribute("viewBox",(-_p)+" "+(-_p)+" "+(maxX+_p*2)+" "+(maxY+_p*2));
-  document.getElementById("chart-root").removeAttribute("transform");
 }
 
-function autoCenter(vw, vh) {
-  var c = document.getElementById('chart-container');
-  var cw = c.clientWidth || 800;
-  var ch = c.clientHeight || 500;
-  // Set viewBox to match actual content size so coordinates are in px not %
-  var svg = document.getElementById('chart-svg');
-  svg.setAttribute('viewBox', '0 0 ' + cw + ' ' + ch);
-  svgScale = Math.min((cw - 60) / vw, (ch - 60) / vh, 1.5);
-  svgOffX = (cw - vw * svgScale) / 2;
-  svgOffY = (ch - vh * svgScale) / 2;
-  applyTransform();
+// ─── ZOOM / PAN ───────────────────────────────────────────────
+function getVB() {
+  var v = document.getElementById('chart-svg').getAttribute('viewBox');
+  return v ? v.split(' ').map(Number) : null;
 }
-
-function applyTransform() {
-  document.getElementById('chart-root').setAttribute('transform','translate('+svgOffX+','+svgOffY+') scale('+svgScale+')');
+function setVB(arr) {
+  document.getElementById('chart-svg').setAttribute('viewBox', arr.join(' '));
 }
-
-function zoom(f) {
-  var _s=document.getElementById("chart-svg"),_v=_s.getAttribute("viewBox");
-  if(!_v)return;
-  var _p=_v.split(" ").map(Number),_nw=_p[2]/f,_nh=_p[3]/f;
-  _s.setAttribute("viewBox",(_p[0]+(_p[2]-_nw)/2)+" "+(_p[1]+(_p[3]-_nh)/2)+" "+_nw+" "+_nh);
+function doZoom(f) {
+  var v = getVB(); if (!v) return;
+  var nw = v[2]/f, nh = v[3]/f;
+  setVB([v[0]+(v[2]-nw)/2, v[1]+(v[3]-nh)/2, nw, nh]);
 }
+function doReset() { redraw(); }
 
-function resetZoom() {
-  if(!nodes.length)return;
-  var lo=buildLayout(),ps=lo.positions,mx=0,my=0;
-  Object.keys(ps).forEach(function(id){mx=Math.max(mx,ps[id].x+NW);my=Math.max(my,ps[id].y+NH);});
-  document.getElementById("chart-svg").setAttribute("viewBox","-40 -40 "+(mx+80)+" "+(my+80));
-}
-
-var cont = document.getElementById('chart-container');
-cont.addEventListener('mousedown',function(e){ dragging=true; lastX=e.clientX; lastY=e.clientY; });
-cont.addEventListener('mousemove',function(e){
-  if(!dragging)return;
-  var _s=document.getElementById("chart-svg"),_v=_s.getAttribute("viewBox");
-  if(!_v)return;
-  var _p=_v.split(" ").map(Number),_sx=_p[2]/cont.clientWidth,_sy=_p[3]/cont.clientHeight;
-  _s.setAttribute("viewBox",(_p[0]-(e.clientX-lastX)*_sx)+" "+(_p[1]-(e.clientY-lastY)*_sy)+" "+_p[2]+" "+_p[3]);
-  lastX=e.clientX;lastY=e.clientY;
+var wrap_ = document.getElementById('chart-wrap');
+var dragging = false, lx = 0, ly = 0;
+wrap_.addEventListener('mousedown', function(e){ dragging=true; lx=e.clientX; ly=e.clientY; });
+wrap_.addEventListener('mousemove', function(e){
+  if (!dragging) return;
+  var v = getVB(); if (!v) return;
+  var sx = v[2]/wrap_.clientWidth, sy = v[3]/wrap_.clientHeight;
+  setVB([v[0]-(e.clientX-lx)*sx, v[1]-(e.clientY-ly)*sy, v[2], v[3]]);
+  lx=e.clientX; ly=e.clientY;
 });
-cont.addEventListener('mouseup',function(){ dragging=false; });
-cont.addEventListener('mouseleave',function(){ dragging=false; });
-cont.addEventListener('touchstart',function(e){ if(e.touches.length===1){ dragging=true; lastX=e.touches[0].clientX; lastY=e.touches[0].clientY; }},{passive:true});
-cont.addEventListener('touchmove',function(e){
-  if(!dragging||e.touches.length!==1)return;
-  var _s=document.getElementById("chart-svg"),_v=_s.getAttribute("viewBox");
-  if(!_v)return;
-  var _p=_v.split(" ").map(Number),_sx=_p[2]/cont.clientWidth,_sy=_p[3]/cont.clientHeight;
-  _s.setAttribute("viewBox",(_p[0]-(e.touches[0].clientX-lastX)*_sx)+" "+(_p[1]-(e.touches[0].clientY-lastY)*_sy)+" "+_p[2]+" "+_p[3]);
-  lastX=e.touches[0].clientX;lastY=e.touches[0].clientY;
+wrap_.addEventListener('mouseup', function(){ dragging=false; });
+wrap_.addEventListener('mouseleave', function(){ dragging=false; });
+wrap_.addEventListener('touchstart', function(e){ if(e.touches.length===1){ dragging=true; lx=e.touches[0].clientX; ly=e.touches[0].clientY; }},{passive:true});
+wrap_.addEventListener('touchmove', function(e){
+  if(!dragging||e.touches.length!==1) return;
+  var v=getVB(); if(!v) return;
+  var sx=v[2]/wrap_.clientWidth, sy=v[3]/wrap_.clientHeight;
+  setVB([v[0]-(e.touches[0].clientX-lx)*sx, v[1]-(e.touches[0].clientY-ly)*sy, v[2], v[3]]);
+  lx=e.touches[0].clientX; ly=e.touches[0].clientY;
 },{passive:true});
-cont.addEventListener('touchend',function(){ dragging=false; });
-cont.addEventListener('wheel',function(e){ e.preventDefault(); zoom(e.deltaY<0?1.1:0.91); },{passive:false});
+wrap_.addEventListener('touchend', function(){ dragging=false; });
+wrap_.addEventListener('wheel', function(e){ e.preventDefault(); doZoom(e.deltaY<0?1.15:0.87); },{passive:false});
 
+// ─── DROPDOWN & STAFF LIST ────────────────────────────────────
 function updateDropdown() {
-  var s = document.getElementById('reportsTo'); var cur = s.value;
+  var s = document.getElementById('uParent'), cur = s.value;
   s.innerHTML = '<option value="">— Tiada (Peringkat Teratas) —</option>';
-  nodes.forEach(function(n){ s.add(new Option(n.name + ' — ' + n.role, n.id)); });
+  nodes.forEach(function(n){ s.add(new Option(n.name+' — '+n.role, n.id)); });
   s.value = cur;
 }
 
-function renderStaffList() {
-  var list = document.getElementById('staff-list');
-  if (!nodes.length) { list.innerHTML = '<div class="empty-list"><div class="empty-icon">🗂️</div>Belum ada staf.<br>Tambah staf untuk bina carta.</div>'; return; }
-  list.innerHTML = nodes.map(function(n) {
-    var parent = n.pid ? nodes.find(function(x){ return x.id===n.pid; }) : null;
+function updateStaffList() {
+  var list = document.getElementById('staffList');
+  if (!nodes.length) {
+    list.innerHTML = '<div class="empty-list"><div class="empty-icon">🗂️</div>Belum ada staf.<br>Tambah staf untuk bina carta.</div>';
+    return;
+  }
+  list.innerHTML = nodes.map(function(n){
+    var par = n.pid ? nodes.find(function(x){ return x.id===n.pid; }) : null;
     return '<div class="staff-item">' +
-      '<div class="staff-avatar">' + (n.img ? '<img src="'+n.img+'">' : '👤') + '</div>' +
-      '<div class="staff-info"><div class="staff-name">'+n.name+'</div><div class="staff-role">'+n.role+'</div>' +
-      (parent ? '<div class="staff-reports">↑ '+parent.name+'</div>' : '') + '</div>' +
-      '<button class="btn-del" onclick="removeNode(\''+n.id+'\')">×</button></div>';
+      '<div class="s-avatar">' + (n.img ? '<img src="'+n.img+'">' : '👤') + '</div>' +
+      '<div class="s-info">' +
+        '<div class="s-name">'+n.name+'</div>' +
+        '<div class="s-role">'+n.role+'</div>' +
+        (par ? '<div class="s-parent">↑ '+par.name+'</div>' : '') +
+      '</div>' +
+      '<button class="btn-del" onclick="removeStaf(\''+n.id+'\')">×</button>' +
+    '</div>';
   }).join('');
 }
 
-function renderAll() { updateDropdown(); renderStaffList(); renderChart(); }
-
-function printChart() {
-  if (!nodes.length) { showToast('⚠️ Carta masih kosong!','var(--red)'); return; }
-
-  // Kira semula bounding box carta
-  var layout = buildLayout(); var pos = layout.positions;
-  var maxX = 0, maxY = 0;
-  Object.keys(pos).forEach(function(id){ maxX=Math.max(maxX,pos[id].x+NW); maxY=Math.max(maxY,pos[id].y+NH); });
-  var vw = maxX + 60, vh = maxY + 60;
-
-  // Clone SVG dan set viewBox betul tanpa transform pan/zoom
-  var svg = document.getElementById('chart-svg');
+// ─── PRINT / EXPORT ───────────────────────────────────────────
+function doPrint() {
+  if (!nodes.length) { toast('⚠️ Carta kosong!', 'var(--red)'); return; }
+  var svg   = document.getElementById('chart-svg');
   var clone = svg.cloneNode(true);
-  clone.querySelector('#chart-root').setAttribute('transform', 'translate(30, 30)');
-  clone.setAttribute('viewBox', '0 0 ' + vw + ' ' + vh);
-  clone.setAttribute('width', '100%');
-  clone.setAttribute('height', 'auto');
-  clone.removeAttribute('style');
-
-  var tajuk = document.getElementById('displayTitle').textContent;
+  var tajuk = document.getElementById('dispTitle').textContent;
   var w = window.open('','','width=1200,height=900');
   w.document.write('<!DOCTYPE html><html><head><title>'+tajuk+'</title>' +
     '<link href="https://fonts.googleapis.com/css2?family=Syne:wght@800&display=swap" rel="stylesheet">' +
-    '<style>' +
-    'html,body{margin:0;padding:0;background:#fff;-webkit-print-color-adjust:exact;print-color-adjust:exact;}' +
-    'body{padding:20mm;font-family:Syne,Arial;text-align:center;}' +
-    'h2{margin:0 0 16px;font-size:15pt;font-weight:800;text-transform:uppercase;letter-spacing:2px;color:#111;}' +
-    '.svg-wrap{width:100%;display:flex;justify-content:center;}' +
-    'svg{width:100%!important;height:auto!important;}' +
-    '@page{size:A4 landscape;margin:0;}' +
-    '</style></head><body>' +
-    '<h2>'+tajuk+'</h2>' +
-    '<div class="svg-wrap">'+clone.outerHTML+'</div>' +
+    '<style>html,body{margin:0;padding:0;background:#fff;-webkit-print-color-adjust:exact;print-color-adjust:exact;}' +
+    'body{padding:15mm;font-family:Syne,Arial;text-align:center;}' +
+    'h2{margin:0 0 14px;font-size:14pt;font-weight:800;text-transform:uppercase;letter-spacing:2px;}' +
+    'svg{width:100%;height:auto;display:block;}' +
+    '@page{size:A4 landscape;margin:0;}</style></head><body>' +
+    '<h2>'+tajuk+'</h2>' + clone.outerHTML +
     '<script>window.onload=function(){window.print();window.close();}<\/script>' +
     '</body></html>');
   w.document.close();
 }
 
-function exportPNG() {
-  if (!nodes.length) { showToast('⚠️ Carta masih kosong!','var(--red)'); return; }
-  showToast('⏳ Memproses PNG...','var(--amber)');
-  var svg = document.getElementById('chart-svg');
-  var layout = buildLayout(); var pos = layout.positions;
-  var maxX = 0, maxY = 0;
-  Object.keys(pos).forEach(function(id){ maxX=Math.max(maxX,pos[id].x+NW); maxY=Math.max(maxY,pos[id].y+NH); });
-  var vw = maxX+60, vh = maxY+60;
+function doPNG() {
+  if (!nodes.length) { toast('⚠️ Carta kosong!', 'var(--red)'); return; }
+  toast('⏳ Memproses...', 'var(--amber)');
+  var svg   = document.getElementById('chart-svg');
+  var vb    = svg.getAttribute('viewBox').split(' ').map(Number);
   var clone = svg.cloneNode(true);
-  clone.querySelector('#chart-root').setAttribute('transform','');
-  clone.setAttribute('width', vw*2); clone.setAttribute('height', vh*2);
-  clone.setAttribute('viewBox','0 0 '+vw+' '+vh);
-  var blob = new Blob([new XMLSerializer().serializeToString(clone)],{type:'image/svg+xml'});
-  var url = URL.createObjectURL(blob);
-  var img2 = new Image();
-  img2.onload = function() {
-    var canvas = document.createElement('canvas'); canvas.width=vw*2; canvas.height=vh*2;
-    canvas.getContext('2d').drawImage(img2,0,0);
+  var scale = 2;
+  clone.setAttribute('width',  vb[2]*scale);
+  clone.setAttribute('height', vb[3]*scale);
+  var blob = new Blob([new XMLSerializer().serializeToString(clone)], {type:'image/svg+xml'});
+  var url  = URL.createObjectURL(blob);
+  var img  = new Image();
+  img.onload = function(){
+    var cv = document.createElement('canvas');
+    cv.width = vb[2]*scale; cv.height = vb[3]*scale;
+    cv.getContext('2d').drawImage(img, 0, 0);
     URL.revokeObjectURL(url);
-    var a = document.createElement('a'); a.download='EZI_OrgChart_'+Date.now()+'.png';
-    a.href=canvas.toDataURL('image/png'); a.click();
-    showToast('✅ PNG berjaya dieksport!');
+    var a = document.createElement('a');
+    a.download = 'EZI_OrgChart_'+Date.now()+'.png';
+    a.href = cv.toDataURL('image/png'); a.click();
+    toast('✅ PNG berjaya!');
   };
-  img2.src = url;
+  img.src = url;
 }
 
-function saveData() {
-  if (!nodes.length) { showToast('⚠️ Tiada data!','var(--red)'); return; }
-  var d = { title:document.getElementById('chartTitle').value, nodes:nodes };
-  var b = new Blob([JSON.stringify(d,null,2)],{type:'application/json'});
-  var a = document.createElement('a'); a.href=URL.createObjectURL(b);
-  a.download='EZI_OrgChart_'+new Date().toISOString().split('T')[0]+'.json'; a.click();
-  showToast('✅ Data disimpan!');
+function doSave() {
+  if (!nodes.length) { toast('⚠️ Tiada data!', 'var(--red)'); return; }
+  var d = { title: document.getElementById('chartTitle').value, nodes: nodes };
+  var b = new Blob([JSON.stringify(d,null,2)], {type:'application/json'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(b);
+  a.download = 'EZI_OrgChart_'+new Date().toISOString().split('T')[0]+'.json';
+  a.click();
+  toast('✅ Disimpan!');
 }
 
-function loadData() {
-  var inp = document.createElement('input'); inp.type='file'; inp.accept='.json';
-  inp.onchange = function(e) {
-    var r = new FileReader();
-    r.onload = function(ev) {
+function doLoad() {
+  var inp = document.createElement('input');
+  inp.type = 'file'; inp.accept = '.json';
+  inp.onchange = function(e){
+    var fr = new FileReader();
+    fr.onload = function(ev){
       try {
         var d = JSON.parse(ev.target.result);
         nodes = Array.isArray(d) ? d : (d.nodes || []);
-        if (!Array.isArray(d) && d.title) { document.getElementById('chartTitle').value=d.title; updateTitle(d.title); }
-        renderAll(); showToast('✅ Data dimuatkan!');
-      } catch(err) { showToast('⚠️ Fail tidak sah!','var(--red)'); }
+        if (!Array.isArray(d) && d.title) {
+          document.getElementById('chartTitle').value = d.title;
+          document.getElementById('dispTitle').textContent = d.title;
+        }
+        redraw();
+        toast('✅ Data dimuatkan!');
+      } catch(err) { toast('⚠️ Fail tidak sah!', 'var(--red)'); }
     };
-    r.readAsText(e.target.files[0]);
+    fr.readAsText(e.target.files[0]);
   };
   inp.click();
 }
